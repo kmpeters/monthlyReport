@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+
+	<xsd:element name="BCDA_Staff_Monthly_Report">
+    		<xsd:complexType>
+    			<xsd:sequence>
+				<xsd:element name="date" minOccurs="1" maxOccurs="1" type="xsd:date"/>
+				<xsd:element name="author_fullname" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+				<xsd:element name="author" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+    				<xsd:element name="remark" minOccurs="1" maxOccurs="unbounded" type="record"/>
+			</xsd:sequence>
+			<xsd:attribute name="version" type="xsd:float" use="required"/>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="record" mixed="true">
+		<xsd:sequence>
+			<xsd:element name="title" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="subject" minOccurs="0" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="entry" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="effort" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+</xsd:schema>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	elementFormDefault="qualified">
+    <xsd:element name="log">
+    	<xsd:complexType>
+    		<xsd:sequence>
+    			<xsd:element name="entry" minOccurs="1" maxOccurs="unbounded" type="record"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="record" mixed="true">
+		<xsd:sequence>
+			<xsd:element name="day" minOccurs="1" maxOccurs="1" type="xsd:positiveInteger"/>
+			<xsd:element name="date" minOccurs="1" maxOccurs="1" type="xsd:date"/>
+			<xsd:element name="duration" minOccurs="1" maxOccurs="1" type="xsd:decimal"/>
+			<xsd:element name="category" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="keyword" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="description" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+			<xsd:element name="resolution" minOccurs="1" maxOccurs="1" type="xsd:string"/>
+		</xsd:sequence>
+		<xsd:attribute name="index" type="xsd:positiveInteger" use="required"/>
+	</xsd:complexType>
+
+</xsd:schema>
