@@ -14,9 +14,11 @@ Basic configuration of choices for reporting.
 :param [str] possible_customers: broad list of choices to categorize Who initiated this work?
 :param [str] possible_activities: broad list of choices to categorize What kind of work or activity was done?
 :param [str] possible_groups: list of choices where BCDA will deliver support
+:param dict tooltips: for use in the GUI
 
-The *Customers* that drive the work can be described in a few, short categories.  
-The list of ``possible_customers`` is not likely to change.:
+
+*Customers* initiate, or drive, the work.
+The list of a few, short categories is not likely to change.
 
 ===============  =====================================================
 customer         description
@@ -34,7 +36,7 @@ BCDA             Usually administrative matters or other group,
 ===============  =====================================================
 
 *Activities* describe, broadly, the kind of work that was done.
-This list helps describe our activities to upper management.:
+This list helps describe our activities to upper management.
 
 ===============  =====================================================
 activity         description
@@ -61,9 +63,10 @@ the list seems to fit.  This will flag the list of groups for revision.
 
 
 :note: To report vacation time, 
-sick days, lab holidays, weather-related lab closing, or similar,
-select ``customer="BCDA"``, ``activity="Administrative"``, and
-``group="Leave"``.
+    sick days, lab holidays, weather-related lab closing, or similar,
+    select ``customer="BCDA"``, ``activity="Administrative"``, and
+    ``group="Leave"``.
+
 '''
 
 
@@ -94,7 +97,13 @@ possible_groups = ['',
                  ]
 possible_groups.sort()
 
-customer_tooltip = "Who initiated this work?"
-activity_tooltip = "What kind of work or activity was done?"
-group_tooltip = "Beam line, group, or category for this work."
+tooltips = {
+            'customer': "Who initiated this work",
+            'activity': "What kind of work or activity was done?",
+            'group': "Beam line, group, or category for this work.",
+            'effort_hrs': """report the time in hours with
+with precision of 0.25, such as '6.75'.""",
+            'title': "Summarize this work with a few words.",
+            'description': "Describe the work that was done.",
+            }
 

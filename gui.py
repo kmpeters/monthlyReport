@@ -23,12 +23,17 @@ import config
 
 
 class Report( HasTraits ):
+    '''
+    describes a single report of work
+    '''
     customer = Enum(config.possible_customers, value="")
     activity = Enum(config.possible_activities, value="")
     group = Enum(config.possible_groups, value="")
     description = Str
     title = Str
     effort_hrs = Float
+    # date: provide some record of when this entry was created or modified
+    _dirty = Bool(False)    # True once the field is edited
 
     addBtn = Button('Add')
     resetBtn = Button('Reset')
@@ -59,15 +64,15 @@ class Report( HasTraits ):
         print "click [x] in the window's title bar to quit"
 
     traits_view = View(
-        Item('customer', tooltip=config.customer_tooltip),
-        Item('activity', tooltip=config.activity_tooltip),
-        Item('group', tooltip=config.group_tooltip),
+        Item('customer', tooltip=config.tooltips['customer']),
+        Item('activity', tooltip=config.tooltips['activity']),
+        Item('group', tooltip=config.tooltips['group']),
         HGroup(
-               Item('title', springy=True, tooltip="Summarize this work with a few words"),
-               Item('effort_hrs', tooltip="report the time in hours with \n precision of 0.25, such as '6.75'"),
+               Item('title', springy=True, tooltip=config.tooltips['title']),
+               Item('effort_hrs', tooltip=config.tooltips['effort_hrs']),
                ),
         Item('description', 
-             tooltip="Describe the work that was done.", 
+             tooltip=config.tooltips['description'], 
              resizable=True, springy=True, 
              editor=TextEditor(), style='custom'),
         HGroup(
@@ -84,6 +89,12 @@ class Report( HasTraits ):
 
 
 def doReportAdd(*args, **kw):
+    '''
+    Example routine to handle the request to enter a new report
+    of work into the current database.  This routine has a trivial
+    response, since no database is yet connected and the calling
+    signature is not yet confirmed.
+    '''
     import pprint
     print "args: ",
     pprint.pprint(args)

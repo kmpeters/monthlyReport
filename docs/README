@@ -1,0 +1,11 @@
+$Id$
+
+To build the documentation, you will need Python with the 
+sphinx package as the default one on your path.
+EPD python has this.  Then, type::
+
+	make html
+
+To view the HTML documentation, look at ``build/html/index.html``::
+
+	firefox build/html/index.html &
