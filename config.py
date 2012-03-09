@@ -98,7 +98,8 @@ possible_groups = ['',
 possible_groups.sort()
 
 tooltips = {
-            'customer': "Who initiated this work",
+            'date': "Date of this effort (yyyy-mm-dd)",
+            'customer': "Who initiated this work?",
             'activity': "What kind of work or activity was done?",
             'group': "Beam line, group, or category for this work.",
             'effort_hrs': """report the time in hours with

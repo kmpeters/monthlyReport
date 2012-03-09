@@ -19,6 +19,14 @@ import xmllog
 class ReportLog:
   '''
   Class representing a monthly-report log.
+  
+  :param str logFile: file name
+  :returns: ReportLog object
+  :rtype: complex structure from :meth:`getLog()`
+  
+  .. alternate form, use when the "type" is more than one word
+  ..  :param other: this is not used
+  ..  :type other: list of **objects**
   '''
   def __init__(self, logFile):
     self.definitions()
