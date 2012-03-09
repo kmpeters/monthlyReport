@@ -1,21 +1,9 @@
 .. $Id$
 
-Package
-===========
+modules
+=============
 
-:mod:`config` Module
---------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: config
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`gui` Module
------------------
-
-.. automodule:: gui
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
+   modules
