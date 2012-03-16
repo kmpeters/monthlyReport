@@ -50,6 +50,8 @@ class ReportCli:
 	 "psum": self.displayPercentSummary,
 	  "rep": self.displayReport,
 	 "prep": self.displayPercentReport,
+	 "list": self.listLabels,
+	    "l": self.listLabels,
 	  "xml": self.createReportXml,
 	"mkrep": self.makePdfReport,
          }
@@ -103,6 +105,9 @@ class ReportCli:
    rep [cat] 	 displays the summary w/ details (hours)
    prep [cat]	 displays the summary w/ details (percent)
 
+   list [label ...] list the labels used in the log. Default labels are
+                customer, activity, group and title.
+
    xml		Generates a skeleton xml report in the same directory
    		as the work log. Categories and keywords in the work log
 		correspond to titles and subjects in the xml report.  
@@ -111,10 +116,6 @@ class ReportCli:
 		
    mkrep	Converts an xml file into a pdf. Titles are optional 
    		and do not currently appear in the pdf.
-		
- Not yet implemented:
-   list 	prints categories & keywords
-		
     """
     return True
 
@@ -235,6 +236,63 @@ class ReportCli:
     status = mkrep.makeXml(analysis, self.directory, desiredFilename, fullName)    
 
     return True
+
+
+  def _recursiveDisplayLabels(self, struct, level=0):
+    '''
+    Display the labels used in the report
+    '''
+    #!print "Displaying stuff", struct
+    indentStr = "   "
+    if type(struct) is dict:
+      keys = struct.keys()
+      keys.sort()
+      for k in keys:
+        print indentStr * level + k
+        self._recursiveDisplayLabels(struct[k], level+1)
+    
+    if type(struct) is list:
+      for item in struct:
+        print indentStr * level + item
+
+
+  def listLabels(self, *args):
+    '''
+    Method to display the heirarchy of labels used for the entries in the log
+    
+    args is a tuple of the labels that defines the nesting used when displaying the results.
+    '''
+    #!print "listLabels(", args, ")"
+    
+    defaultLabels = ['customer', 'activity', 'group', 'title']
+    
+    if args == ():
+      labels = defaultLabels[:]
+    else:
+      # only include valid arguments
+      labels = []
+      for label in args:
+        if label in self.logEntryDef:
+	  labels.append(label)
+	else:
+	  print "! %s is not a valid label." % label
+
+    #!print labels
+    
+    #!print "Listing the following:"
+    print ""
+    for i in range(len(labels)):
+      print "   " * i + labels[i]
+    
+    if len(labels) != 0:
+      struct = self.logObj.collectLabels(labels)
+    
+      print "---" * (len(labels) + 1 )
+      self._recursiveDisplayLabels(struct)
+      print ""
+    
+    return True
+    
 
   def displayReport(self, *args):
     '''

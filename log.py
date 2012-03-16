@@ -59,6 +59,52 @@ class ReportLog:
     '''
     return self.logEntryDef[:]
 
+  def _recursiveCollectLabels(self, ent, labels, struct, level=0):
+    '''
+    A recursive funtion is needed to hand the arbitrary number of levels.
+    
+    Creates dictionaries for the higher levels and populates the list at the lowest level.
+    '''
+    #!print ent, labels, struct, level
+    getFun, setFun, verifyFun = ent.getFunctions(labels[level])
+    label = getFun()
+    
+    numLabels = len(labels)
+    lastIndex = numLabels - 1
+    
+    if level == lastIndex:
+      if label not in struct:
+    	struct.append(label)
+    else:
+      if level == lastIndex - 1:
+    	if label not in struct:
+          struct[label] = []
+      else:
+        if label not in struct:
+    	  struct[label] = {}
+
+      self._recursiveCollectLabels(ent, labels, struct[label], level+1)
+
+
+  def collectLabels(self, labels):
+    '''
+    Collects the labels on entries from the work log.
+    
+    Returns nested dictionaries of labels, with lists at the lowest level.
+    '''
+    levels = len(labels)
+    if levels == 1:
+      struct = []
+    else:
+      struct = {}
+
+    for x in self.entryArray:
+      #!print x
+      self._recursiveCollectLabels(x, labels[:], struct)
+     
+    return struct
+        
+
   def collectEntries(self, group, field):
     '''
     Return a list of responses to the prompt for field (choice for field are defined in self.logEntryDef) for entries matching the given group.  
