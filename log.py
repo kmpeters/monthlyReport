@@ -98,7 +98,7 @@ class ReportLog:
     
     index is an integer (numbering from 0)
     '''
-    print "INDEX ", index
+    #!print "INDEX ", index
     return self.entryArray[index]
 
   def replaceEntry(self, index, entry):

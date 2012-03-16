@@ -547,7 +547,7 @@ class ReportCli:
     if status == True:
       self.logObj.addEntry(newEntry)
       self.dirty = True
-      newEntry.printEntry()
+      #!newEntry.printEntry()
     else:
       #!print "addEntry canceled"
       pass
