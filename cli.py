@@ -31,6 +31,14 @@ class ReportCli:
   The command-line interface class, which interacts with the log module
   '''
   def __init__(self):
+    # Remove '-' from delim list so entries with dashes auto-complete properly
+    delims = readline.get_completer_delims()
+    #!print "delims = %s" % delims
+    new_delims = delims.replace("-",'')
+    readline.set_completer_delims(new_delims)
+    #!delims2 = readline.get_completer_delims()
+    #!print "delims = %s" % delims2
+
     self.commands = { 
          "help": self.displayHelp,
             "h": self.displayHelp,  
@@ -776,13 +784,6 @@ class _TabCompleter:
 
 
 if __name__ == "__main__":
-	# Remove '-' from delim list so categories & keywords auto-complete properly
-	delims = readline.get_completer_delims()
-	#!print "delims = %s" % delims
-	new_delims = delims.replace("-",'')
-	readline.set_completer_delims(new_delims)
-	#!delims2 = readline.get_completer_delims()
-	#!print "delims = %s" % delims2
-	cli = ReportCli()			
-	cli.main()
+  cli = ReportCli()			  
+  cli.main()
 
