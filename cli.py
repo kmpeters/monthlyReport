@@ -52,6 +52,7 @@ class ReportCli:
 	    "d": self.displayDay,
          "save": self.saveLog,
             "s": self.saveLog,
+         "exit": self.quit,
          "quit": self.quit,
             "q": self.quit,
           "sum": self.displaySummary,
