@@ -32,10 +32,18 @@ class ReportLog:
     self.definitions()
     
     # import xml log file?
-    self.logFile = xmllog.XmlLog(logFile, self.logEntryDef[:])
+    self.logFile = self.createLogFileObj(logFile, self.logEntryDef[:])
     
     # log file in array of entry objs form
     self.entryArray = self.getLog()
+
+
+  def createLogFileObj(self, logFile, logEntryDef):
+    '''
+    Method called by __init__ to create the log file instance. Designed to be overriden without having to reimplement __init__.
+    '''
+    return xmllog.XmlLog(logFile, logEntryDef)
+
 
   def definitions(self):
     '''

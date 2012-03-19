@@ -85,8 +85,14 @@ class ReportCli:
 
     if self.run == True:
       # Read log file into persistent log object
-      self.logObj = log.ReportLog(self.filepath)
+      self.logObj = self.createReportLog(self.filepath)
       self.logEntryDef = self.logObj.getLogEntryDef()
+
+  def createReportLog(self, filepath):
+    '''
+    Method called by __init__ to create the ReportLog instance. Designed to be overriden without having to reimplement __init__.
+    '''
+    return log.ReportLog(filepath)
 
 
   def definitions(self):
