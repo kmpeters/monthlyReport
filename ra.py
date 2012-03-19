@@ -5,6 +5,7 @@ Example showing how to use custom config to reduce group list
 '''
 
 import cli
+import log
 
 class MyCli(cli.ReportCli):
   # Override the definition function to customize interface defaults
@@ -23,6 +24,24 @@ class MyCli(cli.ReportCli):
                     'Infrastructure',
                     'Training', 'Leave', 'Offsite',
                  ]
+
+  # Override the createReportLog function so that MyReportLog is used instead of ReportLog
+  def createReportLog(self, filepath):
+    return MyReportLog(filepath)
+
+class MyReportLog(log.ReportLog):
+  # Override the definition function to change the order of items in logEntryDef
+  def definitions(self):
+    self.logEntryDef = [
+        "date",
+        "duration",
+        "group",
+        "title",
+        "description",
+        "customer",
+        "activity"
+      ]
+
     
 if __name__ == '__main__':
   myCli = MyCli()
