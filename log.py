@@ -113,6 +113,21 @@ class ReportLog:
     return struct
         
 
+  def collectGroups(self):
+    '''
+    Return a list of groups that already exist in the log.
+    
+    Used by high-level interfaces for tab-completion.
+    '''
+    groups = []
+    # loop over all entries in the log
+    for x in self.entryArray:
+      if x.group not in groups:
+        groups.append(x.group)
+
+    return groups[:]
+  
+
   def collectEntries(self, group, field):
     '''
     Return a list of responses to the prompt for field (choice for field are defined in self.logEntryDef) for entries matching the given group.  

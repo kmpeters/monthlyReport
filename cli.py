@@ -528,9 +528,15 @@ class ReportCli:
         completer = _TabCompleter(self.possibleActivities[:])
         readline.set_completer(completer.complete)
       if item == 'group':
-        print "  Possible groups:   %s" % ", ".join(self.possibleGroups[1:])
+        # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
+	#!print "  Used groups:   %s" % ", ".join(self.logObj.collectGroups())
+        #!print "  Possible groups:   %s" % ", ".join(self.possibleGroups[1:])
+	totalGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[:]))
+	totalGroups.sort()
+	print "  Possible groups:   %s" % ", ".join(totalGroups[1:])
         readline.parse_and_bind("tab: complete")
-        completer = _TabCompleter(self.possibleGroups[:])
+        #!completer = _TabCompleter(self.possibleGroups[:])
+        completer = _TabCompleter(totalGroups)
         readline.set_completer(completer.complete)
       if item == 'title':
         #existingTitles = self.logObj.getElementList(item)
