@@ -29,7 +29,7 @@ def _writeLaTeX(results, subdir, texPrefix):
   author = results[0]
   date = strftime("%B %Y")
   srDict = results[2]
-  groupTotals = results[3]
+  #groupTotals = results[3]
 	
   # Eventually get more sophisticated about the filename and file existence checking
   if isfile("dummy.tex"):
@@ -47,7 +47,8 @@ def _writeLaTeX(results, subdir, texPrefix):
   lines.append("\\maketitle\n\n")
 
   # LaTeX body
-  groups = groupTotals.keys()
+  #groups = groupTotals.keys()
+  groups = srDict.keys()
   groups.sort()
   for group in groups:
     # LaTeX Section = monthly report group
@@ -69,7 +70,8 @@ def _writeLaTeX(results, subdir, texPrefix):
       correctedDetails = correctedDetails.replace("_", "\\_")
       # Also handle percents
       correctedDetails = correctedDetails.replace("%", "\\%")
-      lines.append("  \\item %s - \\emph{%d\\%%}\n" % (correctedDetails, item[0]) )
+      #lines.append("  \\item %s - \\emph{%d\\%%}\n" % (correctedDetails, item[0]) )
+      lines.append("  \\item %s - \\emph{%s}\n" % (correctedDetails, item[0]) )
   
       # Eventually figure out a pretty way of including an optional title
       #!if item[2] == None:
@@ -97,7 +99,7 @@ def _analyzeXml(sr):
   fullname = None
   xmldate = None
   srDict = {}
-  groupTotals = {}
+  #groupTotals = {}
 
   # Get relevant info from xml file
   for elem in sr:
@@ -123,23 +125,25 @@ def _analyzeXml(sr):
       # Add entries if group hasn't been encountered yet
       if group.text not in srDict:
         srDict[group.text] = []
-        groupTotals[group.text] = 0.0
+        #groupTotals[group.text] = 0.0
 
       # Add a tuple for this bullet point to the srDict
-      effortFloat = float(effort.text[:-1])
-      srDict[group.text].append( (effortFloat, entry.text, titleText) )
+      #effortFloat = float(effort.text[:-1])
+      #srDict[group.text].append( (effortFloat, entry.text, titleText) )
+      srDict[group.text].append( (effort.text, entry.text, titleText) )
       # Add it to the total effort calculation
-      groupTotals[group.text] += effortFloat
+      #groupTotals[group.text] += effortFloat
 
   # Compute total (sanity check)
-  totalEffort = 0.0
-  for group in groupTotals:
-  	  totalEffort += groupTotals[group]
-  print ""
-  print "Total effort: %0.2f%%" % totalEffort
-  print ""
+  #totalEffort = 0.0
+  #for group in groupTotals:
+  #	  totalEffort += groupTotals[group]
+  #print ""
+  #print "Total effort: %0.2f%%" % totalEffort
+  #print ""
 
-  return (fullname, xmldate, srDict, groupTotals)
+  #return (fullname, xmldate, srDict, groupTotals)
+  return (fullname, xmldate, srDict)
 
 
 def _readXml(fullFilePath):
@@ -264,12 +268,16 @@ def makeXml(analysis, directory, filename, fullName):
 
     # Eventually this should change to report hours instead of percents. 
     
-    groupPercent = groupTotals[group] / recordedTotal * 100.00
-    groupPercentStr = "%.1f%%" % groupPercent
+    #groupPercent = groupTotals[group] / recordedTotal * 100.00
+    #groupPercentStr = "%.1f%%" % groupPercent
+    
+    groupHourStr = "%.2f hrs" % groupTotals[group]
     
     for title in titles:
-      titlePercent = titleTotals[group][title] / recordedTotal * 100.0
-      titlePercentStr = "%.1f%%" % titlePercent
+      #titlePercent = titleTotals[group][title] / recordedTotal * 100.0
+      #titlePercentStr = "%.1f%%" % titlePercent
+      
+      titleHourStr = "%.2f hrs" % titleTotals[group][title]
       
       # Populate report with <remark>'s
       remark = etree.SubElement(root, "remark")
@@ -287,7 +295,8 @@ def makeXml(analysis, directory, filename, fullName):
       entryElem.text = "Details of %s" % title
 
       effortElem = etree.SubElement(remark, "effort")
-      effortElem.text = titlePercentStr
+      #effortElem.text = titlePercentStr
+      effortElem.text = titleHourStr
 
   # handle empty directory
   if directory == '':
