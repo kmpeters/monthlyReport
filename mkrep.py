@@ -22,8 +22,9 @@ from os import system
 
 
 def _compileLaTeX(subdir, texPrefix):
+  print ""
   system("pdflatex -output-directory %s %s.tex" % (subdir, texPrefix) )
-
+  print ""
 
 def _writeLaTeX(results, subdir, texPrefix):
   author = results[0]
@@ -171,7 +172,6 @@ def makeReport(fullFilePath):
   subdir = fullFilePath[:-4]
   if exists( subdir ):
     print "The desired subdirectory (%s) already exists." % subdir
-    return
   else:
     print "Creating subdirectory: %s" % subdir
     system("mkdir %s" % subdir)
