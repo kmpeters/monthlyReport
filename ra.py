@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 '''
-Example showing how to use custom config to reduce group list
+Kevin's custom cli customizations:
+  1. Reduced the group list to only those groups I actually use.
+  2. Rearrange the order of the fields so that customer and activity are prompted after the description is entered.
 '''
 
 import cli
@@ -31,6 +33,7 @@ class MyCli(cli.ReportCli):
 
 class MyReportLog(log.ReportLog):
   # Override the definition function to change the order of items in logEntryDef
+  # NOTE: group must always come before title
   def definitions(self):
     self.logEntryDef = [
         "date",
