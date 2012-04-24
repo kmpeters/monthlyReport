@@ -33,11 +33,13 @@ class ReportCli:
   def __init__(self):
     # Remove '-' from delim list so entries with dashes auto-complete properly
     delims = readline.get_completer_delims()
-    #!print "delims = %s" % delims
+    #!print ",".join(["%x" % ord(x) for x in delims])
+    # Allow dashes and spaces to be included in tab-completed words
     new_delims = delims.replace("-",'')
+    new_delims = new_delims.replace(" ",'')
     readline.set_completer_delims(new_delims)
     #!delims2 = readline.get_completer_delims()
-    #!print "delims = %s" % delims2
+    #!print ",".join(["%x" % ord(x) for x in delims2])
 
     self.commands = { 
          "help": self.displayHelp,
