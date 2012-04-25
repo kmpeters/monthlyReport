@@ -394,14 +394,40 @@ class ReportCli:
     groups = titleTotals.keys()
     groups.sort()
     
+    partialGroupStr = ""
+    groupsWithSpaces = []
     # Make sure desired group(s) exist when allowing group to be specified
     for desiredGroup in desiredGroups:
       if desiredGroup not in groups:
-        print "! %s is not a valid group." % desiredGroup
-	
+        #!print "! %s is not a valid group." % desiredGroup
+        # word might be part of a group name with a space in it
+	if len(partialGroupStr) == 0:
+	  partialGroupStr = desiredGroup
+	else:
+	  partialGroupStr = partialGroupStr + " " + desiredGroup
+	  # Check to see if the string is now a valid group
+	  if partialGroupStr in groups:
+	    groupsWithSpaces.append(partialGroupStr)
+      else:
+        # When a desiredGroup is valid, reset the partialGroup string
+        partialGroupStr = ""
+
+    # Remove the individual words from the groupsWithSpaces from the list of desiredGroups
+    desiredGroupList = list(desiredGroups)
+    for groupWithSpaces in groupsWithSpaces:
+      wordList = groupWithSpaces.split(" ")
+      for word in wordList:
+        desiredGroupList.remove(word)
+      # Append the words that were just removed as a single string
+      desiredGroupList.append(groupWithSpaces)
+
+    #!print "desiredGroups", desiredGroups
+    #!print "desiredGroupList", desiredGroupList
+    #!print "groups", groups
+    
     print ""
     for group in groups:
-      if desiredGroups == () or group in desiredGroups:
+      if desiredGroups == () or group in desiredGroupList:
         titles = titleTotals[group].keys()
         titles.sort()
       
