@@ -25,18 +25,22 @@ import entry
 import log
 import mkrep
 
+#!import logging
+
+#!LOG_FILENAME = 'completer.log'
+#!logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 class ReportCli:
   '''
   The command-line interface class, which interacts with the log module
   '''
   def __init__(self):
-    # Remove '-' from delim list so entries with dashes auto-complete properly
+    # Remove '-' from delim list so entries with dashes tab-complete properly
     delims = readline.get_completer_delims()
     #!print ",".join(["%x" % ord(x) for x in delims])
     # Allow dashes and spaces to be included in tab-completed words
     new_delims = delims.replace("-",'')
-    new_delims = new_delims.replace(" ",'')
+    #!!!new_delims = new_delims.replace(" ",'')
     readline.set_completer_delims(new_delims)
     #!delims2 = readline.get_completer_delims()
     #!print ",".join(["%x" % ord(x) for x in delims2])
@@ -191,6 +195,7 @@ class ReportCli:
 		return False
 	finally:
 		# Turn off tab complete
+		## TODO: restore smart completer
 		readline.parse_and_bind("tab: \t")
 
 	#!print "desiredXml", desiredXml
@@ -615,6 +620,7 @@ class ReportCli:
       finally:
         # Turn off tab complete
 	if item in ['customer', 'activity', 'group', 'title']:
+	  ## TODO: restore smart completer
 	  readline.parse_and_bind("tab: \t")
 	
       #  Break the loop before userInput is set since we received the Ctrl+D for the next item and userInput is stale.
@@ -784,6 +790,17 @@ class ReportCli:
     '''
     The main loop of the CLI.  Responsible for interpreting commands typed by the user.
     '''
+    # print only the long form of the commands
+    longCommandList = sorted([c for c in self.commands.keys() if len(c) > 1])
+    #!print longCommandList
+    # print groups that have been used so far
+    #!print self.logObj.collectGroups()
+
+    # Set up the smart tab completer
+    readline.parse_and_bind("tab: complete")
+    completer = _SmartTabCompleter(longCommandList, self.logObj)
+    readline.set_completer(completer.complete)
+    
     # Enter command interpreter mode
     while ( self.run ):
       try:
@@ -805,6 +822,84 @@ class ReportCli:
           self.run = self.commands[cmndKey](*args)
         else:
 	  print "\"%s\" is not a valid command" % cmnd
+
+
+class _SmartTabCompleter:
+  '''
+  A custom tab-completer class for the main loop.  Needs to be smart (auto-complete commands and then groups based on the command).
+  '''
+  def __init__(self, commandList, logObj):
+    self.commands = commandList
+    self.logObj = logObj
+    self.currentCandidates = []
+    
+  def complete(self, text, state):
+    '''
+    A mandatory method that returns the subset of strings to be tab-completed.
+    
+    NOTE: this doesn't work well if spaces are not word delimiters
+    '''
+    response = None
+    if state == 0:
+      originalLine = readline.get_line_buffer()
+      begin = readline.get_begidx()
+      end = readline.get_endidx()
+      wordToComplete = originalLine[begin:end]
+      words = originalLine.split(" ")
+      
+      #!logging.debug('originalLine=%s', repr(originalLine))
+      #!logging.debug('begin=%s', begin)
+      #!logging.debug('end=%s', end)
+      #!logging.debug('wordToComplete=%s', wordToComplete)
+      #!logging.debug('words=%s', words)
+
+      if not words:
+        # If no words have been typed, then the long commands are candidates for tab-completion
+	self.currentCandidates = self.commands[:]
+      else:
+        try:
+	  if begin == 0:
+	    # first word (command is being tab-completed)
+	    candidates = self.commands[:]
+	  else:
+	    if words[0] in ['sum', 'psum', 'rep', 'prep']:
+	      # later word (group is being tab-completed, but only if command is correct)
+	      try:
+	        candidates = self.logObj.collectGroups()
+              except:
+	        #!logging.debug('Group collection failed:')
+		candidates = []	      
+	      #!logging.debug('COLLECTING CANDIDATES!!! %s', candidates)
+	    else:
+	      # command doesn't require a group argument, so don't tab-complete anything
+	      candidates = []
+	      #!logging.debug("command doesn't require tab-completion")
+	     
+          #!logging.debug('candidates=%s', candidates)
+
+          if wordToComplete != "":
+	    # match commands with wordToComplete
+	    self.currentCandidates = [w for w in candidates if w.startswith(wordToComplete)]
+	  else:
+	    # matching empty string so use all candidates
+	    self.currentCandidates = candidates
+
+          #!logging.debug('currentCandidates=%s', self.currentCandidates)
+	  
+	except (KeyError, IndexError), err:
+	  #!logging.error('completion error: %s', err)
+	  self.currentCandidates = []
+	except:
+	  #!logging.error('something is very wrong: %s', err)
+	  pass
+
+    try:
+      response = self.currentCandidates[state]
+    except IndexError:
+      response = None
+    
+    #!logging.debug('complete(%s, %s) => %s', repr(text), state, response)
+    return response
 
 
 class _TabCompleter:
