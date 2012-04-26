@@ -40,6 +40,7 @@ class ReportCli:
     #!print ",".join(["%x" % ord(x) for x in delims])
     # Allow dashes and spaces to be included in tab-completed words
     new_delims = delims.replace("-",'')
+    # Handle spaces in the tab-completer code, since this simple approach doesn't handle everything properly
     #!!!new_delims = new_delims.replace(" ",'')
     readline.set_completer_delims(new_delims)
     #!delims2 = readline.get_completer_delims()
@@ -194,9 +195,8 @@ class ReportCli:
 		print "Aborting..."
 		return False
 	finally:
-		# Turn off tab complete
-		## TODO: restore smart completer
-		readline.parse_and_bind("tab: \t")
+		# Restore main completer
+		readline.set_completer(self.mainCompleter.complete)
 
 	#!print "desiredXml", desiredXml
 
@@ -620,8 +620,8 @@ class ReportCli:
       finally:
         # Turn off tab complete
 	if item in ['customer', 'activity', 'group', 'title']:
-	  ## TODO: restore smart completer
-	  readline.parse_and_bind("tab: \t")
+	  ## Restore smart completer
+	  readline.set_completer(self.mainCompleter.complete)
 	
       #  Break the loop before userInput is set since we received the Ctrl+D for the next item and userInput is stale.
       if skipRemainingInput == True:
@@ -798,8 +798,8 @@ class ReportCli:
 
     # Set up the smart tab completer
     readline.parse_and_bind("tab: complete")
-    completer = _SmartTabCompleter(longCommandList, self.logObj)
-    readline.set_completer(completer.complete)
+    self.mainCompleter = _SmartTabCompleter(longCommandList, self.logObj)
+    readline.set_completer(self.mainCompleter.complete)
     
     # Enter command interpreter mode
     while ( self.run ):
