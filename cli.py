@@ -27,21 +27,22 @@ import mkrep
 
 #!import logging
 
+# Log file is necessary for debugging tab-completion problems
 #!LOG_FILENAME = 'completer.log'
 #!logging.basicConfig(filename=LOG_FILENAME, level=logging.DEBUG)
 
 class ReportCli:
   '''
-  The command-line interface class, which interacts with the log module
+  The command-line interface class, which interacts with the log module.
+  
+  Known problems: groups with strings can only be tab-completed before the first space is typed.
   '''
   def __init__(self):
     # Remove '-' from delim list so entries with dashes tab-complete properly
     delims = readline.get_completer_delims()
     #!print ",".join(["%x" % ord(x) for x in delims])
-    # Allow dashes and spaces to be included in tab-completed words
+    # Allow dashes to be included in tab-completed words. Spaces can't be handled here since they are word separators part of the time.
     new_delims = delims.replace("-",'')
-    # Handle spaces in the tab-completer code, since this simple approach doesn't handle everything properly
-    #!!!new_delims = new_delims.replace(" ",'')
     readline.set_completer_delims(new_delims)
     #!delims2 = readline.get_completer_delims()
     #!print ",".join(["%x" % ord(x) for x in delims2])
@@ -871,7 +872,6 @@ class _SmartTabCompleter:
               except:
 	        #!logging.debug('Group collection failed:')
 		candidates = []	      
-	      #!logging.debug('COLLECTING CANDIDATES!!! %s', candidates)
 	    else:
 	      # command doesn't require a group argument, so don't tab-complete anything
 	      candidates = []
@@ -919,6 +919,14 @@ class _TabCompleter:
     results = [x for x in self.items if x.startswith(text)] + [None]
     #!logging.debug(results)
     return results[state]
+    
+    ###
+    # results = [x for x in self.items if x.startswith(text)]
+    # try:
+    #     return results[state]
+    # except IndexError:
+    #     return None
+    ###
 
 
 if __name__ == "__main__":
