@@ -413,6 +413,8 @@ class ReportCli:
 	  # Check to see if the string is now a valid group
 	  if partialGroupStr in groups:
 	    groupsWithSpaces.append(partialGroupStr)
+	    # reset the partialGroup string
+	    partialGroupStr = ""
       else:
         # When a desiredGroup is valid, reset the partialGroup string
         partialGroupStr = ""
