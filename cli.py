@@ -95,6 +95,9 @@ class ReportCli:
       # Read log file into persistent log object
       self.logObj = self.createReportLog(self.filepath)
       self.logEntryDef = self.logObj.getLogEntryDef()
+      
+      # Run the main loop
+      self.main()
 
   def createReportLog(self, filepath):
     '''
@@ -931,5 +934,4 @@ class _TabCompleter:
 
 if __name__ == "__main__":
   cli = ReportCli()			  
-  cli.main()
 
