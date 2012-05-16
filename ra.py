@@ -48,4 +48,3 @@ class MyReportLog(log.ReportLog):
     
 if __name__ == '__main__':
   myCli = MyCli()
-  myCli.main()
