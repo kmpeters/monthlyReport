@@ -92,6 +92,8 @@ class ReportCli:
     self.filepath, self.directory, self.filename = self._getLogFilename()
 
     if self.run == True:
+      # Let the user know which file is being used
+      print "Reading %s" % self.filepath
       # Read log file into persistent log object
       self.logObj = self.createReportLog(self.filepath)
       self.logEntryDef = self.logObj.getLogEntryDef()
