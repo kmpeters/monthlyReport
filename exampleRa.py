@@ -26,4 +26,3 @@ class MyCli(cli.ReportCli):
     
 if __name__ == '__main__':
   myCli = MyCli()
-  myCli.main()
