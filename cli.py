@@ -56,6 +56,7 @@ class ReportCli:
             "a": self.addEntry,
          "corr": self.correctEntry,
             "c": self.correctEntry,
+	   "ch": self.changeTitle,
 	  "day": self.displayDay,
 	    "d": self.displayDay,
          "save": self.saveLog,
@@ -595,8 +596,13 @@ class ReportCli:
 
           validResponse = verifyFun(userInput)
 	  if validResponse == False:
-            print "! %s is not a valid %s." % (userInput, item)
+	    # There is probably a better way to specify correct forms of arguments
+	    if item != "date":
+              print "! %s is not a valid %s." % (userInput, item)
+	    else:
+	      print "! %s is not a valid %s. Required %s format: YYYY-MM-DD" % (userInput, item, item)
 
+          # Force the user to manually enter fields (with exceptions)
           if userInput == '':
             # User input is blank
             if requireInput == True and item != 'date' and item != 'duration':
@@ -621,9 +627,19 @@ class ReportCli:
 	break
 	
       except EOFError:
-        print ""
-	print "Finishing..."
-        skipRemainingInput = True
+        # Abort if adding, Finish if correcting
+	if requireInput == True:
+	  status = False
+	  
+	  userInput = ''
+	  
+	  print ""
+	  print "Aborting (until sensible defaults can be determined)..."
+	  break
+	else:
+          print ""
+	  print "Finishing..."
+          skipRemainingInput = True
 	
       finally:
         # Turn off tab complete
@@ -673,6 +689,23 @@ class ReportCli:
       #!print "addEntry canceled"
       pass
     
+    return True
+
+
+  def _getChangeInput(self):
+    return
+
+
+  def changeTitle(self, *args):
+    '''
+    Called when "ch" is typed.  Allows bulk change of titles.
+    
+    args: group old_title [new_group] new_title
+    '''
+    print "changeTitle(", args, ")"
+    # Originally I thought all the args should be placed on the command line,
+    # but that makes it difficult to tab-complete both groups AND titles.
+    # Instead it may be better to prompt for each individually.
     return True
 
 
