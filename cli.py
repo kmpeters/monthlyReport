@@ -706,7 +706,93 @@ class ReportCli:
 
 
   def _getChangeInput(self):
-    return
+    # Prompt for old group
+    
+    # Prompt for old title
+    
+    # Prompt for new group (optional)
+    
+    # Prompt for new title
+    
+    promptAdj = ['Old', 'Old', 'New', 'New']
+    promptItem = ['group', 'title', 'group', 'title']
+    itemRequired = [True, True, False, True]
+    verifyItem = [True, True, False, False]
+    changeInput = []
+    
+    for i in range(len(promptItem)):
+      item = promptItem[i]
+
+      promptStr = "%s %s: " % (promptAdj[i], item)
+      
+      if item == 'group':
+        # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
+	existingGroups = self.logObj.collectGroups()
+	existingGroups.sort()
+	print "  Possible groups:   %s" % ", ".join(existingGroups[1:])
+        readline.parse_and_bind("tab: complete")
+        completer = _TabCompleter(existingGroups)
+        readline.set_completer(completer.complete)
+      if item == 'title':
+        # Group is element of list before the current one
+        existingTitles = self.logObj.collectEntries(changeInput[i-1], item)
+	print "  Existing titles for %s:   %s" % (changeInput[i-1], ", ".join(existingTitles)) 
+        readline.parse_and_bind("tab: complete")
+        completer = _TabCompleter(existingTitles)
+        readline.set_completer(completer.complete)
+
+      # Prompt user for input
+      try:
+	validResponse = False
+	while not validResponse:
+	  userInput = raw_input(promptStr)
+
+          # 
+          if userInput == '':
+            # User input is blank
+            if itemRequired[i] == True:
+	      print "! %s %s can't be empty." % (promptAdj[i], item)
+	      validResponse = False
+	    elif i == 2:
+	      desiredInput = changeInput[0]
+	      validResponse = True
+          else:
+            # User input is NOT blank
+            if verifyItem[i]:
+	      if item == 'group':
+	        validResponse = userInput in existingGroups
+	      else:
+                validResponse = userInput in existingTitles
+            else:
+	      validResponse = True
+
+	    if validResponse == False:
+	      print "! %s is not an existing %s." % (userInput, item)
+	    else:
+	      desiredInput = userInput
+	  
+          # Remove text from command history
+	  if userInput != "":
+            self._removeHistoryEntry()
+	  
+	  if validResponse:  
+            changeInput.append(desiredInput)
+
+      except (KeyboardInterrupt, EOFError):
+	userInput = ''
+	changeInput = []
+        
+	print ""
+	print "Aborting..."
+	break
+	
+      finally:
+        # Turn off tab complete
+	if item in ['customer', 'activity', 'group', 'title']:
+	  ## Restore smart completer
+	  readline.set_completer(self.mainCompleter.complete)
+	
+    return changeInput
 
 
   def changeTitle(self, *args):
@@ -719,7 +805,8 @@ class ReportCli:
     # Originally I thought all the args should be placed on the command line,
     # but that makes it difficult to tab-complete both groups AND titles.
     # Instead it may be better to prompt for each individually.
-    changeResponse = _getChangeInput()
+    changeResponse = self._getChangeInput()
+    print changeResponse
     return True
 
 
