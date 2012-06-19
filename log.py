@@ -184,7 +184,7 @@ class ReportLog:
     # update the entry array
     self.entryArray = self.getLog()
 
-  def changeTitle(self, changeList):
+  def changeTitle(self, changeList, tag=False):
     '''
     Execute a bulk title change.
     
@@ -202,6 +202,12 @@ class ReportLog:
 	# Should a copy of the object be modified instead of the object itself?
 	groupSetFun(newGroup)
 	titleSetFun(newTitle)
+	
+	if tag == True:
+	  descGetFun, descSetFun, descVerifyFun = x.getFunctions('description')
+	  oldDesc = descGetFun()
+	  newDesc = "(%s/%s) %s" % (oldGroup, oldTitle, oldDesc)
+	  descSetFun(newDesc)
 	
 	# Actually replace the entry with the modified entry
         self.logFile.replaceEntry(int(x.index)-1, x)

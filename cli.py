@@ -806,15 +806,21 @@ class ReportCli:
     '''
     Called when "ch" is typed.  Allows bulk change of titles.
     
-    args: group old_title [new_group] new_title
+    args: None
     '''
     #!print "changeTitle(", args, ")"
     changeResponse = self._getChangeInput()
     #!print changeResponse
+    oldGroup, oldTitle, newGroup, newTitle = changeResponse
     
     if changeResponse != []:
-      # This changes the working array, but not the one that is written to disk.  why?
-      self.logObj.changeTitle(changeResponse)
+      # 
+      existingTitles = self.logObj.collectEntries(newGroup, 'title')
+      if newTitle in existingTitles:
+        # If merging titles, tag descriptions of renamed title with old title
+        self.logObj.changeTitle(changeResponse, True)
+      else:
+        self.logObj.changeTitle(changeResponse, False)
       self.dirty = True
       
     return True
