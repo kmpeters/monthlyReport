@@ -184,6 +184,31 @@ class ReportLog:
     # update the entry array
     self.entryArray = self.getLog()
 
+  def changeTitle(self, changeList):
+    '''
+    Execute a bulk title change.
+    
+    changeList is a list: [oldGroup, oldTitle, newGroup, newTitle]
+    '''
+    
+    oldGroup, oldTitle, newGroup, newTitle = changeList
+    
+    for x in self.entryArray:
+      if x.group == oldGroup and x.title == oldTitle:
+        groupGetFun, groupSetFun, groupVerifyFun = x.getFunctions('group')
+        titleGetFun, titleSetFun, titleVerifyFun = x.getFunctions('title')
+	
+	# Is it worth it to test to see if the group or title are different before setting?
+	# Should a copy of the object be modified instead of the object itself?
+	groupSetFun(newGroup)
+	titleSetFun(newTitle)
+	
+	# Actually replace the entry with the modified entry
+        self.logFile.replaceEntry(int(x.index)-1, x)
+	
+    # update the entry array
+    self.entryArray = self.getLog()
+
   def getLog(self):
     '''
     Tell the backend to update the array of entries.

@@ -707,11 +707,8 @@ class ReportCli:
 
   def _getChangeInput(self):
     # Prompt for old group
-    
     # Prompt for old title
-    
     # Prompt for new group (optional)
-    
     # Prompt for new title
     
     promptAdj = ['Old', 'Old', 'New', 'New']
@@ -727,9 +724,12 @@ class ReportCli:
       
       if item == 'group':
         # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
-	existingGroups = self.logObj.collectGroups()
+	if i == 2:
+	  existingGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[1:]))
+	else:
+	  existingGroups = self.logObj.collectGroups()
 	existingGroups.sort()
-	print "  Possible groups:   %s" % ", ".join(existingGroups[1:])
+	print "  Possible groups:   %s" % ", ".join(existingGroups)
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingGroups)
         readline.set_completer(completer.complete)
@@ -754,6 +754,7 @@ class ReportCli:
 	      print "! %s %s can't be empty." % (promptAdj[i], item)
 	      validResponse = False
 	    elif i == 2:
+	      # Set new group to old group if none is specified
 	      desiredInput = changeInput[0]
 	      validResponse = True
           else:
@@ -763,11 +764,17 @@ class ReportCli:
 	        validResponse = userInput in existingGroups
 	      else:
                 validResponse = userInput in existingTitles
-            else:
+            elif i == 2:
+	      # verify optional new group to make sure it is valid
+	      validResponse = userInput in config.possible_groups[1:]
+	    else:
 	      validResponse = True
 
 	    if validResponse == False:
-	      print "! %s is not an existing %s." % (userInput, item)
+	      if i == 2:
+	        print "! %s is not a valid %s." % (userInput, item)
+	      else:
+	        print "! %s is not an existing %s." % (userInput, item)
 	    else:
 	      desiredInput = userInput
 	  
@@ -801,12 +808,15 @@ class ReportCli:
     
     args: group old_title [new_group] new_title
     '''
-    print "changeTitle(", args, ")"
-    # Originally I thought all the args should be placed on the command line,
-    # but that makes it difficult to tab-complete both groups AND titles.
-    # Instead it may be better to prompt for each individually.
+    #!print "changeTitle(", args, ")"
     changeResponse = self._getChangeInput()
-    print changeResponse
+    #!print changeResponse
+    
+    if changeResponse != []:
+      # This changes the working array, but not the one that is written to disk.  why?
+      self.logObj.changeTitle(changeResponse)
+      self.dirty = True
+      
     return True
 
 
