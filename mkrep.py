@@ -71,6 +71,8 @@ def _writeLaTeX(results, subdir, texPrefix):
       correctedDetails = correctedDetails.replace("_", "\\_")
       # Also handle percents
       correctedDetails = correctedDetails.replace("%", "\\%")
+      # And pound signs
+      correctedDetails = correctedDetails.replace("#", "\\#")
       #lines.append("  \\item %s - \\emph{%d\\%%}\n" % (correctedDetails, item[0]) )
       lines.append("  \\item %s - \\emph{%s}\n" % (correctedDetails, item[0]) )
   
