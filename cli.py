@@ -197,10 +197,10 @@ class ReportCli:
 	    desiredXml = "dummy.xml"
 			
 	# Catch KeyboardInterrupt to allow the user to exit the entry process
-	except KeyboardInterrupt:
+	except (KeyboardInterrupt, EOFError):
 		print ""
 		print "Aborting..."
-		return False
+		return True
 	finally:
 		# Restore main completer
 		readline.set_completer(self.mainCompleter.complete)
@@ -234,12 +234,18 @@ class ReportCli:
       return True
 
     # Prompt user for desired filename (Assume just a filename, not a path)
-    # Should probably catch Ctrl+C and Ctrl+D here
-    desiredFilename = raw_input("XML report filename: ")
-    
-    # Remove text entry from history
-    if desiredFilename != "":
-      self._removeHistoryEntry()
+    try:
+      desiredFilename = raw_input("XML report filename: ")
+
+      # Remove text entry from history
+      if desiredFilename != "":
+        self._removeHistoryEntry()
+
+    # Catch Ctrl+c and Ctrl+d to allow the user to exit the entry process
+    except (KeyboardInterrupt, EOFError):
+      print ""
+      print "Aborting..."
+      return True
     
     # Use a default filename if it was left blank
     if desiredFilename == "":
@@ -255,12 +261,19 @@ class ReportCli:
       print "Can't write xml report.  %s/%s already exists." % (self.directory, desiredFilename)
       return True
 	
-    # Prompt user for their name
-    fullName = raw_input("Your name: ")
+    try:
+      # Prompt user for their name
+      fullName = raw_input("Your name: ")
 
-    # Remove text entry from history
-    if fullName != "":
-      self._removeHistoryEntry()
+      # Remove text entry from history
+      if fullName != "":
+        self._removeHistoryEntry()
+
+    # Catch Ctrl+c and Ctrl+d to allow the user to exit the entry process
+    except (KeyboardInterrupt, EOFError):
+      print ""
+      print "Aborting..."
+      return True
 
     status = mkrep.makeXml(analysis, self.directory, desiredFilename, fullName)    
 
@@ -706,6 +719,7 @@ class ReportCli:
     # Originally I thought all the args should be placed on the command line,
     # but that makes it difficult to tab-complete both groups AND titles.
     # Instead it may be better to prompt for each individually.
+    changeResponse = _getChangeInput()
     return True
 
 
