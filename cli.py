@@ -145,6 +145,9 @@ class ReportCli:
 		
    mkrep	Converts an xml file into a pdf. Titles are optional 
    		and do not currently appear in the pdf.
+		
+   ch		Bulk title change. Make a BACKUP of your log before using
+   		this feature, since it hasn't been extensively tested yet.
     """
     return True
 
