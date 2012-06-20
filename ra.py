@@ -27,6 +27,10 @@ class MyCli(cli.ReportCli):
                     'Training', 'Leave', 'Offsite',
                  ]
 
+    # Improve correctEntry prompts
+    #!self.showCorrectDefaults = True
+    #!self.showCorrectDescLen = 60
+
   # Override the createReportLog function so that MyReportLog is used instead of ReportLog
   def createReportLog(self, filepath):
     return MyReportLog(filepath)
