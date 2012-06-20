@@ -708,6 +708,63 @@ class ReportCli:
     return True
 
 
+  def correctEntry(self, *args):
+    '''
+    Called when "correct" or "c" is typed.  Allows a user to correct an entry or multiple entries.
+    
+    args is a tuple of index strings (numbers starting from 1).  If no indices are specified, the last entry is corrected.
+    '''
+    #!print "correctEntry(", args, ")"
+    
+    # Get the entry to be corrected
+    
+    # If no arguments specified, correct the last entry
+    if args == ():
+      cArgs = (self.logObj.getLogLength(),)
+    else:
+      cArgs = args
+    
+    print ""
+    
+    for x in cArgs:
+      try:
+        index = int(x)
+        if self.logObj.isValidIndex(index):
+	  # Backup the values of the object in case the user cancels the correction
+	  # This getEntry() should probably return a deepcopy of the obj, but that fails at the moment
+	  tempObj = self.logObj.getEntry(index-1)
+	  valueBackup = tempObj.getAll()
+
+	  print "Editing entry #%s" % x
+	  print ""
+          tempObj.printEntry()
+	  print ""
+	  
+	  # Correct the entry
+	  status = self._getUserInput(tempObj)
+	  print ""
+	  
+          # Only correct the entry if the user didn't Ctrl+c out of it
+	  if status == True:
+	    #
+	    self.logObj.replaceEntry(index-1, tempObj)
+	    self.dirty = True
+	  else:
+	    # This may need to change to continue in the future, depending on what comes after it
+	    #!print "correctEntry canceled"
+	    # restore the value backup
+	    tempObj.setAll(valueBackup)
+	  
+        else:
+          print "!", x, "is outside the valid index range."
+      except ValueError:
+        print "!", x, "is not a valid index (integer)."
+        print ""
+        continue
+
+    return True
+
+
   def _getChangeInput(self):
     # Prompt for old group
     # Prompt for old title
@@ -826,63 +883,6 @@ class ReportCli:
         self.logObj.changeTitle(changeResponse, False)
       self.dirty = True
       
-    return True
-
-
-  def correctEntry(self, *args):
-    '''
-    Called when "correct" or "c" is typed.  Allows a user to correct an entry or multiple entries.
-    
-    args is a tuple of index strings (numbers starting from 1).  If no indices are specified, the last entry is corrected.
-    '''
-    #!print "correctEntry(", args, ")"
-    
-    # Get the entry to be corrected
-    
-    # If no arguments specified, correct the last entry
-    if args == ():
-      cArgs = (self.logObj.getLogLength(),)
-    else:
-      cArgs = args
-    
-    print ""
-    
-    for x in cArgs:
-      try:
-        index = int(x)
-        if self.logObj.isValidIndex(index):
-	  # Backup the values of the object in case the user cancels the correction
-	  # This getEntry() should probably return a deepcopy of the obj, but that fails at the moment
-	  tempObj = self.logObj.getEntry(index-1)
-	  valueBackup = tempObj.getAll()
-
-	  print "Editing entry #%s" % x
-	  print ""
-          tempObj.printEntry()
-	  print ""
-	  
-	  # Correct the entry
-	  status = self._getUserInput(tempObj)
-	  print ""
-	  
-          # Only correct the entry if the user didn't Ctrl+c out of it
-	  if status == True:
-	    #
-	    self.logObj.replaceEntry(index-1, tempObj)
-	    self.dirty = True
-	  else:
-	    # This may need to change to continue in the future, depending on what comes after it
-	    #!print "correctEntry canceled"
-	    # restore the value backup
-	    tempObj.setAll(valueBackup)
-	  
-        else:
-          print "!", x, "is outside the valid index range."
-      except ValueError:
-        print "!", x, "is not a valid index (integer)."
-        print ""
-        continue
-
     return True
 
 
