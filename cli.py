@@ -80,6 +80,8 @@ class ReportCli:
     
     self.logFilename = "work_log.xml"
     self.terminalWidth = 132
+    self.showCorrectDefaults = False
+    self.showCorrectDescLen = 40
     
     # Override the above definitions
     self.definitions()
@@ -571,8 +573,14 @@ class ReportCli:
       #!print item
       # Get the get and set functions for this item
       getFun, setFun, verifyFun = entry.getFunctions(item)
-      
-      promptStr = "%s: " % item
+
+      if requireInput == False and self.showCorrectDefaults == True:
+        entryStr = getFun()
+	if len(entryStr) > self.showCorrectDescLen:
+	  entryStr = entryStr[:self.showCorrectDescLen] + "..."
+	promptStr = "%s [%s]: " % (item, entryStr)
+      else: 
+        promptStr = "%s: " % item
       
       # Set tab-complete based on which item is being input
       if item == 'customer':
