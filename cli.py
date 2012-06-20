@@ -851,7 +851,11 @@ class ReportCli:
       try:
         index = int(x)
         if self.logObj.isValidIndex(index):
-          tempObj = self.logObj.getEntry(index-1)
+	  # Backup the values of the object in case the user cancels the correction
+	  # This getEntry() should probably return a deepcopy of the obj, but that fails at the moment
+	  tempObj = self.logObj.getEntry(index-1)
+	  valueBackup = tempObj.getAll()
+
 	  print "Editing entry #%s" % x
 	  print ""
           tempObj.printEntry()
@@ -869,7 +873,8 @@ class ReportCli:
 	  else:
 	    # This may need to change to continue in the future, depending on what comes after it
 	    #!print "correctEntry canceled"
-	    pass
+	    # restore the value backup
+	    tempObj.setAll(valueBackup)
 	  
         else:
           print "!", x, "is outside the valid index range."

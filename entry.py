@@ -42,6 +42,24 @@ class ReportEntry:
       "description":(self.getDescription, self.setDescription, self.verifyDescription),
       "index":(self.getIndex, self.setIndex, self.verifyIndex)}
     self.index = -1
+
+  def getAll(self):
+    '''
+    Method to get all the fields that can be modified by the user.
+    
+    Returns [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+    '''
+    return [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+  
+  def setAll(self, fieldList):
+    '''
+    Method to set all the fields that can be modified by the user.
+    
+    fieldList: [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+    '''  
+    self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description = fieldList
+    return
+  
   
   def getDate(self):
     '''
