@@ -70,7 +70,7 @@ the list seems to fit.  This will flag the list of groups for revision.
 '''
 
 
-possible_customers = ['', 'XSD', 'non-XSD', 'Infrastructure', 'BCDA']
+possible_customers = ['', 'XSD', 'non-XSD', 'Infrastructure', 'BCDA', 'APS-U']
 possible_activities = ['', 
                         'Operations',
                         'Troubleshooting', 
@@ -93,7 +93,8 @@ possible_groups = ['',
                     'AES-MED', 'HPSynC', 
                     'LTP Lab'
                     'Metrology Lab', 'Optics Group', 
-                    'Thermal Fatigue Experiment (TFE)', 
+                    'Thermal Fatigue Experiment (TFE)',
+		    'ISN', 'XIS',
                  ]
 possible_groups.sort()
 
