@@ -25,6 +25,7 @@ class MyCli(cli.ReportCli):
                     'BCDA', 'General', 'SSM', 'Other',
                     'Infrastructure',
                     'Training', 'Leave', 'Offsite',
+		    'ISN', 'XIS',
                  ]
 
     # Improve correctEntry prompts
