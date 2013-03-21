@@ -132,7 +132,8 @@ class ReportCli:
    add (a)	 adds an entry to the log file
    corr (c) [#]  corrects the specified entry (default=last)
    help (h)      displays this help
-   day [#]       prints list of entries for a given day (default=today)
+   day (d) [#]   prints list of entries for a given day (default=today)
+   dsum (ds) [#] prints summary of entries for a given day (default=today)
    sum [cat] 	 displays the summary w/o details (hours)
    psum [cat]	 displays the summary w/o details (percent)
    rep [cat] 	 displays the summary w/ details (hours)
