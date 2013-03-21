@@ -59,6 +59,8 @@ class ReportCli:
 	   "ch": self.changeTitle,
 	  "day": self.displayDay,
 	    "d": self.displayDay,
+	 "dsum": self.displayDaySummary,
+	   "ds": self.displayDaySummary,
          "save": self.saveLog,
             "s": self.saveLog,
          "exit": self.quit,
@@ -560,6 +562,71 @@ class ReportCli:
 	continue
 	
     return True
+
+
+  def displayDaySummary(self, *args):
+    '''
+    Called when "dsum" or "ds" is typed.
+    
+    args is a tuple of day strings.  If no days are specified, the current day is displayed.
+    '''
+    #!print "displayDaySummary(", args, ")"
+    if len(args) == 0:
+      dArgs = (time.strftime("%d"),)
+    else:
+      dArgs = args
+
+    print ""
+      
+    for x in dArgs:
+      try:
+	day = "%02i" % int(x)
+	dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
+	
+	print "selected day: %s" % x
+	print ""
+	
+	dayArraySorted = sorted(dayArray, key=self._customSortKey)
+	
+	runTot = 0.0
+	lastGroup = None
+	for x in dayArraySorted:
+	  if x.group != lastGroup:
+            if lastGroup != None:
+	      print
+	      print " ", lastGroup, runTot, "hours"
+	      print
+	      
+	    runTot = float(x.duration)
+	    lastGroup = x.group
+	  
+	  else:
+	    runTot += float(x.duration)
+
+	  # Should probably use the get() methods, but that adds overhead
+	  print "%s ; %s ; %s - %s ; %s - %s ; %s" % (x.index, x.duration, x.group, x.title, x.customer, x.activity, x.description)
+	    
+        if lastGroup != None:
+	  print
+	  print " ", lastGroup, runTot, "hours"
+	  
+	print ""
+	print "Hours: %.2f" % dayHours
+	print "Percent: %.1f%%" % percentRecorded
+	print ""
+      except ValueError:
+	print "!", x, "is not a valid day (integer)."
+	print ""
+	continue
+	
+    return True
+
+
+  def _customSortKey(self, entry):
+    '''
+    Custom sort routine for entry objects
+    '''
+    return (entry.group, entry.title, entry.index)
 
 
   def _getUserInput(self, entry, requireInput=False):
