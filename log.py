@@ -348,7 +348,62 @@ class ReportLog:
     percentRecorded = dayHours / 8.0 * 100.0
     
     return (dayArray[:], dayHours, percentRecorded)
+
+  def getDaySummary(self, day):
+    '''
+    Returns summary for a given day.
     
+    day is a zero-padded, two-character string represting the day of the month.
+    
+    Returns the following tuple: (dayArray[:], dayHours, percentRecorded)
+    
+    ===============  =======================================================
+    variable         description
+    ===============  =======================================================
+    groups           Array of groups from the specified day
+    totals           Dict of totals with groups as keys
+    entries          Dict of lists of entries with groups as keys
+    dayHours         Total hours recorded for the specified day
+    percentRecorded  Percent recorded, assuming an eight-hour day
+    ===============  =======================================================
+    
+    '''
+    dayArray, dayHours, percentRecorded = self.getDay(day)
+
+    dayArraySorted = sorted(dayArray, key=self._customSortKey)
+
+    runTot = 0.0
+    lastGroup = None
+    groups = []
+    totals = {}
+    entries = {}
+    
+    for item in dayArraySorted:
+      # Add the group to the group list
+      if item.group not in groups:
+	groups.append(item.group)
+      
+      # Keep a running total for the group
+      if item.group not in totals:
+        totals[item.group] = float(item.duration)
+      else:
+        totals[item.group] += float(item.duration)
+	
+      # Categories the entries
+      if item.group not in entries:
+        entries[item.group] = [item]
+      else:
+        entries[item.group].append(item)
+        
+    # [[group, hours, [entry1, entry2]], [], 
+    return (groups[:], totals, entries, dayHours, percentRecorded)
+    
+  def _customSortKey(self, entry):
+    '''
+    Custom sort routine for entry objects
+    '''
+    return (entry.group, entry.title, entry.index)
+
   def printLog(self):
     '''
     Prints the entire log

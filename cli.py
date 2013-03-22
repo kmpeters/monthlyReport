@@ -582,35 +582,19 @@ class ReportCli:
     for x in dArgs:
       try:
 	day = "%02i" % int(x)
-	dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
+	groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
 	
 	print "selected day: %s" % x
-	print ""
 	
-	dayArraySorted = sorted(dayArray, key=self._customSortKey)
+        for group in groups:
+	  print ""
+	  print "%s: %s hours" % (group, totals[group])
+	  print ""
+	  
+	  for x in entries[group]:
+	    # Should probably use the get() methods, but that adds overhead
+	    print "%s ; %s ; %s - %s ; %s - %s ; %s" % (x.index, x.duration, x.group, x.title, x.customer, x.activity, x.description)
 	
-	runTot = 0.0
-	lastGroup = None
-	for x in dayArraySorted:
-	  if x.group != lastGroup:
-            if lastGroup != None:
-	      print
-	      print " ", lastGroup, runTot, "hours"
-	      print
-	      
-	    runTot = float(x.duration)
-	    lastGroup = x.group
-	  
-	  else:
-	    runTot += float(x.duration)
-
-	  # Should probably use the get() methods, but that adds overhead
-	  print "%s ; %s ; %s - %s ; %s - %s ; %s" % (x.index, x.duration, x.group, x.title, x.customer, x.activity, x.description)
-	    
-        if lastGroup != None:
-	  print
-	  print " ", lastGroup, runTot, "hours"
-	  
 	print ""
 	print "Hours: %.2f" % dayHours
 	print "Percent: %.1f%%" % percentRecorded
@@ -621,13 +605,6 @@ class ReportCli:
 	continue
 	
     return True
-
-
-  def _customSortKey(self, entry):
-    '''
-    Custom sort routine for entry objects
-    '''
-    return (entry.group, entry.title, entry.index)
 
 
   def _getUserInput(self, entry, requireInput=False):
