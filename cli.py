@@ -61,6 +61,8 @@ class ReportCli:
 	    "d": self.displayDay,
 	 "dsum": self.displayDaySummary,
 	   "ds": self.displayDaySummary,
+	 "week": self.displayWeek,
+	    "w": self.displayWeek,
          "save": self.saveLog,
             "s": self.saveLog,
          "exit": self.quit,
@@ -605,6 +607,62 @@ class ReportCli:
 	continue
 	
     return True
+
+
+  def _getCurrentWeek(self):
+    '''
+    Internal function to return list of current week days    
+    '''
+    # what day is it
+    dayOfMonth = int(time.strftime("%d"))
+    # 0=sunday
+    dayOfWeek = int(time.strftime("%w"))
+    #
+    monday = dayOfMonth - (dayOfWeek - 1)
+
+    #!print dayOfMonth, dayOfWeek
+    #!print monday
+    
+    #>>> time.asctime(time.localtime(time.time()-60*60*24*3))
+    #'Tue Mar 26 15:52:19 2013'
+
+    currentSeconds = time.time()
+    # Test a day in the past
+    #!currentSeconds = time.time() - 60*60*24*28
+
+    #!print time.asctime(time.localtime(time.time() - 60*60*24*(dayOfWeek-1)))
+    mondaySeconds = currentSeconds - 60*60*24*(dayOfWeek-1)
+
+    weekDayList = []
+
+    for i in range(5):
+      daySeconds = time.localtime(mondaySeconds + 60*60*24*i)
+      #!print time.asctime(daySeconds)
+      weekDayList.append(time.strftime("%d", daySeconds))
+
+    return weekDayList[:]
+
+  def displayWeek(self, *args):
+    '''
+    Called when "week" or "w" is typed.  Only useful for the current week.
+    
+    args is ignored.
+    '''
+    #!print "displayDaySummary(", args, ")"
+
+    if len(args) == 0:
+      wArgs = self._getCurrentWeek()
+    else:
+      try:
+        wArgs = ["%02i" % int(x) for x in args]
+      except ValueError:
+        print "Error: Days must be integers"
+	return True
+    
+    print wArgs
+
+    return True
+
 
 
   def _getUserInput(self, entry, requireInput=False):
