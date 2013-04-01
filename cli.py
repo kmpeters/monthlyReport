@@ -59,12 +59,14 @@ class ReportCli:
 	   "ch": self.changeTitle,
 	  "day": self.displayDay,
 	    "d": self.displayDay,
-	"dtest": self.dayTest,
-	   "dt": self.dayTestSummary,
+	 "wtab": self.displayWeekTable,
+	   "wt": self.displayWeekTable,
+	 "wsum": self.displayWeekSummary,
+	   "ws": self.displayWeekSummary,
+	 "wrep": self.displayWeekReport,
+	   "wr": self.displayWeekReport,
 	 "dsum": self.displayDaySummary,
 	   "ds": self.displayDaySummary,
-	 "week": self.displayWeek,
-	    "w": self.displayWeek,
          "save": self.saveLog,
             "s": self.saveLog,
          "exit": self.quit,
@@ -138,10 +140,13 @@ class ReportCli:
    help (h)      displays this help
    day (d) [#]   prints list of entries for a given day (default=today)
    dsum (ds) [#] prints summary of entries for a given day (default=today)
-   sum [cat] 	 displays the summary w/o details (hours)
-   psum [cat]	 displays the summary w/o details (percent)
-   rep [cat] 	 displays the summary w/ details (hours)
-   prep [cat]	 displays the summary w/ details (percent)
+   wtab (wt) [#] prints a table of hours in green-sheet format
+   wsum (ws) [#] displays the week summary w/o details (hours)
+   wrep (wr) [#] displays the week summary w/ details (hours)
+   sum [cat] 	 displays the month summary w/o details (hours)
+   psum [cat]	 displays the month summary w/o details (percent)
+   rep [cat] 	 displays the month summary w/ details (hours)
+   prep [cat]	 displays the month summary w/ details (percent)
 
    list [label ...] list the labels used in the log. Default labels are
                 customer, activity, group and title.
@@ -569,9 +574,9 @@ class ReportCli:
     return True
 
 
-  def dayTest(self, *args):
+  def displayWeekReport(self, *args):
     '''
-    Called when "dt" is typed.
+    Called when "wr" is typed.
     '''
     #!print "dayTest(", args, ")"
 
@@ -598,9 +603,9 @@ class ReportCli:
 
     return True
 
-  def dayTestSummary(self, *args):
+  def displayWeekSummary(self, *args):
     '''
-    Called when "dt" is typed.
+    Called when "ws" is typed.
     '''
     #!print "dayTest(", args, ")"
 
@@ -703,9 +708,9 @@ class ReportCli:
 
     return weekDayList[:]
 
-  def displayWeek(self, *args):
+  def displayWeekTable(self, *args):
     '''
-    Called when "week" or "w" is typed.  Only useful for the current week.
+    Called when "wt" is typed.  Prints a table with data for green sheets.
     
     args is ignored.
     '''
