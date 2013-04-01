@@ -59,6 +59,8 @@ class ReportCli:
 	   "ch": self.changeTitle,
 	  "day": self.displayDay,
 	    "d": self.displayDay,
+	"dtest": self.dayTest,
+	   "dt": self.dayTestSummary,
 	 "dsum": self.displayDaySummary,
 	   "ds": self.displayDaySummary,
 	 "week": self.displayWeek,
@@ -564,6 +566,65 @@ class ReportCli:
 	print ""
 	continue
 	
+    return True
+
+
+  def dayTest(self, *args):
+    '''
+    Called when "dt" is typed.
+    '''
+    #!print "dayTest(", args, ")"
+
+    if len(args) == 0:
+      wArgs = self._getCurrentWeek()
+    else:
+      try:
+        wArgs = ["%02i" % int(x) for x in args]
+      except ValueError:
+        print "Error: Days must be integers"
+	return True
+
+    print
+    print "Selected days: %s" % " ".join(wArgs)
+
+    analysis = self.logObj.getAnalysis(wArgs)
+    
+    #!print analysis
+    
+    if analysis != None:
+      self._displayAnalysis(analysis, True, False)
+    else:
+      print "! No entries for selected day(s)."
+
+    return True
+
+  def dayTestSummary(self, *args):
+    '''
+    Called when "dt" is typed.
+    '''
+    #!print "dayTest(", args, ")"
+
+    if len(args) == 0:
+      wArgs = self._getCurrentWeek()
+    else:
+      try:
+        wArgs = ["%02i" % int(x) for x in args]
+      except ValueError:
+        print "Error: Days must be integers"
+	return True
+
+    print
+    print "Selected days: %s" % " ".join(wArgs)
+
+    analysis = self.logObj.getAnalysis(wArgs)
+    
+    #!print analysis
+    
+    if analysis != None:
+      self._displayAnalysis(analysis, False, False)
+    else:
+      print "! No entries for selected day(s)."
+
     return True
 
 

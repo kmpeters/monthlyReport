@@ -240,7 +240,7 @@ class ReportLog:
       valid = False
     return valid
     
-  def getAnalysis(self):
+  def getAnalysis(self, dayList=None):
     '''
     Do the analysis.
     
@@ -265,6 +265,17 @@ class ReportLog:
       #!print "There is nothing to analyze!"
       return None
     
+    if dayList == None:
+      entryList = self.entryArray
+    else:
+      entryList = []
+      for x in self.entryArray:
+        if x.date[-2:] in dayList:
+	  entryList.append(x)
+    
+    if len(entryList) == 0:
+      return None
+
     # List of days in the log
     days = []
     # Dictionary of dictionaries. Outer level has group keywords, inner dict has title keywords, values of inner dict are duration totals for that group-title combo
@@ -273,8 +284,8 @@ class ReportLog:
     details = {}
     # 
     groupTotals = {}
-    
-    for x in self.entryArray:
+
+    for x in entryList:
     	# Count the days for total work-day calculation
 	if x.date not in days:
 	  days.append(x.date)
