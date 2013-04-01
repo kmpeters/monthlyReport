@@ -659,7 +659,69 @@ class ReportCli:
         print "Error: Days must be integers"
 	return True
     
-    print wArgs
+    #!print wArgs
+    
+    wList = []
+    for day in wArgs:
+      #  groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
+      wList.append(self.logObj.getDaySummary(day))
+      
+    #!print wList
+    
+    groups = []
+    groupWeekTotals = {}
+    weekHourTotal = 0.0
+    # Collect groups and calculate totals
+    totalStr = "Total\t\t"
+    for i in range(len(wList)):
+      dayList = wList[i]
+
+      weekHourTotal += wList[i][3]
+      totalStr += "%0.2f\t" % wList[i][3]
+
+      groupList = dayList[0]
+      groupDayTotals = dayList[1]
+      
+      for group in groupList:
+	if group not in groups:
+	  groups.append(group)
+	  groupWeekTotals[group] = groupDayTotals[group]
+	else:
+	  groupWeekTotals[group] += groupDayTotals[group]
+
+    totalStr += "%0.2f" % weekHourTotal
+
+    groups.sort()
+    #!print groups
+    #!print groupWeekTotals
+    
+    # Print hours table
+    headString = "Group\t\t"
+    for day in wArgs:
+      headString += " %s\t" % day
+    headString += "Total"
+
+    print headString
+    print "-----\t\t----\t----\t----\t----\t----\t-----"
+
+    for group in groups:
+      grpStr = group[:]
+      # Add fewer tabs for longer group names (could be smarter about this)
+      if len(group) > 7:
+        grpStr += "\t"
+      else:
+        grpStr += "\t\t"
+      for i in range(len(wList)):
+        if group in wList[i][1]:
+	  grpStr += "%0.2f\t" % wList[i][1][group]
+	else:
+	  grpStr += "\t"
+	
+      grpStr += "%0.2f" % groupWeekTotals[group]
+      print grpStr
+
+    print "-----\t\t----\t----\t----\t----\t----\t-----"
+    print totalStr
 
     return True
 
