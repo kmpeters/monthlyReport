@@ -27,7 +27,6 @@ class Entry( HasTraits ):
     '''
     describes a single entry of a work report
     '''
-    customer = Enum(config.possible_customers, value="")
     activity = Enum(config.possible_activities, value="")
     group = Enum(config.possible_groups, value="")
     description = Str
@@ -53,8 +52,6 @@ class Entry( HasTraits ):
         return "T".join(str(datetime.datetime.now()).split())
 
     def _addBtn_fired(self):
-        if len(self.customer) == 0:
-            raise Exception, "You must choose a customer."
         if len(self.activity) == 0:
             raise Exception, "You must choose an activity."
         if len(self.group) == 0:
@@ -65,7 +62,7 @@ class Entry( HasTraits ):
             raise Exception, "You need to estimate the effort for this entry."
         if len(self.description) == 0:
             raise Exception, "Provide some description of the activity."
-        doEntryAdd(self.customer, self.activity, self.group, self.title,
+        doEntryAdd(self.activity, self.group, self.title,
                     self.effort_hrs, self.description)
         self._dirty = False
     
@@ -78,9 +75,6 @@ class Entry( HasTraits ):
         # TODO: finish this work
         print "click [x] in the window's title bar to quit"
         self._dirty = False
-    
-    def _customer_changed(self):
-        self._dirty = True
     
     def _activity_changed(self):
         self._dirty = True
@@ -99,7 +93,6 @@ class Entry( HasTraits ):
 
     traits_view = View(
         Item('date', tooltip=config.tooltips['date']),
-        Item('customer', tooltip=config.tooltips['customer']),
         Item('activity', tooltip=config.tooltips['activity']),
         Item('group', tooltip=config.tooltips['group'], 
               #style  = 'custom', 
@@ -127,7 +120,7 @@ class Entry( HasTraits ):
     
     def __str__(self):
         '''default string representation'''
-        return "%s, %s, %s, %s" % (self.date, self.customer, self.activity, self.group)
+        return "%s, %s, %s" % (self.date, self.activity, self.group)
     
     def __repr__(self):
         '''alternate string representation'''

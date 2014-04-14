@@ -54,11 +54,10 @@ class ReportLog:
     self.logEntryDef = [
         "date",
         "duration",
-        "customer",
-	"activity",
-	"group",
-	"title",
-	"description"
+        "activity",
+        "group",
+        "title",
+        "description"
       ]
 
   def getLogEntryDef(self):

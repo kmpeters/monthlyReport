@@ -302,36 +302,13 @@ def makeXml(analysis, directory, filename, fullName):
         # Combine all the entry descriptions into a paragraph
         entryText += entryObj.description
 	entryText += " "
-	# Collect effort information
-	if entryObj.customer not in effortBreakdown:
-	  effortBreakdown[entryObj.customer] = {}
-	if entryObj.activity not in effortBreakdown[entryObj.customer]:
-	  effortBreakdown[entryObj.customer][entryObj.activity] = float(entryObj.duration)
-	else:
-	  effortBreakdown[entryObj.customer][entryObj.activity] += float(entryObj.duration)
 	  
       entryElem.text = entryText
 
       effortElem = etree.SubElement(remark, "effort")
       #effortElem.text = titlePercentStr
-      #effortElem.text = titleHourStr
+      effortElem.text = titleHourStr
       
-      # Build the new effort string
-      effortStr = titleHourStr + " ("
-      customers = effortBreakdown.keys()
-      for index in range(len(customers)):
-        effortStr = effortStr + customers[index] + ": "
-        activities = effortBreakdown[customers[index]].keys()
-	for jndex in range(len(activities)):
-	  effortStr = effortStr + activities[jndex] + " " + str(effortBreakdown[customers[index]][activities[jndex]]) + " hrs"
-	  if jndex != (len(activities)-1):
-	    effortStr = effortStr + ", "
-	if index != (len(customers)-1):
-          effortStr += "; "
-      effortStr = effortStr + ")"
-
-      effortElem.text = effortStr
-
   # handle empty directory
   if directory == '':
     directory = "."

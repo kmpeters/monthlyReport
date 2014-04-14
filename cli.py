@@ -82,7 +82,6 @@ class ReportCli:
 	"mkrep": self.makePdfReport,
          }
 	 
-    self.possibleCustomers = config.possible_customers[:]
     self.possibleActivities = config.possible_activities[:]
     self.possibleGroups = config.possible_groups[:]
     
@@ -149,7 +148,7 @@ class ReportCli:
    prep [cat]	 displays the month summary w/ details (percent)
 
    list [label ...] list the labels used in the log. Default labels are
-                customer, activity, group and title.
+                activity, group and title.
 
    xml		Generates a skeleton xml report in the same directory
    		as the work log. Categories and keywords in the work log
@@ -323,7 +322,7 @@ class ReportCli:
     '''
     #!print "listLabels(", args, ")"
     
-    defaultLabels = ['customer', 'activity', 'group', 'title']
+    defaultLabels = ['activity', 'group', 'title']
     
     if args == ():
       labels = defaultLabels[:]
@@ -490,7 +489,7 @@ class ReportCli:
 	    
 	  if verbose == True:
 	    for e in details[group][title]:
-	      line = "\t\t%s ; %s ; %s - %s ; %s" % (e.date, e.duration, e.customer, e.activity, e.description)
+	      line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
               print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="\t\t")
 	      print ""
 
@@ -560,7 +559,7 @@ class ReportCli:
 	
 	for x in dayArray:
 	  # Should probably use the get() methods, but that adds overhead
-	  print "%s ; %s ; %s - %s ; %s - %s ; %s" % (x.index, x.duration, x.group, x.title, x.customer, x.activity, x.description)
+	  print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
 	  
 	print ""
 	print "Hours: %.2f" % dayHours
@@ -661,7 +660,7 @@ class ReportCli:
 	  
 	  for x in entries[group]:
 	    # Should probably use the get() methods, but that adds overhead
-	    print "%s ; %s ; %s - %s ; %s - %s ; %s" % (x.index, x.duration, x.group, x.title, x.customer, x.activity, x.description)
+	    print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
 	
 	print ""
 	print "Hours: %.2f" % dayHours
@@ -814,11 +813,6 @@ class ReportCli:
         promptStr = "%s: " % item
       
       # Set tab-complete based on which item is being input
-      if item == 'customer':
-        print "  Possible customers:   %s" % ", ".join(self.possibleCustomers[1:])
-        readline.parse_and_bind("tab: complete")
-        completer = _TabCompleter(self.possibleCustomers[:])
-        readline.set_completer(completer.complete)
       if item == 'activity':
         print "  Possible activities:   %s" % ", ".join(self.possibleActivities[1:])
         readline.parse_and_bind("tab: complete")
@@ -898,7 +892,7 @@ class ReportCli:
 	
       finally:
         # Turn off tab complete
-	if item in ['customer', 'activity', 'group', 'title']:
+	if item in ['activity', 'group', 'title']:
 	  ## Restore smart completer
 	  readline.set_completer(self.mainCompleter.complete)
 	
@@ -1094,7 +1088,7 @@ class ReportCli:
 	
       finally:
         # Turn off tab complete
-	if item in ['customer', 'activity', 'group', 'title']:
+	if item in ['activity', 'group', 'title']:
 	  ## Restore smart completer
 	  readline.set_completer(self.mainCompleter.complete)
 	

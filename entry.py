@@ -24,18 +24,16 @@ class ReportEntry:
   
   All arguments to the init function are strings.
   '''
-  def __init__(self, date=None, duration="0.0", customer="", activity="", group="", title="", description=""):
+  def __init__(self, date=None, duration="0.0", activity="", group="", title="", description=""):
     if date == None:
       self.date = strftime("%Y-%m-%d")
     self.duration = duration
-    self.customer = customer
     self.activity = activity
     self.group = group
     self.title = title
     self.description = description
     self.functionDict = {"date":(self.getDate, self.setDate, self.verifyDate), 
       "duration":(self.getDuration, self.setDuration, self.verifyDuration),
-      "customer":(self.getCustomer, self.setCustomer, self.verifyCustomer),
       "activity":(self.getActivity, self.setActivity, self.verifyActivity),
       "group":(self.getGroup, self.setGroup, self.verifyGroup),
       "title":(self.getTitle, self.setTitle, self.verifyTitle),
@@ -47,17 +45,17 @@ class ReportEntry:
     '''
     Method to get all the fields that can be modified by the user.
     
-    Returns [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+    Returns [self.date, self.duration, self.activity, self.group, self.title, self.description]
     '''
-    return [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+    return [self.date, self.duration, self.activity, self.group, self.title, self.description]
   
   def setAll(self, fieldList):
     '''
     Method to set all the fields that can be modified by the user.
     
-    fieldList: [self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description]
+    fieldList: [self.date, self.duration, self.activity, self.group, self.title, self.description]
     '''  
-    self.date, self.duration, self.customer, self.activity, self.group, self.title, self.description = fieldList
+    self.date, self.duration, self.activity, self.group, self.title, self.description = fieldList
     return
   
   
@@ -73,12 +71,6 @@ class ReportEntry:
     '''  
     return self.duration
     
-  def getCustomer(self):
-    '''
-    Method to get the entry customer.
-    '''  
-    return self.customer
-  
   def getActivity(self):
     '''
     Method to get the entry activity.
@@ -120,12 +112,6 @@ class ReportEntry:
     Method to set the entry duration (String).
     '''  
     self.duration = duration
-    
-  def setCustomer(self, customer):
-    '''
-    Method to set the entry customer (String, choices defined in the config module).
-    '''  
-    self.customer = customer
     
   def setActivity(self, activity):
     '''
@@ -186,16 +172,6 @@ class ReportEntry:
         valid = False
     return valid
     
-  def verifyCustomer(self, userInput):
-    '''
-    Method to verify the customer to be written to the entry. (String)
-    '''  
-    if userInput in config.possible_customers:
-      valid = True
-    else:
-      valid = False
-    return valid
-  
   def verifyActivity(self, userInput):
     '''
     Method to verify the activity to be written to the entry. (String)
@@ -260,7 +236,6 @@ class ReportEntry:
     print "index: %s" % self.index
     print "date: %s" % self.date
     print "duration: %s" % self.duration
-    print "customer: %s" % self.customer
     print "activity: %s" % self.activity
     print "group: %s" % self.group
     print "title: %s" % self.title

@@ -17,12 +17,9 @@ class MyCli(cli.ReportCli):
 
     # Here is where you can specify only the groups you regularly use
     self.possibleGroups = ['', 
-                    '15ID', '26ID', '32ID', 
-                    '33BM', '33ID', '34ID', 
-                    'BCDA', 'General', 'SSM', 'Other',
-                    'Infrastructure',
-                    'Training', 'Leave', 'Offsite',
-                 ]
+					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
+					'15ID', '26ID', '32ID', '33BM', '33ID', '34ID',
+					'XSD', 'Leave']
     
 if __name__ == '__main__':
   myCli = MyCli()
