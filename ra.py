@@ -3,7 +3,7 @@
 '''
 Kevin's custom cli customizations:
   1. Reduced the group list to only those groups I actually use.
-  2. Rearrange the order of the fields so that customer and activity are prompted after the description is entered.
+  2. Rearrange the order of the fields so that activity is prompted after the description is entered.
 '''
 
 import cli
@@ -20,13 +20,12 @@ class MyCli(cli.ReportCli):
 
     # Here is where you can specify only the groups you regularly use
     self.possibleGroups = ['', 
-                    '15ID', '26ID', '32ID', 
-                    '33BM', '33ID', '34ID', 
-                    'BCDA', 'General', 'SSM', 'Other',
-                    'Infrastructure',
-                    'Training', 'Leave', 'Offsite',
-		    'ISN', 'XIS',
-                 ]
+			'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
+			#'EPICS base', 'EPICS clients', 'areaDetector',
+			#'Python', 'spec', 'VxWorks', 'Beamline Env Config', 
+			'15ID', '26ID', '32ID', '33BM', '33ID', '34ID',
+			'XSD', 'Leave']
+
 
     # Improve correctEntry prompts
     #!self.showCorrectDefaults = True
@@ -46,7 +45,6 @@ class MyReportLog(log.ReportLog):
         "group",
         "title",
         "description",
-        "customer",
         "activity"
       ]
 
