@@ -1,0 +1,41 @@
+== General ==
+
+   add (a)	 adds an entry to the log file
+   save (s)	 saves changes to the log file
+   corr (c) [#]  corrects the specified entry (default=last)
+   ch		Bulk title change. Make a BACKUP of your log before using
+   		this feature, since it hasn't been extensively tested yet.
+
+   help (h)      displays this help
+   print (p) [#] prints info from the log file (default=everything)
+   list [label ...] list the labels used in the log. Default labels are
+                activity, group and title.
+
+   day (d) [#]   prints list of entries for a given day (default=today)
+   dsum (ds) [#] prints summary of entries for a given day (default=today)
+
+== Monthly Report ==
+
+   sum [cat] 	 displays the month summary w/o details (hours)
+   psum [cat]	 displays the month summary w/o details (percent)
+   rep [cat] 	 displays the month summary w/ details (hours)
+   prep [cat]	 displays the month summary w/ details (percent)
+
+   xml		Generates a skeleton xml report in the same directory
+   		as the work log. Categories and keywords in the work log
+		correspond to titles and subjects in the xml report.  
+		Details must be MANUALLY entered after examining output
+		of the 'prep' command.
+		
+   mkrep	Converts an xml file into a pdf. Titles are optional 
+   		and do not currently appear in the pdf.
+		
+== Green Sheets ==
+
+   wtab (wt) [#] prints a table of hours in green-sheet format
+   wsum (ws) [#] displays the week summary w/o details (hours)
+   wrep (wr) [#] displays the week summary w/ details (hours)
+
+== Jira ==
+
+
