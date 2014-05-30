@@ -660,7 +660,8 @@ class ReportCli:
           
           for x in entries[group]:
             # Should probably use the get() methods, but that adds overhead
-            print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="    ")
         
         print ""
         print "Hours: %.2f" % dayHours
