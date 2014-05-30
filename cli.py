@@ -111,6 +111,7 @@ class ReportCli:
       # Run the main loop
       self.main()
 
+
   def createReportLog(self, filepath):
     '''
     Method called by __init__ to create the ReportLog instance. Designed to be overriden without having to reimplement __init__.
@@ -708,11 +709,21 @@ class ReportCli:
 
     return weekDayList[:]
 
+
+  def _calcTabs(self, max, group):
+    '''
+    '''
+    # max / 8 + 1 = num tabs max group name uses
+    # (len(group) / 8) + 1 = num tabs group name uses
+    # (max / 8) - (len(group) / 8) + 1 = num tabs to add
+    return ((max / 8) - (len(group) / 8) + 1)
+
+
   def displayWeekTable(self, *args):
     '''
     Called when "wt" is typed.  Prints a table with data for green sheets.
     
-    args is ignored.
+    args is a tuple of day strings.  If no days are specified, the current week is displayed.
     '''
     #!print "displayDaySummary(", args, ")"
 
@@ -738,12 +749,10 @@ class ReportCli:
     groupWeekTotals = {}
     weekHourTotal = 0.0
     # Collect groups and calculate totals
-    totalStr = "Total\t\t"
     for i in range(len(wList)):
       dayList = wList[i]
 
       weekHourTotal += wList[i][3]
-      totalStr += "%0.2f\t" % wList[i][3]
 
       groupList = dayList[0]
       groupDayTotals = dayList[1]
@@ -755,28 +764,41 @@ class ReportCli:
         else:
           groupWeekTotals[group] += groupDayTotals[group]
 
-    totalStr += "%0.2f" % weekHourTotal
-
     groups.sort()
     #!print groups
     #!print groupWeekTotals
-    
-    # Print hours table
-    headString = "Group\t\t"
-    for day in wArgs:
-      headString += " %s\t" % day
+
+    # Find longest group name
+    maxGroupLen = 0
+    for group in groups:
+      if len(group) > maxGroupLen:
+        maxGroupLen = len(group)
+    #!print "maxGroupLen", maxGroupLen
+
+    ### Build hours table
+
+    headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
+    separator =  "-----" + '\t' * self._calcTabs(maxGroupLen, "-----")
+    totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
+
+    for i in range(len(wArgs)):
+      headString += " %s\t" % wArgs[i]
+      separator += "----\t"
+      totalStr += "%0.2f\t" % wList[i][3]
     headString += "Total"
-
+    separator += "-----"
+    totalStr += "%0.2f" % weekHourTotal
+ 
+    # Display first two rows
     print headString
-    print "-----\t\t----\t----\t----\t----\t----\t-----"
+    print separator
 
+    # Build group rows
     for group in groups:
       grpStr = group[:]
-      # Add fewer tabs for longer group names (could be smarter about this)
-      if len(group) > 7:
-        grpStr += "\t"
-      else:
-        grpStr += "\t\t"
+      # Add fewer tabs for longer group names
+      grpStr += '\t' * self._calcTabs(maxGroupLen, grpStr)
+
       for i in range(len(wList)):
         if group in wList[i][1]:
           grpStr += "%0.2f\t" % wList[i][1][group]
@@ -784,13 +806,14 @@ class ReportCli:
           grpStr += "\t"
         
       grpStr += "%0.2f" % groupWeekTotals[group]
+      # Display group strings as they're built
       print grpStr
 
-    print "-----\t\t----\t----\t----\t----\t----\t-----"
+    # Display last two rows
+    print separator
     print totalStr
 
     return True
-
 
 
   def _getUserInput(self, entry, requireInput=False):
