@@ -496,7 +496,7 @@ class ReportCli:
               if dateSort == False:
                 # Use the old, monthly-report approach
                 line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
-                print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="\t\t")
+                print textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t")
                 print ""
               else:
                 # Indent based on date
@@ -505,7 +505,7 @@ class ReportCli:
                   lastDate = e.date
                 # Include index instead of date
                 line = "\t\t\t%s ; %s ; %s ; %s" % (e.index, e.duration, e.activity, e.description)
-                print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="\t\t\t")
+                print textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t")
                 print ""
 
     print ""
@@ -679,7 +679,7 @@ class ReportCli:
           for x in entries[group]:
             # Should probably use the get() methods, but that adds overhead
             line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
-            print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="    ")
+            print textwrap.fill(line, width=(self.terminalWidth), subsequent_indent="    ")
         
         print ""
         print "Hours: %.2f" % dayHours
