@@ -20,11 +20,11 @@ class MyCli(cli.ReportCli):
 
     # Here is where you can specify only the groups you regularly use
     self.possibleGroups = ['', 
-			'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
-			#'EPICS base', 'EPICS clients', 'areaDetector',
-			#'Python', 'spec', 'VxWorks', 'Beamline Env Config', 
-			'15ID', '26ID', '32ID', '33BM', '33ID', '34ID',
-			'XSD', 'Leave']
+					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
+					#'EPICS base', 'EPICS clients', 'areaDetector',
+					#'Python', 'spec', 'VxWorks', 'Beamline Env Config', 
+					'15ID', '26ID', '32ID', '33BM', '33ID', '34ID',
+					'XSD', 'Leave']
 
 
     # Improve correctEntry prompts
