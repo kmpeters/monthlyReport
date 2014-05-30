@@ -18,6 +18,9 @@ class MyCli(cli.ReportCli):
     # You can change the terminal width that is used to wrap text when displaying summaries
     self.terminalWidth = 132
 
+    # Restore pre-Jira wr/wrep output
+    #!self.wrDateSort = False
+
     # Here is where you can specify only the groups you regularly use
     self.possibleGroups = ['', 
 					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
