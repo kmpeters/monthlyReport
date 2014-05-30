@@ -56,32 +56,32 @@ class ReportCli:
             "a": self.addEntry,
          "corr": self.correctEntry,
             "c": self.correctEntry,
-	   "ch": self.changeTitle,
-	  "day": self.displayDay,
-	    "d": self.displayDay,
-	 "wtab": self.displayWeekTable,
-	   "wt": self.displayWeekTable,
-	 "wsum": self.displayWeekSummary,
-	   "ws": self.displayWeekSummary,
-	 "wrep": self.displayWeekReport,
-	   "wr": self.displayWeekReport,
-	 "dsum": self.displayDaySummary,
-	   "ds": self.displayDaySummary,
+           "ch": self.changeTitle,
+          "day": self.displayDay,
+            "d": self.displayDay,
+         "wtab": self.displayWeekTable,
+           "wt": self.displayWeekTable,
+         "wsum": self.displayWeekSummary,
+           "ws": self.displayWeekSummary,
+         "wrep": self.displayWeekReport,
+           "wr": self.displayWeekReport,
+         "dsum": self.displayDaySummary,
+           "ds": self.displayDaySummary,
          "save": self.saveLog,
             "s": self.saveLog,
          "exit": self.quit,
          "quit": self.quit,
             "q": self.quit,
           "sum": self.displaySummary,
-	 "psum": self.displayPercentSummary,
-	  "rep": self.displayReport,
-	 "prep": self.displayPercentReport,
-	 "list": self.listLabels,
-	    "l": self.listLabels,
-	  "xml": self.createReportXml,
-	"mkrep": self.makePdfReport,
+         "psum": self.displayPercentSummary,
+          "rep": self.displayReport,
+         "prep": self.displayPercentReport,
+         "list": self.listLabels,
+            "l": self.listLabels,
+          "xml": self.createReportXml,
+        "mkrep": self.makePdfReport,
          }
-	 
+    
     self.possibleActivities = config.possible_activities[:]
     self.possibleGroups = config.possible_groups[:]
     
@@ -111,6 +111,7 @@ class ReportCli:
       # Run the main loop
       self.main()
 
+
   def createReportLog(self, filepath):
     '''
     Method called by __init__ to create the ReportLog instance. Designed to be overriden without having to reimplement __init__.
@@ -133,8 +134,8 @@ class ReportCli:
     print """
  Commands:
    print (p) [#] prints info from the log file (default=everything)
-   save (s)	 saves changes to the log file
-   add (a)	 adds an entry to the log file
+   save (s)         saves changes to the log file
+   add (a)         adds an entry to the log file
    corr (c) [#]  corrects the specified entry (default=last)
    help (h)      displays this help
    day (d) [#]   prints list of entries for a given day (default=today)
@@ -142,25 +143,25 @@ class ReportCli:
    wtab (wt) [#] prints a table of hours in green-sheet format
    wsum (ws) [#] displays the week summary w/o details (hours)
    wrep (wr) [#] displays the week summary w/ details (hours)
-   sum [cat] 	 displays the month summary w/o details (hours)
-   psum [cat]	 displays the month summary w/o details (percent)
-   rep [cat] 	 displays the month summary w/ details (hours)
-   prep [cat]	 displays the month summary w/ details (percent)
+   sum [cat]          displays the month summary w/o details (hours)
+   psum [cat]         displays the month summary w/o details (percent)
+   rep [cat]          displays the month summary w/ details (hours)
+   prep [cat]         displays the month summary w/ details (percent)
 
    list [label ...] list the labels used in the log. Default labels are
                 activity, group and title.
 
-   xml		Generates a skeleton xml report in the same directory
-   		as the work log. Categories and keywords in the work log
-		correspond to titles and subjects in the xml report.  
-		Details must be MANUALLY entered after examining output
-		of the 'prep' command.
-		
-   mkrep	Converts an xml file into a pdf. Titles are optional 
-   		and do not currently appear in the pdf.
-		
-   ch		Bulk title change. Make a BACKUP of your log before using
-   		this feature, since it hasn't been extensively tested yet.
+   xml                Generates a skeleton xml report in the same directory
+                   as the work log. Categories and keywords in the work log
+                correspond to titles and subjects in the xml report.  
+                Details must be MANUALLY entered after examining output
+                of the 'prep' command.
+                
+   mkrep        Converts an xml file into a pdf. Titles are optional 
+                   and do not currently appear in the pdf.
+                
+   ch                Bulk title change. Make a BACKUP of your log before using
+                   this feature, since it hasn't been extensively tested yet.
     """
     return True
 
@@ -176,64 +177,64 @@ class ReportCli:
 
   def makePdfReport(self, *args):
         '''
-	Convert a report xml file into a pdf.
-	
-	Calls mkrep.makeReport()
-	'''
-	# Interpret empty directory as pwd
-	if self.directory == '':
-	  directory = "."
-	else:
-	  directory = self.directory
-	  
-	# Create a list of xml files in the same directory as the work_log
-	files = os.listdir(directory)
-	xmlFiles = []
-	#!print files
-	for f in files:
-	  if f[-4:] == ".xml" and f != self.filename:
-	    xmlFiles.append(f)
-	
-	# Print xml files in the directory that aren't the work_log
-	print "Found XML files:", ", ".join(xmlFiles)
-	# Prompt user for desired xml file with autocomplete
-	try:
-	  # Turn on tab complete
-	  readline.parse_and_bind("tab: complete")
-	  completer = _TabCompleter(xmlFiles[:])
-	  readline.set_completer(completer.complete)
-		
-	  # Get xml file
-	  desiredXml = raw_input("XML file to convert: ")
-		
-	  if desiredXml != '':
+        Convert a report xml file into a pdf.
+        
+        Calls mkrep.makeReport()
+        '''
+        # Interpret empty directory as pwd
+        if self.directory == '':
+          directory = "."
+        else:
+          directory = self.directory
+          
+        # Create a list of xml files in the same directory as the work_log
+        files = os.listdir(directory)
+        xmlFiles = []
+        #!print files
+        for f in files:
+          if f[-4:] == ".xml" and f != self.filename:
+            xmlFiles.append(f)
+        
+        # Print xml files in the directory that aren't the work_log
+        print "Found XML files:", ", ".join(xmlFiles)
+        # Prompt user for desired xml file with autocomplete
+        try:
+          # Turn on tab complete
+          readline.parse_and_bind("tab: complete")
+          completer = _TabCompleter(xmlFiles[:])
+          readline.set_completer(completer.complete)
+                
+          # Get xml file
+          desiredXml = raw_input("XML file to convert: ")
+                
+          if desiredXml != '':
             self._removeHistoryEntry()
-	  else:
-	    #!print "You didn't specify a file, assuming you want dummy.xml"
-	    desiredXml = "dummy.xml"
-			
-	# Catch KeyboardInterrupt to allow the user to exit the entry process
-	except (KeyboardInterrupt, EOFError):
-		print ""
-		print "Aborting..."
-		return True
-	finally:
-		# Restore main completer
-		readline.set_completer(self.mainCompleter.complete)
+          else:
+            #!print "You didn't specify a file, assuming you want dummy.xml"
+            desiredXml = "dummy.xml"
+                        
+        # Catch KeyboardInterrupt to allow the user to exit the entry process
+        except (KeyboardInterrupt, EOFError):
+                print ""
+                print "Aborting..."
+                return True
+        finally:
+                # Restore main completer
+                readline.set_completer(self.mainCompleter.complete)
 
-	#!print "desiredXml", desiredXml
+        #!print "desiredXml", desiredXml
 
-	# Verify that the file exists
-	#!print "%s/%s" % (directory, desiredXml)
-	fullFilePath = "%s/%s" % (directory, desiredXml)
-	if os.path.exists(fullFilePath) == False:
-		print "The desired xml file (%s) doesn't exist." % fullFilePath
-		return True
+        # Verify that the file exists
+        #!print "%s/%s" % (directory, desiredXml)
+        fullFilePath = "%s/%s" % (directory, desiredXml)
+        if os.path.exists(fullFilePath) == False:
+                print "The desired xml file (%s) doesn't exist." % fullFilePath
+                return True
 
-	# Call mkrep.makeReport()
-	status = mkrep.makeReport(fullFilePath)
-	
-	return True
+        # Call mkrep.makeReport()
+        status = mkrep.makeReport(fullFilePath)
+        
+        return True
 
 
   def createReportXml(self, *args):
@@ -276,7 +277,7 @@ class ReportCli:
     if os.path.exists("%s/%s" % (self.directory, desiredFilename) ):
       print "Can't write xml report.  %s/%s already exists." % (self.directory, desiredFilename)
       return True
-	
+        
     try:
       # Prompt user for their name
       fullName = raw_input("Your name: ")
@@ -331,9 +332,9 @@ class ReportCli:
       labels = []
       for label in args:
         if label in self.logEntryDef:
-	  labels.append(label)
-	else:
-	  print "! %s is not a valid label." % label
+          labels.append(label)
+        else:
+          print "! %s is not a valid label." % label
 
     #!print labels
     
@@ -442,15 +443,15 @@ class ReportCli:
       if desiredGroup not in groups:
         #!print "! %s is not a valid group." % desiredGroup
         # word might be part of a group name with a space in it
-	if len(partialGroupStr) == 0:
-	  partialGroupStr = desiredGroup
-	else:
-	  partialGroupStr = partialGroupStr + " " + desiredGroup
-	  # Check to see if the string is now a valid group
-	  if partialGroupStr in groups:
-	    groupsWithSpaces.append(partialGroupStr)
-	    # reset the partialGroup string
-	    partialGroupStr = ""
+        if len(partialGroupStr) == 0:
+          partialGroupStr = desiredGroup
+        else:
+          partialGroupStr = partialGroupStr + " " + desiredGroup
+          # Check to see if the string is now a valid group
+          if partialGroupStr in groups:
+            groupsWithSpaces.append(partialGroupStr)
+            # reset the partialGroup string
+            partialGroupStr = ""
       else:
         # When a desiredGroup is valid, reset the partialGroup string
         partialGroupStr = ""
@@ -475,23 +476,23 @@ class ReportCli:
         titles.sort()
       
         # Print group total
-	if percents == False:
+        if percents == False:
           print "%5.2f %s" % (groupTotals[group], group)
         else:
           print "%4.1f%% %s" % (groupTotals[group] / recordedTotal * 100.0, group)
-	
+        
         # Loop over titles printing totals
         for title in titles:
-	  if percents == False:
+          if percents == False:
             print "\t%5.2f %s" % (titleTotals[group][title], title)
           else:
             print "\t%4.1f%% %s" % (titleTotals[group][title] / recordedTotal * 100.0, title)
-	    
-	  if verbose == True:
-	    for e in details[group][title]:
-	      line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
+            
+          if verbose == True:
+            for e in details[group][title]:
+              line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
               print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="\t\t")
-	      print ""
+              print ""
 
     print ""
     
@@ -519,18 +520,18 @@ class ReportCli:
       
       for x in args:
         try:
-	  index = int(x)
-	  if self.logObj.isValidIndex(index):
-	    tempObj = self.logObj.getEntry(index-1)
-	    tempObj.printEntry()
-	  else:
-	    print "!", x, "is outside the valid index range."
-	except ValueError:
-	  print "!", x, "is not a valid index (integer)."
-	  print ""
-	  continue
-	
-	print ""
+          index = int(x)
+          if self.logObj.isValidIndex(index):
+            tempObj = self.logObj.getEntry(index-1)
+            tempObj.printEntry()
+          else:
+            print "!", x, "is outside the valid index range."
+        except ValueError:
+          print "!", x, "is not a valid index (integer)."
+          print ""
+          continue
+        
+        print ""
     
     return True
 
@@ -551,25 +552,25 @@ class ReportCli:
       
     for x in dArgs:
       try:
-	day = "%02i" % int(x)
-	dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
-	
-	print "selected day: %s" % x
-	print ""
-	
-	for x in dayArray:
-	  # Should probably use the get() methods, but that adds overhead
-	  print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
-	  
-	print ""
-	print "Hours: %.2f" % dayHours
-	print "Percent: %.1f%%" % percentRecorded
-	print ""
+        day = "%02i" % int(x)
+        dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
+        
+        print "selected day: %s" % x
+        print ""
+        
+        for x in dayArray:
+          # Should probably use the get() methods, but that adds overhead
+          print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+          
+        print ""
+        print "Hours: %.2f" % dayHours
+        print "Percent: %.1f%%" % percentRecorded
+        print ""
       except ValueError:
-	print "!", x, "is not a valid day (integer)."
-	print ""
-	continue
-	
+        print "!", x, "is not a valid day (integer)."
+        print ""
+        continue
+        
     return True
 
 
@@ -586,7 +587,7 @@ class ReportCli:
         wArgs = ["%02i" % int(x) for x in args]
       except ValueError:
         print "Error: Days must be integers"
-	return True
+        return True
 
     print
     print "Selected days: %s" % " ".join(wArgs)
@@ -615,7 +616,7 @@ class ReportCli:
         wArgs = ["%02i" % int(x) for x in args]
       except ValueError:
         print "Error: Days must be integers"
-	return True
+        return True
 
     print
     print "Selected days: %s" % " ".join(wArgs)
@@ -648,29 +649,30 @@ class ReportCli:
       
     for x in dArgs:
       try:
-	day = "%02i" % int(x)
-	groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
-	
-	print "selected day: %s" % x
-	
+        day = "%02i" % int(x)
+        groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
+        
+        print "selected day: %s" % x
+        
         for group in groups:
-	  print ""
-	  print "%s: %s hours" % (group, totals[group])
-	  print ""
-	  
-	  for x in entries[group]:
-	    # Should probably use the get() methods, but that adds overhead
-	    print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
-	
-	print ""
-	print "Hours: %.2f" % dayHours
-	print "Percent: %.1f%%" % percentRecorded
-	print ""
+          print ""
+          print "%s: %s hours" % (group, totals[group])
+          print ""
+          
+          for x in entries[group]:
+            # Should probably use the get() methods, but that adds overhead
+            line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="    ")
+        
+        print ""
+        print "Hours: %.2f" % dayHours
+        print "Percent: %.1f%%" % percentRecorded
+        print ""
       except ValueError:
-	print "!", x, "is not a valid day (integer)."
-	print ""
-	continue
-	
+        print "!", x, "is not a valid day (integer)."
+        print ""
+        continue
+        
     return True
 
 
@@ -707,11 +709,21 @@ class ReportCli:
 
     return weekDayList[:]
 
+
+  def _calcTabs(self, max, group):
+    '''
+    '''
+    # max / 8 + 1 = num tabs max group name uses
+    # (len(group) / 8) + 1 = num tabs group name uses
+    # (max / 8) - (len(group) / 8) + 1 = num tabs to add
+    return ((max / 8) - (len(group) / 8) + 1)
+
+
   def displayWeekTable(self, *args):
     '''
     Called when "wt" is typed.  Prints a table with data for green sheets.
     
-    args is ignored.
+    args is a tuple of day strings.  If no days are specified, the current week is displayed.
     '''
     #!print "displayDaySummary(", args, ")"
 
@@ -722,7 +734,7 @@ class ReportCli:
         wArgs = ["%02i" % int(x) for x in args]
       except ValueError:
         print "Error: Days must be integers"
-	return True
+        return True
     
     #!print wArgs
     
@@ -737,59 +749,71 @@ class ReportCli:
     groupWeekTotals = {}
     weekHourTotal = 0.0
     # Collect groups and calculate totals
-    totalStr = "Total\t\t"
     for i in range(len(wList)):
       dayList = wList[i]
 
       weekHourTotal += wList[i][3]
-      totalStr += "%0.2f\t" % wList[i][3]
 
       groupList = dayList[0]
       groupDayTotals = dayList[1]
       
       for group in groupList:
-	if group not in groups:
-	  groups.append(group)
-	  groupWeekTotals[group] = groupDayTotals[group]
-	else:
-	  groupWeekTotals[group] += groupDayTotals[group]
-
-    totalStr += "%0.2f" % weekHourTotal
+        if group not in groups:
+          groups.append(group)
+          groupWeekTotals[group] = groupDayTotals[group]
+        else:
+          groupWeekTotals[group] += groupDayTotals[group]
 
     groups.sort()
     #!print groups
     #!print groupWeekTotals
-    
-    # Print hours table
-    headString = "Group\t\t"
-    for day in wArgs:
-      headString += " %s\t" % day
+
+    # Find longest group name
+    maxGroupLen = 0
+    for group in groups:
+      if len(group) > maxGroupLen:
+        maxGroupLen = len(group)
+    #!print "maxGroupLen", maxGroupLen
+
+    ### Build hours table
+
+    headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
+    separator =  "-----" + '\t' * self._calcTabs(maxGroupLen, "-----")
+    totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
+
+    for i in range(len(wArgs)):
+      headString += " %s\t" % wArgs[i]
+      separator += "----\t"
+      totalStr += "%0.2f\t" % wList[i][3]
     headString += "Total"
-
+    separator += "-----"
+    totalStr += "%0.2f" % weekHourTotal
+ 
+    # Display first two rows
     print headString
-    print "-----\t\t----\t----\t----\t----\t----\t-----"
+    print separator
 
+    # Build group rows
     for group in groups:
       grpStr = group[:]
-      # Add fewer tabs for longer group names (could be smarter about this)
-      if len(group) > 7:
-        grpStr += "\t"
-      else:
-        grpStr += "\t\t"
+      # Add fewer tabs for longer group names
+      grpStr += '\t' * self._calcTabs(maxGroupLen, grpStr)
+
       for i in range(len(wList)):
         if group in wList[i][1]:
-	  grpStr += "%0.2f\t" % wList[i][1][group]
-	else:
-	  grpStr += "\t"
-	
+          grpStr += "%0.2f\t" % wList[i][1][group]
+        else:
+          grpStr += "\t"
+        
       grpStr += "%0.2f" % groupWeekTotals[group]
+      # Display group strings as they're built
       print grpStr
 
-    print "-----\t\t----\t----\t----\t----\t----\t-----"
+    # Display last two rows
+    print separator
     print totalStr
 
     return True
-
 
 
   def _getUserInput(self, entry, requireInput=False):
@@ -806,9 +830,9 @@ class ReportCli:
 
       if requireInput == False and self.showCorrectDefaults == True:
         entryStr = getFun()
-	if len(entryStr) > self.showCorrectDescLen:
-	  entryStr = entryStr[:self.showCorrectDescLen] + "..."
-	promptStr = "%s [%s]: " % (item, entryStr)
+        if len(entryStr) > self.showCorrectDescLen:
+          entryStr = entryStr[:self.showCorrectDescLen] + "..."
+        promptStr = "%s [%s]: " % (item, entryStr)
       else: 
         promptStr = "%s: " % item
       
@@ -820,11 +844,11 @@ class ReportCli:
         readline.set_completer(completer.complete)
       if item == 'group':
         # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
-	#!print "  Used groups:   %s" % ", ".join(self.logObj.collectGroups())
+        #!print "  Used groups:   %s" % ", ".join(self.logObj.collectGroups())
         #!print "  Possible groups:   %s" % ", ".join(self.possibleGroups[1:])
-	totalGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[:]))
-	totalGroups.sort()
-	print "  Possible groups:   %s" % ", ".join(totalGroups[1:])
+        totalGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[:]))
+        totalGroups.sort()
+        print "  Possible groups:   %s" % ", ".join(totalGroups[1:])
         readline.parse_and_bind("tab: complete")
         #!completer = _TabCompleter(self.possibleGroups[:])
         completer = _TabCompleter(totalGroups)
@@ -832,75 +856,75 @@ class ReportCli:
       if item == 'title':
         #existingTitles = self.logObj.getElementList(item)
         existingTitles = self.logObj.collectEntries(entry.group, item)
-	print "  Existing titles for %s:   %s" % (entry.group, ", ".join(existingTitles)) 
+        print "  Existing titles for %s:   %s" % (entry.group, ", ".join(existingTitles)) 
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingTitles)
         readline.set_completer(completer.complete)
 
       # Prompt user for input
       try:
-	validResponse = False
-	while not validResponse:
-	  userInput = raw_input(promptStr)
+        validResponse = False
+        while not validResponse:
+          userInput = raw_input(promptStr)
 
           validResponse = verifyFun(userInput)
-	  if validResponse == False:
-	    # There is probably a better way to specify correct forms of arguments
-	    if item != "date":
+          if validResponse == False:
+            # There is probably a better way to specify correct forms of arguments
+            if item != "date":
               print "! %s is not a valid %s." % (userInput, item)
-	    else:
-	      print "! %s is not a valid %s. Required %s format: YYYY-MM-DD" % (userInput, item, item)
+            else:
+              print "! %s is not a valid %s. Required %s format: YYYY-MM-DD" % (userInput, item, item)
 
           # Force the user to manually enter fields (with exceptions)
           if userInput == '':
             # User input is blank
             if requireInput == True and item != 'date' and item != 'duration':
-	      print "! %s can't be empty." % item
-	      validResponse = False
+              print "! %s can't be empty." % item
+              validResponse = False
           else:
             # User input is NOT blank and has already been verified.
-	    pass
-	    
+            pass
+            
           # Remove text from command history
-	  if userInput != "":
+          if userInput != "":
             self._removeHistoryEntry()
 
       except KeyboardInterrupt:
         status = False
-	
-	# It may be neccessary to clear this.  Test it
-	userInput = ''
         
-	print ""
-	print "Aborting..."
-	break
-	
+        # It may be neccessary to clear this.  Test it
+        userInput = ''
+        
+        print ""
+        print "Aborting..."
+        break
+        
       except EOFError:
         # Abort if adding, Finish if correcting
-	if requireInput == True:
-	  status = False
-	  
-	  userInput = ''
-	  
-	  print ""
-	  print "Aborting (until sensible defaults can be determined)..."
-	  break
-	else:
+        if requireInput == True:
+          status = False
+          
+          userInput = ''
+          
           print ""
-	  print "Finishing..."
+          print "Aborting (until sensible defaults can be determined)..."
+          break
+        else:
+          print ""
+          print "Finishing..."
           skipRemainingInput = True
-	
+        
       finally:
         # Turn off tab complete
-	if item in ['activity', 'group', 'title']:
-	  ## Restore smart completer
-	  readline.set_completer(self.mainCompleter.complete)
-	
+        if item in ['activity', 'group', 'title']:
+          ## Restore smart completer
+          readline.set_completer(self.mainCompleter.complete)
+        
       #  Break the loop before userInput is set since we received the Ctrl+D for the next item and userInput is stale.
       if skipRemainingInput == True:
         #!print '\t', item, userInput
         break
-	
+        
       # Only change entries from the default if user input isn't blank
       if userInput != "":
         setFun(userInput)
@@ -963,31 +987,31 @@ class ReportCli:
       try:
         index = int(x)
         if self.logObj.isValidIndex(index):
-	  # Backup the values of the object in case the user cancels the correction
-	  # This getEntry() should probably return a deepcopy of the obj, but that fails at the moment
-	  tempObj = self.logObj.getEntry(index-1)
-	  valueBackup = tempObj.getAll()
+          # Backup the values of the object in case the user cancels the correction
+          # This getEntry() should probably return a deepcopy of the obj, but that fails at the moment
+          tempObj = self.logObj.getEntry(index-1)
+          valueBackup = tempObj.getAll()
 
-	  print "Editing entry #%s" % x
-	  print ""
+          print "Editing entry #%s" % x
+          print ""
           tempObj.printEntry()
-	  print ""
-	  
-	  # Correct the entry
-	  status = self._getUserInput(tempObj)
-	  print ""
-	  
+          print ""
+          
+          # Correct the entry
+          status = self._getUserInput(tempObj)
+          print ""
+          
           # Only correct the entry if the user didn't Ctrl+c out of it
-	  if status == True:
-	    #
-	    self.logObj.replaceEntry(index-1, tempObj)
-	    self.dirty = True
-	  else:
-	    # This may need to change to continue in the future, depending on what comes after it
-	    #!print "correctEntry canceled"
-	    # restore the value backup
-	    tempObj.setAll(valueBackup)
-	  
+          if status == True:
+            #
+            self.logObj.replaceEntry(index-1, tempObj)
+            self.dirty = True
+          else:
+            # This may need to change to continue in the future, depending on what comes after it
+            #!print "correctEntry canceled"
+            # restore the value backup
+            tempObj.setAll(valueBackup)
+          
         else:
           print "!", x, "is outside the valid index range."
       except ValueError:
@@ -1017,81 +1041,81 @@ class ReportCli:
       
       if item == 'group':
         # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
-	if i == 2:
-	  existingGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[1:]))
-	else:
-	  existingGroups = self.logObj.collectGroups()
-	existingGroups.sort()
-	print "  Possible groups:   %s" % ", ".join(existingGroups)
+        if i == 2:
+          existingGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[1:]))
+        else:
+          existingGroups = self.logObj.collectGroups()
+        existingGroups.sort()
+        print "  Possible groups:   %s" % ", ".join(existingGroups)
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingGroups)
         readline.set_completer(completer.complete)
       if item == 'title':
         # Group is element of list before the current one
         existingTitles = self.logObj.collectEntries(changeInput[i-1], item)
-	print "  Existing titles for %s:   %s" % (changeInput[i-1], ", ".join(existingTitles)) 
+        print "  Existing titles for %s:   %s" % (changeInput[i-1], ", ".join(existingTitles)) 
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingTitles)
         readline.set_completer(completer.complete)
 
       # Prompt user for input
       try:
-	validResponse = False
-	while not validResponse:
-	  userInput = raw_input(promptStr)
+        validResponse = False
+        while not validResponse:
+          userInput = raw_input(promptStr)
 
           # 
           if userInput == '':
             # User input is blank
             if itemRequired[i] == True:
-	      print "! %s %s can't be empty." % (promptAdj[i], item)
-	      validResponse = False
-	    elif i == 2:
-	      # Set new group to old group if none is specified
-	      desiredInput = changeInput[0]
-	      validResponse = True
+              print "! %s %s can't be empty." % (promptAdj[i], item)
+              validResponse = False
+            elif i == 2:
+              # Set new group to old group if none is specified
+              desiredInput = changeInput[0]
+              validResponse = True
           else:
             # User input is NOT blank
             if verifyItem[i]:
-	      if item == 'group':
-	        validResponse = userInput in existingGroups
-	      else:
+              if item == 'group':
+                validResponse = userInput in existingGroups
+              else:
                 validResponse = userInput in existingTitles
             elif i == 2:
-	      # verify optional new group to make sure it is valid
-	      validResponse = userInput in config.possible_groups[1:]
-	    else:
-	      validResponse = True
+              # verify optional new group to make sure it is valid
+              validResponse = userInput in config.possible_groups[1:]
+            else:
+              validResponse = True
 
-	    if validResponse == False:
-	      if i == 2:
-	        print "! %s is not a valid %s." % (userInput, item)
-	      else:
-	        print "! %s is not an existing %s." % (userInput, item)
-	    else:
-	      desiredInput = userInput
-	  
+            if validResponse == False:
+              if i == 2:
+                print "! %s is not a valid %s." % (userInput, item)
+              else:
+                print "! %s is not an existing %s." % (userInput, item)
+            else:
+              desiredInput = userInput
+          
           # Remove text from command history
-	  if userInput != "":
+          if userInput != "":
             self._removeHistoryEntry()
-	  
-	  if validResponse:  
+          
+          if validResponse:  
             changeInput.append(desiredInput)
 
       except (KeyboardInterrupt, EOFError):
-	userInput = ''
-	changeInput = []
+        userInput = ''
+        changeInput = []
         
-	print ""
-	print "Aborting..."
-	break
-	
+        print ""
+        print "Aborting..."
+        break
+        
       finally:
         # Turn off tab complete
-	if item in ['activity', 'group', 'title']:
-	  ## Restore smart completer
-	  readline.set_completer(self.mainCompleter.complete)
-	
+        if item in ['activity', 'group', 'title']:
+          ## Restore smart completer
+          readline.set_completer(self.mainCompleter.complete)
+        
     return changeInput
 
 
@@ -1206,10 +1230,10 @@ class ReportCli:
         command = raw_input(" > ")
       except KeyboardInterrupt:
         print ""
-	command = "quit"
+        command = "quit"
       except EOFError:
         print ""
-	continue
+        continue
 
       cmnd = string.strip(command)
       if len(cmnd) > 0:
@@ -1220,7 +1244,7 @@ class ReportCli:
           #!print commands[cmndKey]
           self.run = self.commands[cmndKey](*args)
         else:
-	  print "\"%s\" is not a valid command" % cmnd
+          print "\"%s\" is not a valid command" % cmnd
 
 
 class _SmartTabCompleter:
@@ -1254,42 +1278,42 @@ class _SmartTabCompleter:
 
       if not words:
         # If no words have been typed, then the long commands are candidates for tab-completion
-	self.currentCandidates = self.commands[:]
+        self.currentCandidates = self.commands[:]
       else:
         try:
-	  if begin == 0:
-	    # first word (command is being tab-completed)
-	    candidates = self.commands[:]
-	  else:
-	    if words[0] in ['sum', 'psum', 'rep', 'prep']:
-	      # later word (group is being tab-completed, but only if command is correct)
-	      try:
-	        candidates = self.logObj.collectGroups()
+          if begin == 0:
+            # first word (command is being tab-completed)
+            candidates = self.commands[:]
+          else:
+            if words[0] in ['sum', 'psum', 'rep', 'prep']:
+              # later word (group is being tab-completed, but only if command is correct)
+              try:
+                candidates = self.logObj.collectGroups()
               except:
-	        #!logging.debug('Group collection failed:')
-		candidates = []	      
-	    else:
-	      # command doesn't require a group argument, so don't tab-complete anything
-	      candidates = []
-	      #!logging.debug("command doesn't require tab-completion")
-	     
+                #!logging.debug('Group collection failed:')
+                candidates = []              
+            else:
+              # command doesn't require a group argument, so don't tab-complete anything
+              candidates = []
+              #!logging.debug("command doesn't require tab-completion")
+             
           #!logging.debug('candidates=%s', candidates)
 
           if wordToComplete != "":
-	    # match commands with wordToComplete
-	    self.currentCandidates = [w for w in candidates if w.startswith(wordToComplete)]
-	  else:
-	    # matching empty string so use all candidates
-	    self.currentCandidates = candidates
+            # match commands with wordToComplete
+            self.currentCandidates = [w for w in candidates if w.startswith(wordToComplete)]
+          else:
+            # matching empty string so use all candidates
+            self.currentCandidates = candidates
 
           #!logging.debug('currentCandidates=%s', self.currentCandidates)
-	  
-	except (KeyError, IndexError), err:
-	  #!logging.error('completion error: %s', err)
-	  self.currentCandidates = []
-	except:
-	  #!logging.error('something is very wrong: %s', err)
-	  pass
+          
+        except (KeyError, IndexError), err:
+          #!logging.error('completion error: %s', err)
+          self.currentCandidates = []
+        except:
+          #!logging.error('something is very wrong: %s', err)
+          pass
 
     try:
       response = self.currentCandidates[state]
@@ -1326,5 +1350,5 @@ class _TabCompleter:
 
 
 if __name__ == "__main__":
-  cli = ReportCli()			  
+  cli = ReportCli()
 
