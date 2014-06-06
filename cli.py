@@ -16,6 +16,7 @@ import sys
 import os
 import readline
 import time
+import datetime
 import string
 import textwrap
 import os.path
@@ -595,7 +596,7 @@ class ReportCli:
     #!print "dayTest(", args, ")"
 
     if len(args) == 0:
-      wArgs = self._getCurrentWeek()
+      wArgs = self._getWeek(0)
     else:
       try:
         wArgs = ["%02i" % int(x) for x in args]
@@ -627,7 +628,7 @@ class ReportCli:
     #!print "dayTest(", args, ")"
 
     if len(args) == 0:
-      wArgs = self._getCurrentWeek()
+      wArgs = self._getWeek(0)
     else:
       try:
         wArgs = ["%02i" % int(x) for x in args]
@@ -693,36 +694,28 @@ class ReportCli:
     return True
 
 
-  def _getCurrentWeek(self):
+  def _getWeek(self, num):
     '''
-    Internal function to return list of current week days    
+    Internal function to return current or previous weeks
     '''
-    # what day is it
-    dayOfMonth = int(time.strftime("%d"))
-    # 0=sunday
-    dayOfWeek = int(time.strftime("%w"))
-    #
-    monday = dayOfMonth - (dayOfWeek - 1)
-
-    #!print dayOfMonth, dayOfWeek
-    #!print monday
+    currentDate = datetime.date.today()
+    dayOfMonth = currentDate.day
+    # 0=monday
+    dayOfWeek = currentDate.weekday()
     
-    #>>> time.asctime(time.localtime(time.time()-60*60*24*3))
-    #'Tue Mar 26 15:52:19 2013'
-
-    currentSeconds = time.time()
-    # Test a day in the past
-    #!currentSeconds = time.time() - 60*60*24*28
-
-    #!print time.asctime(time.localtime(time.time() - 60*60*24*(dayOfWeek-1)))
-    mondaySeconds = currentSeconds - 60*60*24*(dayOfWeek-1)
+    # current Monday DOM (Day Of Month) = dayOfMonth - dayOfWeek
+    currentMonday = currentDate.replace(day=(dayOfMonth - dayOfWeek))
+    
+    weekTimeDelta = datetime.timedelta(7)
+    
+    # num is a negative number and weekTimeDelta is positive, which results in subtracting time
+    desiredMonday = currentMonday + num * weekTimeDelta
+    desiredMondayDOM = desiredMonday.day
 
     weekDayList = []
 
     for i in range(5):
-      daySeconds = time.localtime(mondaySeconds + 60*60*24*i)
-      #!print time.asctime(daySeconds)
-      weekDayList.append(time.strftime("%d", daySeconds))
+      weekDayList.append( desiredMonday.replace(day=(desiredMondayDOM + i)).strftime("%d") )
 
     return weekDayList[:]
 
@@ -745,7 +738,7 @@ class ReportCli:
     #!print "displayDaySummary(", args, ")"
 
     if len(args) == 0:
-      wArgs = self._getCurrentWeek()
+      wArgs = self._getWeek(0)
     else:
       try:
         wArgs = ["%02i" % int(x) for x in args]
