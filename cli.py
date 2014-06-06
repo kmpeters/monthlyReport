@@ -87,8 +87,10 @@ class ReportCli:
     
     self.logFilename = "work_log.xml"
     self.terminalWidth = 132
+    self.tabSize = 8
     self.showCorrectDefaults = False
     self.showCorrectDescLen = 40
+    self.wrDateSort = True
     
     # Override the above definitions
     self.definitions()
@@ -363,7 +365,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, True, False, args)
+      self._displayAnalysis(analysis, True, False, False, args)
     else:
       print "! The log is empty."
     
@@ -380,7 +382,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, True, True, args)
+      self._displayAnalysis(analysis, True, True, False, args)
     else:
       print "! The log is empty."
     
@@ -397,7 +399,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, False, args)
+      self._displayAnalysis(analysis, False, False, False, args)
     else:
       print "! The log is empty."
     
@@ -414,14 +416,14 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, True, args)
+      self._displayAnalysis(analysis, False, True, False, args)
     else:
       print "! The log is empty."
     
     return True
 
 
-  def _displayAnalysis(self, analysis, verbose=False, percents=False, desiredGroups=()):
+  def _displayAnalysis(self, analysis, verbose=False, percents=False, dateSort=False, desiredGroups=()):
     '''
     Method that actually displays the analysis
     '''
@@ -489,10 +491,22 @@ class ReportCli:
             print "\t%4.1f%% %s" % (titleTotals[group][title] / recordedTotal * 100.0, title)
             
           if verbose == True:
+            lastDate = ""
             for e in details[group][title]:
-              line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
-              print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="\t\t")
-              print ""
+              if dateSort == False:
+                # Use the old, monthly-report approach
+                line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
+                print textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t")
+                print ""
+              else:
+                # Indent based on date
+                if lastDate != e.date:
+                  print "\t\t%s" % e.date
+                  lastDate = e.date
+                # Include index instead of date
+                line = "\t\t\t%s ; %s ; %s ; %s" % (e.index, e.duration, e.activity, e.description)
+                print textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t")
+                print ""
 
     print ""
     
@@ -597,7 +611,10 @@ class ReportCli:
     #!print analysis
     
     if analysis != None:
-      self._displayAnalysis(analysis, True, False)
+      if self.wrDateSort == False:
+        self._displayAnalysis(analysis, True, False, False)
+      else:
+        self._displayAnalysis(analysis, True, False, True)
     else:
       print "! No entries for selected day(s)."
 
@@ -626,7 +643,7 @@ class ReportCli:
     #!print analysis
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, False)
+      self._displayAnalysis(analysis, False, False, False)
     else:
       print "! No entries for selected day(s)."
 
@@ -662,7 +679,7 @@ class ReportCli:
           for x in entries[group]:
             # Should probably use the get() methods, but that adds overhead
             line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
-            print textwrap.fill(line, width=(self.terminalWidth-16), subsequent_indent="    ")
+            print textwrap.fill(line, width=(self.terminalWidth), subsequent_indent="    ")
         
         print ""
         print "Hours: %.2f" % dayHours
