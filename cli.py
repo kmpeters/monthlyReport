@@ -595,12 +595,8 @@ class ReportCli:
     '''
     #!print "dayTest(", args, ")"
 
-    if len(args) == 0:
-      wArgs = self._getWeek(0)
-    else:
-      try:
-        wArgs = ["%02i" % int(x) for x in args]
-      except ValueError:
+    wArgs = self._handleWeekArgs(args)
+    if wArgs == -1:
         print "Error: Days must be integers"
         return True
 
@@ -627,12 +623,8 @@ class ReportCli:
     '''
     #!print "dayTest(", args, ")"
 
-    if len(args) == 0:
-      wArgs = self._getWeek(0)
-    else:
-      try:
-        wArgs = ["%02i" % int(x) for x in args]
-      except ValueError:
+    wArgs = self._handleWeekArgs(args)
+    if wArgs == -1:
         print "Error: Days must be integers"
         return True
 
@@ -729,20 +721,43 @@ class ReportCli:
     return ((max / 8) - (len(group) / 8) + 1)
 
 
-  def displayWeekTable(self, *args):
+  def _handleWeekArgs(self, args):
     '''
-    Called when "wt" is typed.  Prints a table with data for green sheets.
-    
-    args is a tuple of day strings.  If no days are specified, the current week is displayed.
+    Internal routine to handle week args for displayWeek* methods
     '''
-    #!print "displayDaySummary(", args, ")"
-
     if len(args) == 0:
       wArgs = self._getWeek(0)
     else:
       try:
-        wArgs = ["%02i" % int(x) for x in args]
+        # Replacing this list comprehension with a loop would allow handling extra spaces between arguments
+        rawWeekArgs = ["%02i" % int(x) for x in args]
       except ValueError:
+        # pass error indicator back to calling method
+        return -1
+      else:
+        wArgs = []
+        
+        # num is a two-digit string representation of an integer
+        for num in rawWeekArgs:
+          if int(num) >= 1:
+            wArgs.append(num)
+          else:
+            wArgs += self._getWeek(int(num))
+      
+    # This would be a good place to sort the list, if the wArgs contained date object rather than strings
+    return wArgs[:]
+    
+
+  def displayWeekTable(self, *args):
+    '''
+    Called when "wt" is typed.  Prints a table with data for green sheets.
+    
+    args is a tuple of day strings.  If no days are specified, the current week is displayed.  Zero will return the current week.  Negative numbers will return previous weeks.
+    '''
+    #!print "displayDaySummary(", args, ")"
+    
+    wArgs = self._handleWeekArgs(args)
+    if wArgs == -1:
         print "Error: Days must be integers"
         return True
     
