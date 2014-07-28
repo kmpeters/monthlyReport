@@ -690,24 +690,27 @@ class ReportCli:
     '''
     Internal function to return current or previous weeks
     '''
-    currentDate = datetime.date.today()
-    dayOfMonth = currentDate.day
-    # 0=monday
-    dayOfWeek = currentDate.weekday()
-    
-    # current Monday DOM (Day Of Month) = dayOfMonth - dayOfWeek
-    currentMonday = currentDate.replace(day=(dayOfMonth - dayOfWeek))
-    
     weekTimeDelta = datetime.timedelta(7)
+    dayTimeDelta = datetime.timedelta(1)
+
+    # Current date is needed to determine past mondays
+    currentDate = datetime.date.today()
+    
+    # 0=monday, so week day == days since last monday
+    daysSinceMonday = currentDate.weekday()
+
+    # Calcate date object for last monday
+    lastMonday = currentDate - datetime.timedelta(daysSinceMonday)
     
     # num is a negative number and weekTimeDelta is positive, which results in subtracting time
-    desiredMonday = currentMonday + num * weekTimeDelta
-    desiredMondayDOM = desiredMonday.day
+    desiredMonday = lastMonday + num * weekTimeDelta
 
+    # Generate the list of week days
     weekDayList = []
 
     for i in range(5):
-      weekDayList.append( desiredMonday.replace(day=(desiredMondayDOM + i)).strftime("%d") )
+      day = desiredMonday + i * dayTimeDelta
+      weekDayList.append( day.strftime("%d") )
 
     return weekDayList[:]
 
