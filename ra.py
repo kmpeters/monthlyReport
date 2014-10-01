@@ -25,7 +25,7 @@ class MyCli(cli.ReportCli):
     self.possibleGroups = ['', 
 					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
 					#'EPICS base', 'EPICS clients', 'areaDetector',
-					#'Python', 'spec', 'VxWorks', 'Beamline Env Config', 
+					#'Python', 'spec', 'VxWorks', 'Beamline Comp Env', 
 					'9ID', '15ID', '26ID', '32ID', '33BM', '33ID', '34ID-C',
 					'34ID-E', 'XSD', 'Leave']
 
