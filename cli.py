@@ -94,6 +94,8 @@ class ReportCli:
     self.showCorrectDefaults = False
     self.showCorrectDescLen = 40
     self.wrDateSort = True
+    self.showCostCodes = False
+    self.showWBSCodes = False
     
     # Override the above definitions
     self.definitions()
@@ -824,8 +826,30 @@ class ReportCli:
     ### Build hours table
 
     headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
-    separator =  "-----" + '\t' * self._calcTabs(maxGroupLen, "-----")
+    separator =  "-" * maxGroupLen + '\t'
     totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
+
+    # Cost Code
+    # TODO: Add this if it would be helpful    
+    
+    # WBS Code
+    if self.showWBSCodes == True:
+      # Find longest WBS code
+      maxWBSLen = 0
+      for group in groups:
+        # Will need to handle KeyError exception when pre-jira groups are used
+        try:
+	  wbsLen = len(config.jiraDict[group]['wbs_code'])
+	except KeyError:
+	  continue
+	
+	if wbsLen > maxWBSLen:
+	  maxWBSLen = wbsLen
+
+      # Add WBS codes
+      headString += "WBS Code" + '\t' * self._calcTabs(maxWBSLen, "WBS Code")
+      separator +=  "-" * maxWBSLen + '\t'
+      totalStr += "        " + '\t' * self._calcTabs(maxWBSLen, "        ")
 
     for i in range(len(wArgs)):
       headString += " %s\t" % wArgs[i]
@@ -842,8 +866,17 @@ class ReportCli:
     # Build group rows
     for group in groups:
       grpStr = group[:]
-      # Add fewer tabs for longer group names
+      # Add fewer tabs for longer group names (should grpStr be used at the end of the next line?)
       grpStr += '\t' * self._calcTabs(maxGroupLen, grpStr)
+
+      #
+      if self.showWBSCodes == True:
+        try:
+	  wbsCode = config.jiraDict[group]['wbs_code']
+	except KeyError:
+	  wbsCode = 'NONE'
+	
+	grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
 
       for i in range(len(wList)):
         if group in wList[i][1]:
