@@ -79,6 +79,8 @@ class ReportCli:
          "prep": self.displayPercentReport,
          "list": self.listLabels,
             "l": self.listLabels,
+       "groups": self.listGroups,
+	   "lg": self.listGroups,
           "xml": self.createReportXml,
         "mkrep": self.makePdfReport,
          }
@@ -136,35 +138,38 @@ class ReportCli:
     #!print "displayHelp(", args, ")"
     print """
  Commands:
-   print (p) [#] prints info from the log file (default=everything)
-   save (s)         saves changes to the log file
-   add (a)         adds an entry to the log file
-   corr (c) [#]  corrects the specified entry (default=last)
    help (h)      displays this help
+   groups (lg)   list all available groups
+
+   add (a)       adds an entry to the log file
+   save (s)      saves changes to the log file
+   corr (c) [#]  corrects the specified entry (default=last)
+
    day (d) [#]   prints list of entries for a given day (default=today)
    dsum (ds) [#] prints summary of entries for a given day (default=today)
    wtab (wt) [#] prints a table of hours in green-sheet format
    wsum (ws) [#] displays the week summary w/o details (hours)
    wrep (wr) [#] displays the week summary w/ details (hours)
-   sum [cat]          displays the month summary w/o details (hours)
-   psum [cat]         displays the month summary w/o details (percent)
-   rep [cat]          displays the month summary w/ details (hours)
-   prep [cat]         displays the month summary w/ details (percent)
+   sum [cat]     displays the month summary w/o details (hours)
+   psum [cat]    displays the month summary w/o details (percent)
+   rep [cat]     displays the month summary w/ details (hours)
+   prep [cat]    displays the month summary w/ details (percent)
 
+   print (p) [#] prints info from the log file (default=everything)
    list [label ...] list the labels used in the log. Default labels are
-                activity, group and title.
+                 activity, group and title.
 
-   xml                Generates a skeleton xml report in the same directory
-                   as the work log. Categories and keywords in the work log
-                correspond to titles and subjects in the xml report.  
-                Details must be MANUALLY entered after examining output
-                of the 'prep' command.
+   xml           Generates a skeleton xml report in the same directory
+                 as the work log. Categories and keywords in the work log
+                 correspond to titles and subjects in the xml report.  
+                 Details must be MANUALLY entered after examining output
+                 of the 'prep' command.
                 
-   mkrep        Converts an xml file into a pdf. Titles are optional 
-                   and do not currently appear in the pdf.
+   mkrep         Converts an xml file into a pdf. Titles are optional 
+                 and do not currently appear in the pdf.
                 
-   ch                Bulk title change. Make a BACKUP of your log before using
-                   this feature, since it hasn't been extensively tested yet.
+   ch            Bulk title change. Make a BACKUP of your log before using
+                 this feature, since it hasn't been extensively tested yet.
     """
     return True
 
@@ -354,7 +359,20 @@ class ReportCli:
       print ""
     
     return True
+ 
     
+  def listGroups(self, *args):
+    '''
+    Method to display the complete list of valid groups
+    
+    args is currently ignored
+    '''
+    #!print "listLabels(", args, ")"
+
+    print "Possible groups:   %s" % ", ".join(config.possible_groups[1:])
+
+    return True
+
 
   def displayReport(self, *args):
     '''
