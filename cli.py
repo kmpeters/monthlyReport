@@ -816,26 +816,47 @@ class ReportCli:
     #!print groups
     #!print groupWeekTotals
 
+    ###
+    ### Build hours table
+    ###
+
+    ### Group
     # Find longest group name
-    maxGroupLen = 0
+    maxGroupLen = 5
     for group in groups:
       if len(group) > maxGroupLen:
         maxGroupLen = len(group)
     #!print "maxGroupLen", maxGroupLen
 
-    ### Build hours table
-
     headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
     separator =  "-" * maxGroupLen + '\t'
     totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
 
-    # Cost Code
-    # TODO: Add this if it would be helpful    
+    ### Cost Code
+    if self.showCostCodes == True:
+      ### Find longest Cost code
+      # Column needs to be at least as wide as the heading
+      maxCostCodeLen = 9
+      for group in groups:
+        # Will need to handle KeyError exception when pre-jira groups are used
+        try:
+	  costCodeLen = len(config.jiraDict[group]['cost_code'])
+	except KeyError:
+	  continue
+	
+	if costCodeLen > maxCostCodeLen:
+	  maxCostCodeLen = costCodeLen
+
+      # Add Cost codes
+      headString += "Cost Code" + '\t' * self._calcTabs(maxCostCodeLen, "Cost Code")
+      separator +=  "-" * maxCostCodeLen + '\t'
+      totalStr += " " * maxCostCodeLen + '\t'
     
     # WBS Code
     if self.showWBSCodes == True:
-      # Find longest WBS code
-      maxWBSLen = 0
+      ### Find longest WBS code
+      # Column needs to be at least as wide as the heading
+      maxWBSLen = 8
       for group in groups:
         # Will need to handle KeyError exception when pre-jira groups are used
         try:
@@ -849,7 +870,7 @@ class ReportCli:
       # Add WBS codes
       headString += "WBS Code" + '\t' * self._calcTabs(maxWBSLen, "WBS Code")
       separator +=  "-" * maxWBSLen + '\t'
-      totalStr += "        " + '\t' * self._calcTabs(maxWBSLen, "        ")
+      totalStr += " " * maxWBSLen + '\t'
 
     for i in range(len(wArgs)):
       headString += " %s\t" % wArgs[i]
@@ -869,7 +890,16 @@ class ReportCli:
       # Add fewer tabs for longer group names (should grpStr be used at the end of the next line?)
       grpStr += '\t' * self._calcTabs(maxGroupLen, grpStr)
 
-      #
+      # Optionally add Cost code
+      if self.showCostCodes == True:
+        try:
+	  costCode = config.jiraDict[group]['cost_code']
+	except KeyError:
+	  costCode = 'NONE'
+	
+	grpStr += costCode + '\t' * self._calcTabs(maxCostCodeLen, costCode)
+
+      # Optionally add WBS code
       if self.showWBSCodes == True:
         try:
 	  wbsCode = config.jiraDict[group]['wbs_code']
