@@ -35,7 +35,7 @@ class MyCli(cli.ReportCli):
     #!self.showCorrectDescLen = 60
 
     # Improve the wt command for Dayforce
-    #!self.showCostCodes = True
+    self.showCostCodes = True
     self.showWBSCodes = True
 
   # Override the createReportLog function so that MyReportLog is used instead of ReportLog
