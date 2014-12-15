@@ -872,6 +872,8 @@ class ReportCli:
       separator +=  "-" * maxWBSLen + '\t'
       totalStr += " " * maxWBSLen + '\t'
 
+    # wArgs = list of dates to be displayed
+    # wList = list of day summary results
     for i in range(len(wArgs)):
       headString += " %s\t" % wArgs[i]
       separator += "----\t"
@@ -908,6 +910,7 @@ class ReportCli:
 	
 	grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
 
+      # wList = list of day summary results
       for i in range(len(wList)):
         if group in wList[i][1]:
           grpStr += "%0.2f\t" % wList[i][1][group]
