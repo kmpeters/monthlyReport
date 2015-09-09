@@ -148,7 +148,7 @@ jiraDict = {
   'LTP Lab':{'jira_key':'BCDA_LTP_LAB', 'cost_code':'6031601-132', 'wbs_code':'APS.030501'},
   'Topo Lab':{'jira_key':'BCDA_TOPO_LAB', 'cost_code':'6031601-132', 'wbs_code':'APS.030501'},
   'XRR Lab':{'jira_key':'BCDA_XRR_LAB', 'cost_code':'6031601-132', 'wbs_code':'APS.030501'},
-  'Leave':{'jira_key':'LEAVE', 'cost_code':'1301000-130', 'wbs_code':'PAID_ABSENCE'}
+  'Leave':{'jira_key':'LEAVE', 'cost_code':'1321000-132', 'wbs_code':'PAID_ABSENCE'}
   }
 
 #possible_groups = ['', 
