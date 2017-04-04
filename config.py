@@ -153,20 +153,6 @@ jiraDict = {
   'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PAID_ABSENCE'}
   }
 
-#possible_groups = ['', 
-#					'BCDA', 'motor', 'synApps', 'Jira', 'Python', 'spec', 'Stockroom',
-#					'VxWorks', 'Beamline Comp Env', 'MEDM Replacement',
-#					'Custom Hardware', 'areaDetector', 'EPICS base', 'EPICS clients',
-#					'01BM', '01ID', '02BM', '02ID-B', '02ID-D', '02ID-E', '03ID', '04ID-C','04ID-D',
-#					'05BM', '05ID', '06BM', '06ID-D', '06ID-BC', '07BM', '07ID',
-#					'08BM', '08ID-E', '08ID-I', '09BM', '09ID', '11BM', '11ID-B', '11ID-C', '11ID-D',
-#					'12BM', '12ID-CD', '13ID', '14ID', '15ID', '16ID',
-#					'18ID', '20ID', '23ID', '26ID', '27ID', '29ID',
-#					'30ID', '32ID', '33BM', '33ID', '34ID-C', '34ID-E', '35ID',
-#					'XSD', 'Detector Group', 'Optics Group', 'HPSynC',
-#					'MED Labs', 'Depo Lab', 'LTP Lab', 'Topo Lab', 'XRR Lab',
-#					'Leave']
-
 possible_groups = jiraDict.keys() + ["",]
 
 possible_groups.sort()
