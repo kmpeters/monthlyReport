@@ -26,8 +26,8 @@ class MyCli(cli.ReportCli):
 					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
 					#'EPICS base', 'EPICS clients', 'areaDetector',
 					#'Python', 'spec', 'VxWorks', 'Beamline Comp Env', 
-					'09ID', '15ID', '26ID', '32ID', '33BM', '33ID', '34ID-C',
-					'34ID-E', 'XSD', 'Leave']
+					'09ID-B', '09ID-C', '15ID', '26ID', '32ID', '33BM', '33ID', 
+					'34ID-C', '34ID-E', 'XSD', 'Leave']
 
 
     # Improve correctEntry prompts
