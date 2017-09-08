@@ -58,6 +58,9 @@ class ReportCli:
          "corr": self.correctEntry,
             "c": self.correctEntry,
            "ch": self.changeTitle,
+          "chd": self.changeDate,
+          "cld": self.clearDate,
+          "lsd": self.showDate,
           "day": self.displayDay,
             "d": self.displayDay,
          "wtab": self.displayWeekTable,
@@ -96,6 +99,7 @@ class ReportCli:
     self.wrDateSort = True
     self.showCostCodes = False
     self.showWBSCodes = False
+    self.customDate = None
     
     # Override the above definitions
     self.definitions()
@@ -173,6 +177,40 @@ class ReportCli:
    ch            Bulk title change. Make a BACKUP of your log before using
                  this feature, since it hasn't been extensively tested yet.
     """
+    return True
+
+
+  def changeDate(self, *args):
+    '''
+    Set a default date other than today
+    '''
+    #!print args
+    if len(args) != 1:
+      print "Usage: chd DAY\n  or:  chd YYYY-MM-DD"
+    else:
+      # Temporarily assume user always gives a valid date
+      self.customDate = args[0]
+
+    return True
+    
+
+  def clearDate(self, *args):
+	'''
+	Clear the custom date (returns to default: today)
+	'''
+	self.customDate = None
+
+	return True
+
+  def showDate(self, *args):
+    '''
+    Display the default date
+    '''
+    if (self.customDate != None):
+      print "Custom date =", self.customDate
+    else:
+      print "Default date =", time.strftime("%Y-%m-%d")
+
     return True
 
 
