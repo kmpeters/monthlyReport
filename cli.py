@@ -1119,6 +1119,11 @@ class ReportCli:
       # Only change entries from the default if user input isn't blank
       if userInput != "":
         setFun(userInput)
+      else:
+        # User input is empty
+        if (item == 'date') and (self.customDate != None):
+          # The user set a custom date
+          setFun(self.customDate)
 
     return status
 
