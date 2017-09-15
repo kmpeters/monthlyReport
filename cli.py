@@ -652,10 +652,13 @@ class ReportCli:
     '''
     #!print "displayDay(", args, ")"
     if len(args) == 0:
-      dArgs = (time.strftime("%d"),)
+      if self.customDate == None:
+        dArgs = (time.strftime("%d"),)
+      else:
+        dArgs = (self.customDate[-2:],)
     else:
       dArgs = args
-
+    
     print ""
       
     for x in dArgs:
@@ -744,12 +747,15 @@ class ReportCli:
     '''
     #!print "displayDaySummary(", args, ")"
     if len(args) == 0:
-      dArgs = (time.strftime("%d"),)
+      if self.customDate == None:
+        dArgs = (time.strftime("%d"),)
+      else:
+        dArgs = (self.customDate[-2:],)
     else:
       dArgs = args
 
     print ""
-      
+    
     for x in dArgs:
       try:
         day = "%02i" % int(x)
