@@ -151,11 +151,17 @@ class ReportCli:
    save (s)      saves changes to the log file
    corr (c) [#]  corrects the specified entry (default=last)
 
+   chd           set a custom date to be used as the default
+   cld           clear the custom date
+   lsd           list the default date
+
    day (d) [#]   prints list of entries for a given day (default=today)
    dsum (ds) [#] prints summary of entries for a given day (default=today)
+   
    wtab (wt) [#] prints a table of hours in green-sheet format
    wsum (ws) [#] displays the week summary w/o details (hours)
    wrep (wr) [#] displays the week summary w/ details (hours)
+   
    sum [cat]     displays the month summary w/o details (hours)
    psum [cat]    displays the month summary w/o details (percent)
    rep [cat]     displays the month summary w/ details (hours)
@@ -189,18 +195,47 @@ class ReportCli:
       print "Usage: chd DAY\n  or:  chd YYYY-MM-DD"
     else:
       # Temporarily assume user always gives a valid date
-      self.customDate = args[0]
-
+      newDate = args[0]
+      day = None
+      
+      # validate the date (code duplicated in entry.py)
+      try:
+        if len(newDate) > 2:
+          # a full date was specified
+          if newDate.count('/') == 2:
+            # don't accept slashes
+            newDate = newDate.replace('/', '-')
+          
+          # the following line generates an exception if the newDate is not valid
+          time.strptime(newDate, '%Y-%m-%d')
+          
+        else:
+          # a day of the current month was specified
+          if len(newDate) == 1:
+            day = "0" + newDate
+          else:
+            day = newDate
+          newDate = time.strftime("%Y-%m-") + day
+          time.strptime(newDate, '%Y-%m-%d')
+      except ValueError:
+        if day == None:
+          print args[0], "is not a valid date"
+        else:
+          print args[0], "is not a valid day of the month"
+      else:
+        self.customDate = newDate
+        print self.customDate, "is the new, default date"
+    
     return True
     
 
   def clearDate(self, *args):
-	'''
-	Clear the custom date (returns to default: today)
-	'''
-	self.customDate = None
+    '''
+    Clear the custom date (returns to default: today)
+    '''
+    self.customDate = None
 
-	return True
+    return True
 
   def showDate(self, *args):
     '''
