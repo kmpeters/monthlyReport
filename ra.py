@@ -27,7 +27,7 @@ class MyCli(cli.ReportCli):
 					#'EPICS base', 'EPICS clients', 'areaDetector',
 					#'Python', 'spec', 'VxWorks', 'Beamline Comp Env', 
 					'09ID-B', '09ID-C', '15ID', '26ID', '32ID', '33BM', '33ID', 
-					'34ID-C', '34ID-E', 'XSD', 'Leave']
+					'34ID-C', '34ID-E', 'XSD', 'Leave', '33ID-C HFM']
 
 
     # Improve correctEntry prompts
