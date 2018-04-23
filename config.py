@@ -150,7 +150,8 @@ jiraDict = {
   'Topo Lab':{'jira_key':'BCDA_TOPO_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   'XRR Lab':{'jira_key':'BCDA_XRR_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   # Old leave cost code: 1321000-132
-  'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PAID_ABSENCE'}
+  'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PAID_ABSENCE'},
+  '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'}
   }
 
 possible_groups = jiraDict.keys() + ["",]
