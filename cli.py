@@ -1324,9 +1324,10 @@ class ReportCli:
     #!print "changeTitle(", args, ")"
     changeResponse = self._getChangeInput()
     #!print changeResponse
-    oldGroup, oldTitle, newGroup, newTitle = changeResponse
     
     if changeResponse != []:
+      oldGroup, oldTitle, newGroup, newTitle = changeResponse
+
       # 
       existingTitles = self.logObj.collectEntries(newGroup, 'title')
       if newTitle in existingTitles:
