@@ -69,6 +69,7 @@ class ReportCli:
            "ws": self.displayWeekSummary,
          "wrep": self.displayWeekReport,
            "wr": self.displayWeekReport,
+           "wd": self.displayWeekDayforce,
          "dsum": self.displayDaySummary,
            "ds": self.displayDaySummary,
          "save": self.saveLog,
@@ -83,7 +84,7 @@ class ReportCli:
          "list": self.listLabels,
             "l": self.listLabels,
        "groups": self.listGroups,
-	   "lg": self.listGroups,
+           "lg": self.listGroups,
           "xml": self.createReportXml,
         "mkrep": self.makePdfReport,
          }
@@ -161,6 +162,8 @@ class ReportCli:
    wtab (wt) [#] prints a table of hours in green-sheet format
    wsum (ws) [#] displays the week summary w/o details (hours)
    wrep (wr) [#] displays the week summary w/ details (hours)
+   
+   wd [#]        prints a table in dayforce format
    
    sum [cat]     displays the month summary w/o details (hours)
    psum [cat]    displays the month summary w/o details (percent)
@@ -848,6 +851,83 @@ class ReportCli:
       
     # This would be a good place to sort the list, if the wArgs contained date object rather than strings
     return wArgs[:]
+
+
+  def displayWeekDayforce(self, *args):
+    '''
+    Called when "wd" is typed.  Prints a table with data for dayforce
+    
+    args is a tuple of day strings.  If no days are specified, the current week is displayed.  Zero will return the current week.  Negative numbers will return previous weeks.
+    '''
+    #!print "displayWeekDayforce(", args, ")"
+    
+    wArgs = self._handleWeekArgs(args)
+    if wArgs == -1:
+        print "Error: Days must be integers"
+        return True
+    
+    #!print wArgs
+    
+    wList = []
+    for day in wArgs:
+      #  groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
+      wList.append(self.logObj.getDaySummary(day))
+      
+    #!print wArgs
+    
+    # header row
+    print "Day\t\tTotal\tHours\tProject"
+    #!print "---\t\t-----\t-----\t-------"
+    line = "-" * 52
+    print line
+    
+    weekHourTotal = 0.0
+    
+    # Display the info
+    for i in range(len(wList)):
+        #
+        day = wArgs[i]
+        dayList = wList[i]
+        groups = dayList[0]
+        totals = dayList[1]
+        dayTotal = dayList[3]
+        firstGroup = True
+
+        weekHourTotal += dayTotal
+        
+        #
+        if len(groups) > 0:
+            for group in groups:
+                #
+                groupTotal = totals[group]
+                #
+                if firstGroup == True:
+                    prefixStr = "%s\t\t%0.2f\t" % (day, dayTotal)
+                    firstGroup = False
+                else:
+                    prefixStr = "\t\t\t"
+                
+                suffixStr = "%0.2f\t" % groupTotal
+                
+                # Include either wbs codes or cost codes
+                if self.showWBSCodes == True:
+                    suffixStr += "%s %s" % (config.jiraDict[group]['wbs_code'], group)
+                else:
+                    suffixStr += "%s %s" % (config.jiraDict[group]['cost_code'], group)
+                
+                print prefixStr + suffixStr
+        else:
+            # day is empty
+            print "%s\t\t%0.2f\t" % (day, dayTotal)
+        
+        #!print ""
+        #!print "---\t\t-----\t-----\t-------"
+        print line
+        
+    #!print "\t\t-----\t\t"
+    print "\t\t%0.2f" % weekHourTotal
+        
+    return True
     
 
   def displayWeekTable(self, *args):
