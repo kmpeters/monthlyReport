@@ -150,7 +150,12 @@ jiraDict = {
   'XRR Lab':{'jira_key':'BCDA_XRR_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   # Old leave cost code: 1321000-132; Formerly PAID_ABSENCE
   'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PT4037'},
-  '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'}
+  '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'},
+  # Upgrade projects
+  'ATOMIC/3DMN Support':{'jira_key':'UPGRADE_34ID_SUPPORT', 'cost_code':'RJ1006459 U2-CON-133_MGT_0403340101.D', 'wbs_code':'0403340101'},
+  'ATOMIC/3DMN Design':{'jira_key':'UPGRADE_34ID_DESIGN', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
+  'ATOMIC 34ID-F':{'jira_key':'UPGRADE_34ID_F', 'cost_code':'PRJ1006459 U2-CON-133_FIN_04033401030301.D', 'wbs_code':'04033401030301'},
+  '3DMN 34ID-E':{'jira_key':'UPGRADE_34ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'}
   }
 
 possible_groups = jiraDict.keys() + ["",]
