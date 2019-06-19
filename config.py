@@ -122,7 +122,6 @@ jiraDict = {
   '12ID-CD':{'jira_key':'BCDA_12ID_A_C_D', 'cost_code':'PRJ1000854-PH01-APS03072702', 'wbs_code':'APS03072702'},
   '13ID':{'jira_key':'BCDA_13ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '14ID':{'jira_key':'BCDA_14ID', 'cost_code':'PRJ1000854-PH01-APS03072802', 'wbs_code':'APS03072802'},
-  # Should we use the 15ID-D project plan instead of the CAT one?
   '15ID':{'jira_key':'BCDA_15ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '16ID':{'jira_key':'BCDA_16ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '18ID':{'jira_key':'BCDA_18ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
@@ -149,8 +148,8 @@ jiraDict = {
   'LTP Lab':{'jira_key':'BCDA_LTP_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   'Topo Lab':{'jira_key':'BCDA_TOPO_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   'XRR Lab':{'jira_key':'BCDA_XRR_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
-  # Old leave cost code: 1321000-132
-  'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PAID_ABSENCE'},
+  # Old leave cost code: 1321000-132; Formerly PAID_ABSENCE
+  'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PT4037'},
   '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'}
   }
 
