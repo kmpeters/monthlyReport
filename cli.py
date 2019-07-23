@@ -85,12 +85,16 @@ class ReportCli:
             "l": self.listLabels,
        "groups": self.listGroups,
            "lg": self.listGroups,
+        "codes": self.listPayCodes,
+           "pc": self.listPayCodes,
           "xml": self.createReportXml,
         "mkrep": self.makePdfReport,
          }
     
     self.possibleActivities = config.possible_activities[:]
     self.possibleGroups = config.possible_groups[:]
+    self.possiblePayCodes = config.possible_payCodes[:]
+    self.defaultPayCode = "RG"
     
     self.logFilename = "work_log.xml"
     self.terminalWidth = 132
@@ -100,6 +104,7 @@ class ReportCli:
     self.wrDateSort = True
     self.showCostCodes = False
     self.showWBSCodes = False
+    self.showPayCodes = False
     self.customDate = None
     
     # Override the above definitions
@@ -147,6 +152,7 @@ class ReportCli:
  Commands:
    help (h)      displays this help
    groups (lg)   list all available groups
+   codes (pc)    list all available pay codes
 
    add (a)       adds an entry to the log file
    save (s)      saves changes to the log file
@@ -452,6 +458,19 @@ class ReportCli:
     return True
 
 
+  def listPayCodes(self, *args):
+    '''
+    Method to display the complete list of valid pay codes
+    
+    args is currently ignored
+    '''
+    #!print "listLabels(", args, ")"
+
+    print "Possible pay codes:   %s" % ", ".join(sorted(config.possible_payCodes[:]))
+
+    return True
+
+
   def displayReport(self, *args):
     '''
     Method to display the summary with details in hours.
@@ -674,8 +693,10 @@ class ReportCli:
         
         for x in dayArray:
           # Should probably use the get() methods, but that adds overhead
-          print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
-          
+          if self.showPayCodes == False:
+            print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+          else:
+            print "%s ; %4s ; %s ; %s - %s ; %s ; %s" % (x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description)
         print ""
         print "Hours: %.2f" % dayHours
         print "Percent: %.1f%%" % percentRecorded
@@ -773,7 +794,10 @@ class ReportCli:
           
           for x in entries[group]:
             # Should probably use the get() methods, but that adds overhead
-            line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            if self.showPayCodes == False:
+              line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            else:
+              line = "  %s ; %4s ; %s ; %s - %s ; %s ; %s" % (x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description)
             print textwrap.fill(line, width=(self.terminalWidth), subsequent_indent="    ")
         
         print ""
@@ -876,9 +900,12 @@ class ReportCli:
     #!print wArgs
     
     # header row
-    print "Day\t\tTotal\tHours\tProject"
+    if self.showPayCodes == False:
+        print "Day\t\tTotal\tHours\tProject"
+    else:
+        print "Day\t\tTotal\tCode\tHours\tProject"
     #!print "---\t\t-----\t-----\t-------"
-    line = "-" * 52
+    line = "-" * 60
     print line
     
     weekHourTotal = 0.0
@@ -889,6 +916,7 @@ class ReportCli:
         day = wArgs[i]
         dayList = wList[i]
         groups = dayList[0]
+        entries = dayList[2]
         totals = dayList[1]
         dayTotal = dayList[3]
         firstGroup = True
@@ -907,7 +935,13 @@ class ReportCli:
                 else:
                     prefixStr = "\t\t\t"
                 
-                suffixStr = "%0.2f\t" % groupTotal
+                suffixStr = ""
+                
+                # Assume there will only be one pay code for a given project each day
+                if self.showPayCodes == True:
+                    suffixStr += "%s\t" % entries[group][0].payCode
+                
+                suffixStr += "%0.2f\t" % groupTotal
                 
                 # Include either wbs codes or cost codes
                 if self.showWBSCodes == True:
@@ -1131,6 +1165,11 @@ class ReportCli:
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingTitles)
         readline.set_completer(completer.complete)
+      if item == 'payCode':
+        print "  Possible payCodes: %s" % ", ".join(self.possiblePayCodes[:])
+        readline.parse_and_bind("tab: complete")
+        completer = _TabCompleter(self.possiblePayCodes[:])
+        readline.set_completer(completer.complete)
 
       # Prompt user for input
       try:
@@ -1149,7 +1188,7 @@ class ReportCli:
           # Force the user to manually enter fields (with exceptions)
           if userInput == '':
             # User input is blank
-            if requireInput == True and item != 'date' and item != 'duration':
+            if requireInput == True and item != 'date' and item != 'duration' and item != 'payCode':
               print "! %s can't be empty." % item
               validResponse = False
           else:
@@ -1187,7 +1226,7 @@ class ReportCli:
         
       finally:
         # Turn off tab complete
-        if item in ['activity', 'group', 'title']:
+        if item in ['activity', 'group', 'title', 'payCode']:
           ## Restore smart completer
           readline.set_completer(self.mainCompleter.complete)
         
@@ -1204,6 +1243,9 @@ class ReportCli:
         if (item == 'date') and (self.customDate != None):
           # The user set a custom date
           setFun(self.customDate)
+        if (item == 'payCode' and requireInput!=False):
+          # Use a default pay code, but not when correcting an entry
+          setFun(self.defaultPayCode)
 
     return status
 

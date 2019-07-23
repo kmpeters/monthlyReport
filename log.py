@@ -57,7 +57,8 @@ class ReportLog:
         "activity",
         "group",
         "title",
-        "description"
+        "description",
+        "payCode"
       ]
 
   def getLogEntryDef(self):

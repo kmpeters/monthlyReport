@@ -66,7 +66,11 @@ class XmlLog:
     for x in self.xmlEntryDef:
       getFun, setFun, verifyFun = newObj.getFunctions(x)
       # Set the ReportEntry object to the value from the xml file
-      setFun(entryElem.find(x).text)
+      try:
+        setFun(entryElem.find(x).text)
+      except AttributeError:
+        # The x element of the entry couldn't be found; None types don't have .text fields
+        setFun("None")
 
     return newObj
 
