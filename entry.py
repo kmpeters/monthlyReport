@@ -24,7 +24,7 @@ class ReportEntry:
   
   All arguments to the init function are strings.
   '''
-  def __init__(self, date=None, duration="0.0", activity="", group="", title="", description=""):
+  def __init__(self, date=None, duration="0.0", activity="", group="", title="", description="", payCode=""):
     if date == None:
       self.date = strftime("%Y-%m-%d")
     self.duration = duration
@@ -32,12 +32,14 @@ class ReportEntry:
     self.group = group
     self.title = title
     self.description = description
+    self.payCode = payCode
     self.functionDict = {"date":(self.getDate, self.setDate, self.verifyDate), 
       "duration":(self.getDuration, self.setDuration, self.verifyDuration),
       "activity":(self.getActivity, self.setActivity, self.verifyActivity),
       "group":(self.getGroup, self.setGroup, self.verifyGroup),
       "title":(self.getTitle, self.setTitle, self.verifyTitle),
       "description":(self.getDescription, self.setDescription, self.verifyDescription),
+      "payCode":(self.getPayCode, self.setPayCode, self.verifyPayCode),
       "index":(self.getIndex, self.setIndex, self.verifyIndex)}
     self.index = -1
 
@@ -45,17 +47,17 @@ class ReportEntry:
     '''
     Method to get all the fields that can be modified by the user.
     
-    Returns [self.date, self.duration, self.activity, self.group, self.title, self.description]
+    Returns [self.date, self.duration, self.activity, self.group, self.title, self.description, self.payCode]
     '''
-    return [self.date, self.duration, self.activity, self.group, self.title, self.description]
+    return [self.date, self.duration, self.activity, self.group, self.title, self.description, self.payCode]
   
   def setAll(self, fieldList):
     '''
     Method to set all the fields that can be modified by the user.
     
-    fieldList: [self.date, self.duration, self.activity, self.group, self.title, self.description]
+    fieldList: [self.date, self.duration, self.activity, self.group, self.title, self.description, self.payCode]
     '''  
-    self.date, self.duration, self.activity, self.group, self.title, self.description = fieldList
+    self.date, self.duration, self.activity, self.group, self.title, self.description, self.payCode = fieldList
     return
   
   
@@ -94,6 +96,12 @@ class ReportEntry:
     Method to get the entry description.
     '''  
     return self.description
+
+  def getPayCode(self):
+    '''
+    Method to get the entry pay code.
+    '''  
+    return self.payCode
 
   def getIndex(self):
     '''
@@ -136,6 +144,12 @@ class ReportEntry:
     Method to set the entry description (String).
     '''  
     self.description = description
+
+  def setPayCode(self, payCode):
+    '''
+    Method to set the entry pay code (String).
+    '''  
+    self.payCode = payCode
 
   def setIndex(self, index):
     '''
@@ -204,6 +218,17 @@ class ReportEntry:
     '''  
     return True
 
+  def verifyPayCode(self, userInput):
+    '''
+    Method to verify the pay code to be written to the entry. (String)
+    '''
+    # Allow an empty string to be considered valid; the ui must handle that case
+    if userInput in config.possible_payCodes or userInput == "":
+      valid = True
+    else:
+      valid = False
+    return valid
+
   def verifyIndex(self, userInput):
     '''
     Method to verify the index to be written to the entry. (String)
@@ -240,3 +265,4 @@ class ReportEntry:
     print "group: %s" % self.group
     print "title: %s" % self.title
     print "description: %s" % self.description
+    print "payCode: %s" % self.payCode

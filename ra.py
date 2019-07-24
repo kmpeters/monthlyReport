@@ -31,6 +31,19 @@ class MyCli(cli.ReportCli):
 					'ATOMIC/3DMN Support', 'ATOMIC/3DMN Design',
 					'ATOMIC 34ID-F', '3DMN 34ID-E']
 
+    self.payCodeDict = {#'None':'None',
+                          'VAC':'Vacation',
+                          'SIC':'Sick Pay',
+                          'SLF':'Sick Leave Family',
+                          'FHL':'Floating Holiday',
+                         #'BRV':'Bereavement',
+                         #'CL1':'Operations Suspended',
+                         #'JUR':'Jury Duty',
+                         #'PAR':'Parental Leave*',
+                           'RG':'Regular',
+                          'TEL':'TELECOMMUTING*'
+                          }
+    self.possiblePayCodes = sorted(self.payCodeDict.keys())
 
     # Improve correctEntry prompts
     #!self.showCorrectDefaults = True
@@ -40,6 +53,8 @@ class MyCli(cli.ReportCli):
     self.showWBSCodes = True
     # The cost codes are now workday project plans, which are only differentiated by the WBS code. Save screen space and omit them.
     self.showCostCodes = False
+    # Pay codes only appear on d, ds and wd output
+    self.showPayCodes = True
 
   # Override the createReportLog function so that MyReportLog is used instead of ReportLog
   def createReportLog(self, filepath):
@@ -55,7 +70,8 @@ class MyReportLog(log.ReportLog):
         "group",
         "title",
         "description",
-        "activity"
+        "activity",
+        "payCode"
       ]
 
     
