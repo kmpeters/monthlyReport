@@ -55,6 +55,8 @@ class MyCli(cli.ReportCli):
     self.showCostCodes = False
     # Pay codes only appear on d, ds and wd output
     self.showPayCodes = True
+    # Use the default pay code for everything
+    self.promptForPayCode = False
 
   # Override the createReportLog function so that MyReportLog is used instead of ReportLog
   def createReportLog(self, filepath):

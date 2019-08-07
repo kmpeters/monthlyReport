@@ -87,6 +87,7 @@ class ReportCli:
            "lg": self.listGroups,
         "codes": self.listPayCodes,
            "pc": self.listPayCodes,
+          "tpc": self.togglePayCodePrompt,
           "xml": self.createReportXml,
         "mkrep": self.makePdfReport,
          }
@@ -95,6 +96,7 @@ class ReportCli:
     self.possibleGroups = config.possible_groups[:]
     self.possiblePayCodes = config.possible_payCodes[:]
     self.defaultPayCode = "RG"
+    self.promptForPayCode = True
     
     self.logFilename = "work_log.xml"
     self.terminalWidth = 132
@@ -153,6 +155,7 @@ class ReportCli:
    help (h)      displays this help
    groups (lg)   list all available groups
    codes (pc)    list all available pay codes
+   tpc           Toggle prompt for pay code when adding entries
 
    add (a)       adds an entry to the log file
    save (s)      saves changes to the log file
@@ -470,6 +473,20 @@ class ReportCli:
 
     return True
 
+  def togglePayCodePrompt(self, *args):
+    '''
+    Method to toggle prompt for the pay code when adding entries
+    
+    args is currently ignored
+    '''
+    if self.promptForPayCode == True:
+      self.promptForPayCode = False
+      print "Prompt for pay code: Disabled"
+    else:
+      self.promptForPayCode = True
+      print "Prompt for pay code: Enabled"
+    
+    return True
 
   def displayReport(self, *args):
     '''
@@ -1132,7 +1149,12 @@ class ReportCli:
       #!print item
       # Get the get and set functions for this item
       getFun, setFun, verifyFun = entry.getFunctions(item)
-
+      
+      if (item == 'payCode' and self.promptForPayCode == False and requireInput != False):
+        # Use a default pay code without prompting, but only when adding an entry
+        setFun(self.defaultPayCode)
+        continue
+      
       if requireInput == False and self.showCorrectDefaults == True:
         entryStr = getFun()
         if len(entryStr) > self.showCorrectDescLen:
