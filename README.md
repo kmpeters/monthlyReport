@@ -2,9 +2,9 @@
 
 Use the command-line interface; the gui hasn't been maintained
 
-``cli.py`` provides a generic command-line interface that shows all of the available options when entering data
-``exampleRa.py`` is an example of how the default cli.py settings can be overridden to make the program more usable
-``ra.py`` is Kevin's highly-customized cli (ra is short for report append)
+* ``cli.py`` provides a generic command-line interface that shows all of the available options when entering data
+* ``exampleRa.py`` is an example of how the default cli.py settings can be overridden to make the program more usable
+* ``ra.py`` is Kevin's highly-customized cli (ra is short for report append)
 
 ## Starting the program
 
@@ -75,7 +75,7 @@ The help command ('help' or 'h') prints a somewhat helpful message:
 `` > a ``
 
 This initiates the data entry process for a new entry in the work log.  The user is prompted for the following info:
-
+```
 date - The date in YYYY-MM-DD format.  Leaving the date blank will result in today's date being used.
 duration - Duration of effort (floating point number of hours).  Leaving the duration blank will result in 0.0 being used.
 activity - A high-level categorization of the type of work that was completed.  A valid option is required and tab-completion is available.
@@ -83,6 +83,7 @@ group - The group for which the work was done. A valid option is required.  Tab 
 title - A user-specified title for the work being done.  This can't be empty.  Tab-completion is available for previously-entered titles of the current group.
 description - Details of the work.  This can't be empty.
 payCode - Dayforce payCode associated with the work.  The 'tpc' command can be used to turn this prompt off, which results in RG being used for every entry (the payCode can still be modified when correcting entries).
+```
 
 ### s (save)
 
