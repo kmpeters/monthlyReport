@@ -1649,7 +1649,7 @@ class _SmartTabCompleter:
 
           #!logging.debug('currentCandidates=%s', self.currentCandidates)
           
-        except (KeyError, IndexError), err:
+        except (KeyError, IndexError) as err:
           #!logging.error('completion error: %s', err)
           self.currentCandidates = []
         except:
