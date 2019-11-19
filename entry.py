@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###########
 # $Date$
@@ -181,7 +181,7 @@ class ReportEntry:
     else:
       try:
         float(userInput)
-	valid = True
+        valid = True
       except ValueError:
         valid = False
     return valid
@@ -239,10 +239,10 @@ class ReportEntry:
     else:
       try:
         index = int(userInput)
-	if index >= -1:
-	  valid = True
-	else:
-	  valid = False
+        if index >= -1:
+          valid = True
+        else:
+          valid = False
       except ValueError:
         valid = False
     return valid
@@ -258,11 +258,11 @@ class ReportEntry:
     Prints the entry to the console.
     '''
     # Should this instead return a string representation of the entry?
-    print "index: %s" % self.index
-    print "date: %s" % self.date
-    print "duration: %s" % self.duration
-    print "activity: %s" % self.activity
-    print "group: %s" % self.group
-    print "title: %s" % self.title
-    print "description: %s" % self.description
-    print "payCode: %s" % self.payCode
+    print("index: {}".format(self.index))
+    print("date: {}".format(self.date))
+    print("duration: {}".format(self.duration))
+    print("activity: {}".format(self.activity))
+    print("group: {}".format(self.group))
+    print("title: {}".format(self.title))
+    print("description: {}".format(self.description))
+    print("payCode: {}".format(self.payCode))
