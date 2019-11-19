@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###################
 # $Date$
@@ -203,7 +203,7 @@ jiraDict = {
   '3DMN 34ID-E':{'jira_key':'UPGRADE_34ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'}
   }
 
-possible_groups = jiraDict.keys() + ["",]
+possible_groups = list(jiraDict.keys()) + ["",]
 
 possible_groups.sort()
 
