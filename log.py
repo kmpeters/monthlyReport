@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###########
 # $Date$
@@ -73,7 +73,7 @@ class ReportLog:
     
     Creates dictionaries for the higher levels and populates the list at the lowest level.
     '''
-    #!print ent, labels, struct, level
+    #!print(ent, labels, struct, level)
     getFun, setFun, verifyFun = ent.getFunctions(labels[level])
     label = getFun()
     
@@ -82,14 +82,14 @@ class ReportLog:
     
     if level == lastIndex:
       if label not in struct:
-    	struct.append(label)
+        struct.append(label)
     else:
       if level == lastIndex - 1:
-    	if label not in struct:
+        if label not in struct:
           struct[label] = []
       else:
         if label not in struct:
-    	  struct[label] = {}
+          struct[label] = {}
 
       self._recursiveCollectLabels(ent, labels, struct[label], level+1)
 
@@ -107,7 +107,7 @@ class ReportLog:
       struct = {}
 
     for x in self.entryArray:
-      #!print x
+      #!print(x)
       self._recursiveCollectLabels(x, labels[:], struct)
      
     return struct
@@ -143,10 +143,10 @@ class ReportLog:
       # if the group of an entry matches the desired group...
       if group == x.group or group == "":
         entry = getFun()
-	# ...and the text of the desired field isn't already in the list...
-	if entry not in entries:
-	  # add it to the list
-	  entries.append(entry)
+        # ...and the text of the desired field isn't already in the list...
+        if entry not in entries:
+          # add it to the list
+          entries.append(entry)
 
     return entries[:]
 
@@ -156,7 +156,7 @@ class ReportLog:
     
     entry is an ReportEntry object.
     '''
-    #!print entry
+    #!print(entry)
     self.logFile.addEntry(entry)
     # update the entry array
     self.entryArray = self.getLog()
@@ -167,7 +167,7 @@ class ReportLog:
     
     index is an integer (numbering from 0)
     '''
-    #!print "INDEX ", index
+    #!print("INDEX ", index)
     return self.entryArray[index]
 
   def replaceEntry(self, index, entry):
@@ -197,21 +197,21 @@ class ReportLog:
       if x.group == oldGroup and x.title == oldTitle:
         groupGetFun, groupSetFun, groupVerifyFun = x.getFunctions('group')
         titleGetFun, titleSetFun, titleVerifyFun = x.getFunctions('title')
-	
-	# Is it worth it to test to see if the group or title are different before setting?
-	# Should a copy of the object be modified instead of the object itself?
-	groupSetFun(newGroup)
-	titleSetFun(newTitle)
-	
-	if tag == True:
-	  descGetFun, descSetFun, descVerifyFun = x.getFunctions('description')
-	  oldDesc = descGetFun()
-	  newDesc = "(%s/%s) %s" % (oldGroup, oldTitle, oldDesc)
-	  descSetFun(newDesc)
-	
-	# Actually replace the entry with the modified entry
+        
+        # Is it worth it to test to see if the group or title are different before setting?
+        # Should a copy of the object be modified instead of the object itself?
+        groupSetFun(newGroup)
+        titleSetFun(newTitle)
+        
+        if tag == True:
+          descGetFun, descSetFun, descVerifyFun = x.getFunctions('description')
+          oldDesc = descGetFun()
+          newDesc = "(%s/%s) %s" % (oldGroup, oldTitle, oldDesc)
+          descSetFun(newDesc)
+        
+        # Actually replace the entry with the modified entry
         self.logFile.replaceEntry(int(x.index)-1, x)
-	
+        
     # update the entry array
     self.entryArray = self.getLog()
 
@@ -262,7 +262,7 @@ class ReportLog:
     '''
     # Make sure there is something to analyze
     if self.getLogLength() == 0:
-      #!print "There is nothing to analyze!"
+      #!print("There is nothing to analyze!")
       return None
     
     if dayList == None:
@@ -271,7 +271,7 @@ class ReportLog:
       entryList = []
       for x in self.entryArray:
         if x.date[-2:] in dayList:
-	  entryList.append(x)
+          entryList.append(x)
     
     if len(entryList) == 0:
       return None
@@ -286,25 +286,25 @@ class ReportLog:
     groupTotals = {}
 
     for x in entryList:
-    	# Count the days for total work-day calculation
-	if x.date not in days:
-	  days.append(x.date)
+      # Count the days for total work-day calculation
+      if x.date not in days:
+        days.append(x.date)
+      
+      if x.group not in titleTotals:
+        titleTotals[x.group] = {}
+        details[x.group] = {}
         
-	if x.group not in titleTotals:
-	  titleTotals[x.group] = {}
-	  details[x.group] = {}
-	  
-	if x.title not in titleTotals[x.group]:
-	  titleTotals[x.group][x.title] = 0.0
-	  details[x.group][x.title] = []
-	  
-	numDuration = float(x.duration)
-	
-	details[x.group][x.title].append(x)
-	titleTotals[x.group][x.title] += numDuration
-	  
-    #!print "titleTotals", titleTotals
-    #!print "groupTotals", groupTotals
+      if x.title not in titleTotals[x.group]:
+        titleTotals[x.group][x.title] = 0.0
+        details[x.group][x.title] = []
+      
+      numDuration = float(x.duration)
+      
+      details[x.group][x.title].append(x)
+      titleTotals[x.group][x.title] += numDuration
+      
+    #!print("titleTotals", titleTotals)
+    #!print("groupTotals", groupTotals)
 
     groups = titleTotals.keys()
     groups.sort()
@@ -355,7 +355,7 @@ class ReportLog:
     for x in self.entryArray:
       if day == x.date[-2:]:
         dayArray.append(x)
-	dayHours += float(x.duration)
+        dayHours += float(x.duration)
     percentRecorded = dayHours / 8.0 * 100.0
     
     return (dayArray[:], dayHours, percentRecorded)
@@ -392,14 +392,14 @@ class ReportLog:
     for item in dayArraySorted:
       # Add the group to the group list
       if item.group not in groups:
-	groups.append(item.group)
+        groups.append(item.group)
       
       # Keep a running total for the group
       if item.group not in totals:
         totals[item.group] = float(item.duration)
       else:
         totals[item.group] += float(item.duration)
-	
+        
       # Categories the entries
       if item.group not in entries:
         entries[item.group] = [item]
@@ -421,9 +421,9 @@ class ReportLog:
     '''
     #log = self.logFile.convertLogToObjs()
     for x in self.entryArray:
-      print ""
+      print("")
       x.printEntry()
-    print ""
+    print("")
 
   def saveLog(self):
     '''
