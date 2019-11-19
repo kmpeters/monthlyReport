@@ -306,14 +306,14 @@ class ReportLog:
     #!print("titleTotals", titleTotals)
     #!print("groupTotals", groupTotals)
 
-    groups = titleTotals.keys()
-    groups.sort()
+    groups = list(titleTotals.keys())
+    groups = sorted(groups)
     
     # Compute group totals after all groups and titles have been collected.
     recordedTotal = 0.0
     for group in groups:
       titles = titleTotals[group].keys()
-      titles.sort()
+      titles = sorted(titles)
         
       # Loop over titles to get a group total
       groupTotal = 0.0

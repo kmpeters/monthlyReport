@@ -91,7 +91,7 @@ class XmlLog:
     # Add an entry with the appropriate index
     length = len(self.root) + 1
     #!print(length)
-    entryElem = etree.SubElement(self.root, "entry", index="{:i}".format(length))
+    entryElem = etree.SubElement(self.root, "entry", index="{:d}".format(length))
 
     # Loop over array, appending to entry
     for x in self.xmlEntryDef:

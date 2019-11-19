@@ -118,7 +118,7 @@ payCodeDict  = {'None':'None',
                  'WRK':'Work'
                  }
 
-possible_payCodes = payCodeDict.keys()
+possible_payCodes = list(payCodeDict.keys())
 
 jiraDict = {
   'BCDA':{'jira_key':'BCDA_GROUP', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'APS03010502'},
@@ -205,7 +205,7 @@ jiraDict = {
 
 possible_groups = list(jiraDict.keys()) + ["",]
 
-possible_groups.sort()
+possible_groups = sorted(possible_groups)
 
 tooltips = {
             'date': "Date of this effort (yyyy-mm-dd)",

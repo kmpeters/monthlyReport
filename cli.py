@@ -399,8 +399,8 @@ class ReportCli:
     #!print("Displaying stuff", struct)
     indentStr = "   "
     if type(struct) is dict:
-      keys = struct.keys()
-      keys.sort()
+      keys = list(struct.keys())
+      keys = sorted(keys)
       for k in keys:
         print(indentStr * level + k)
         self._recursiveDisplayLabels(struct[k], level+1)
@@ -568,8 +568,8 @@ class ReportCli:
     theoreticalHours = analysis[4]
     percent = analysis[5]
     
-    groups = titleTotals.keys()
-    groups.sort()
+    groups = list(titleTotals.keys())
+    groups = sorted(groups)
     
     partialGroupStr = ""
     groupsWithSpaces = []
@@ -607,8 +607,8 @@ class ReportCli:
     print("")
     for group in groups:
       if desiredGroups == () or group in desiredGroupList:
-        titles = titleTotals[group].keys()
-        titles.sort()
+        titles = list(titleTotals[group].keys())
+        titles = sorted(titles)
       
         # Print group total
         if percents == False:
@@ -689,7 +689,7 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current day is displayed.
     '''
-    #!print("displayDay(", args, ")")
+    print("displayDay(", args, ")")
     if len(args) == 0:
       if self.customDate == None:
         dArgs = (time.strftime("%d"),)
@@ -699,10 +699,10 @@ class ReportCli:
       dArgs = args
     
     print("")
-      
+    
     for x in dArgs:
       try:
-        day = "{:02i}".format(int(x))
+        day = "{:02d}".format(int(x))
         dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
         
         print("selected day: {}".format(x))
@@ -799,7 +799,7 @@ class ReportCli:
     
     for x in dArgs:
       try:
-        day = "{:02i}".format(int(x))
+        day = "{:02d}".format(int(x))
         groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
         
         print("selected day: {}".format(x))
@@ -858,13 +858,14 @@ class ReportCli:
     return weekDayList[:]
 
 
-  def _calcTabs(self, max, group):
+  def _calcTabs(self, maxLen, group):
     '''
     '''
-    # max / 8 + 1 = num tabs max group name uses
+    # maxLen / 8 + 1 = num tabs max group name uses
     # (len(group) / 8) + 1 = num tabs group name uses
-    # (max / 8) - (len(group) / 8) + 1 = num tabs to add
-    return ((max / 8) - (len(group) / 8) + 1)
+    # (maxLen / 8) - (len(group) / 8) + 1 = num tabs to add
+    # NOTE: in python2 the result is an int, in python3 the result is a float
+    return int((maxLen / 8) - (len(group) / 8) + 1)
 
 
   def _handleWeekArgs(self, args):
@@ -876,7 +877,7 @@ class ReportCli:
     else:
       try:
         # Replacing this list comprehension with a loop would allow handling extra spaces between arguments
-        rawWeekArgs = ["{:02i}".format(int(x)) for x in args]
+        rawWeekArgs = ["{:02d}".format(int(x)) for x in args]
       except ValueError:
         # pass error indicator back to calling method
         return -1
@@ -1022,7 +1023,7 @@ class ReportCli:
         else:
           groupWeekTotals[group] += groupDayTotals[group]
 
-    groups.sort()
+    groups = sorted(groups)
     #!print(groups)
     #!print(groupWeekTotals)
 
@@ -1037,7 +1038,7 @@ class ReportCli:
       if len(group) > maxGroupLen:
         maxGroupLen = len(group)
     #!print("maxGroupLen", maxGroupLen)
-
+    
     headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
     separator =  "-" * maxGroupLen + '\t'
     totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
@@ -1174,7 +1175,7 @@ class ReportCli:
         #!print("  Used groups:   {}".format(", ".join(self.logObj.collectGroups())))
         #!print("  Possible groups:   {}".format(", ".join(self.possibleGroups[1:])))
         totalGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[:]))
-        totalGroups.sort()
+        totalGroups = sorted(totalGroups)
         print("  Possible groups:   {}".format(", ".join(totalGroups[1:])))
         readline.parse_and_bind("tab: complete")
         #!completer = _TabCompleter(self.possibleGroups[:])
@@ -1385,7 +1386,7 @@ class ReportCli:
           existingGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[1:]))
         else:
           existingGroups = self.logObj.collectGroups()
-        existingGroups.sort()
+        existingGroups = sorted(existingGroups)
         print("  Possible groups:   {}".format(", ".join(existingGroups)))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingGroups)
@@ -1504,7 +1505,7 @@ class ReportCli:
       retval = False
     else:
       rawAck = input("You have unsaved changes, are you sure you want to quit without saving? ")
-      ack = string.strip(rawAck)
+      ack = rawAck.strip()
       if ack == "Yes" or ack == "yes" or ack == "Y" or ack == "y":
         print("Discarding unsaved changes and quitting...")
         retval = False
@@ -1576,7 +1577,7 @@ class ReportCli:
         print("")
         continue
 
-      cmnd = string.strip(command)
+      cmnd = command.strip()
       if len(cmnd) > 0:
         cmndKey = cmnd.split(" ")[0]
         args = cmnd.split(" ")[1:]

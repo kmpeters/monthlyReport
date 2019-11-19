@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 '''
 Kevin's custom cli customizations:
@@ -43,7 +43,7 @@ class MyCli(cli.ReportCli):
                            'RG':'Regular',
                           'TEL':'TELECOMMUTING*'
                           }
-    self.possiblePayCodes = sorted(self.payCodeDict.keys())
+    self.possiblePayCodes = sorted(list(self.payCodeDict.keys()))
 
     # Improve correctEntry prompts
     #!self.showCorrectDefaults = True

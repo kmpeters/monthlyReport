@@ -48,9 +48,9 @@ def _writeLaTeX(results, subdir, texPrefix):
   lines.append("\\maketitle\n\n")
 
   # LaTeX body
-  #groups = groupTotals.keys()
-  groups = srDict.keys()
-  groups.sort()
+  #groups = list(groupTotals.keys())
+  groups = list(srDict.keys())
+  groups = sorted(groups)
   for group in groups:
     # LaTeX Section = monthly report group
     #!lines.append("\\section*{{} - \\emph{{:d}\\%%}}\n\n".format(group, groupTotals[group]))
@@ -260,13 +260,13 @@ def makeXml(analysis, directory, filename, fullName):
   author.text = lastName
 
   # Get groups
-  groups = titleTotals.keys()
-  groups.sort()
+  groups = list(titleTotals.keys())
+  groups = sorted(groups)
   
   for group in groups:
     # Get titles
-    titles = titleTotals[group].keys()
-    titles.sort()
+    titles = list(titleTotals[group].keys())
+    titles = sorted(titles)
 
     # Eventually this should change to report hours instead of percents. 
     
