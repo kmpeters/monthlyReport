@@ -256,8 +256,8 @@ class ReportCli:
     if (self.customDate != None):
       print("Custom date = {}".format(self.customDate))
     else:
-      print("Default date = {}".format(time.strftime("%Y-%m-%d"))
-
+      print("Default date = {}".format(time.strftime("%Y-%m-%d")))
+    
     return True
 
 
@@ -1050,12 +1050,12 @@ class ReportCli:
       for group in groups:
         # Will need to handle KeyError exception when pre-jira groups are used
         try:
-	  costCodeLen = len(config.jiraDict[group]['cost_code'])
-	except KeyError:
-	  continue
-	
-	if costCodeLen > maxCostCodeLen:
-	  maxCostCodeLen = costCodeLen
+          costCodeLen = len(config.jiraDict[group]['cost_code'])
+        except KeyError:
+          continue
+        
+        if costCodeLen > maxCostCodeLen:
+          maxCostCodeLen = costCodeLen
 
       # Add Cost codes
       headString += "Cost Code" + '\t' * self._calcTabs(maxCostCodeLen, "Cost Code")
@@ -1070,12 +1070,12 @@ class ReportCli:
       for group in groups:
         # Will need to handle KeyError exception when pre-jira groups are used
         try:
-	  wbsLen = len(config.jiraDict[group]['wbs_code'])
-	except KeyError:
-	  continue
-	
-	if wbsLen > maxWBSLen:
-	  maxWBSLen = wbsLen
+          wbsLen = len(config.jiraDict[group]['wbs_code'])
+        except KeyError:
+          continue
+        
+        if wbsLen > maxWBSLen:
+          maxWBSLen = wbsLen
 
       # Add WBS codes
       headString += "WBS Code" + '\t' * self._calcTabs(maxWBSLen, "WBS Code")
@@ -1105,20 +1105,20 @@ class ReportCli:
       # Optionally add Cost code
       if self.showCostCodes == True:
         try:
-	  costCode = config.jiraDict[group]['cost_code']
-	except KeyError:
-	  costCode = 'NONE'
-	
-	grpStr += costCode + '\t' * self._calcTabs(maxCostCodeLen, costCode)
+          costCode = config.jiraDict[group]['cost_code']
+        except KeyError:
+          costCode = 'NONE'
+        
+        grpStr += costCode + '\t' * self._calcTabs(maxCostCodeLen, costCode)
 
       # Optionally add WBS code
       if self.showWBSCodes == True:
         try:
-	  wbsCode = config.jiraDict[group]['wbs_code']
-	except KeyError:
-	  wbsCode = 'NONE'
-	
-	grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
+          wbsCode = config.jiraDict[group]['wbs_code']
+        except KeyError:
+          wbsCode = 'NONE'
+        
+        grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
 
       # wList = list of day summary results
       for i in range(len(wList)):
