@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###########
 # $Date$
@@ -90,8 +90,8 @@ class XmlLog:
     '''
     # Add an entry with the appropriate index
     length = len(self.root) + 1
-    #!print length
-    entryElem = etree.SubElement(self.root, "entry", index="%i" % length)
+    #!print(length)
+    entryElem = etree.SubElement(self.root, "entry", index="{:d}".format(length))
 
     # Loop over array, appending to entry
     for x in self.xmlEntryDef:
@@ -158,7 +158,7 @@ class XmlLog:
     Write the xml file to disk.
     '''
     # Move current file to backup
-    newfilepath = "%s.bup" % self.filepath
+    newfilepath = "{}.bup".format(self.filepath)
     shutil.move(self.filepath, newfilepath)
     # Make tree presentable
     self._indent(self.root)

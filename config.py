@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###################
 # $Date$
@@ -118,7 +118,7 @@ payCodeDict  = {'None':'None',
                  'WRK':'Work'
                  }
 
-possible_payCodes = payCodeDict.keys()
+possible_payCodes = list(payCodeDict.keys())
 
 jiraDict = {
   'BCDA':{'jira_key':'BCDA_GROUP', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'APS03010502'},
@@ -203,9 +203,9 @@ jiraDict = {
   '3DMN 34ID-E':{'jira_key':'UPGRADE_34ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'}
   }
 
-possible_groups = jiraDict.keys() + ["",]
+possible_groups = list(jiraDict.keys()) + ["",]
 
-possible_groups.sort()
+possible_groups = sorted(possible_groups)
 
 tooltips = {
             'date': "Date of this effort (yyyy-mm-dd)",

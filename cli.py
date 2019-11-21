@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ########### SVN repository information ###########
 # $Date$
@@ -41,12 +41,12 @@ class ReportCli:
   def __init__(self):
     # Remove '-' from delim list so entries with dashes tab-complete properly
     delims = readline.get_completer_delims()
-    #!print ",".join(["%x" % ord(x) for x in delims])
+    #!print(",".join(["%x" % ord(x) for x in delims]))
     # Allow dashes to be included in tab-completed words. Spaces can't be handled here since they are word separators part of the time.
     new_delims = delims.replace("-",'')
     readline.set_completer_delims(new_delims)
     #!delims2 = readline.get_completer_delims()
-    #!print ",".join(["%x" % ord(x) for x in delims2])
+    #!print(",".join(["%x" % ord(x) for x in delims2]))
 
     self.commands = { 
          "help": self.displayHelp,
@@ -122,7 +122,7 @@ class ReportCli:
 
     if self.run == True:
       # Let the user know which file is being used
-      print "Reading %s" % self.filepath
+      print("Reading {}".format(self.filepath))
       # Read log file into persistent log object
       self.logObj = self.createReportLog(self.filepath)
       self.logEntryDef = self.logObj.getLogEntryDef()
@@ -149,8 +149,8 @@ class ReportCli:
     '''
     Called when "help" or "h" is typed.  Prints a help message.
     '''
-    #!print "displayHelp(", args, ")"
-    print """
+    #!print("displayHelp(", args, ")")
+    print("""
  Commands:
    help (h)      displays this help
    groups (lg)   list all available groups
@@ -194,7 +194,7 @@ class ReportCli:
                 
    ch            Bulk title change. Make a BACKUP of your log before using
                  this feature, since it hasn't been extensively tested yet.
-    """
+    """)
     return True
 
 
@@ -202,9 +202,9 @@ class ReportCli:
     '''
     Set a default date other than today
     '''
-    #!print args
+    #!print(args)
     if len(args) != 1:
-      print "Usage: chd DAY\n  or:  chd YYYY-MM-DD"
+      print("Usage: chd DAY\n  or:  chd YYYY-MM-DD")
     else:
       # Temporarily assume user always gives a valid date
       newDate = args[0]
@@ -231,12 +231,12 @@ class ReportCli:
           time.strptime(newDate, '%Y-%m-%d')
       except ValueError:
         if day == None:
-          print args[0], "is not a valid date"
+          print("{} is not a valid date".format(args[0]))
         else:
-          print args[0], "is not a valid day of the month"
+          print("{} is not a valid day of the month".format(args[0]))
       else:
         self.customDate = newDate
-        print self.customDate, "is the new, default date"
+        print("{} is the new, default date".format(self.customDate))
     
     return True
     
@@ -254,10 +254,10 @@ class ReportCli:
     Display the default date
     '''
     if (self.customDate != None):
-      print "Custom date =", self.customDate
+      print("Custom date = {}".format(self.customDate))
     else:
-      print "Default date =", time.strftime("%Y-%m-%d")
-
+      print("Default date = {}".format(time.strftime("%Y-%m-%d")))
+    
     return True
 
 
@@ -266,7 +266,7 @@ class ReportCli:
     Remove an entry from the readline input history
     '''
     pos = readline.get_current_history_length()-1
-    #!print "Removing %s from history, pos=%i" % (readline.get_history_item(pos+1), pos+1)
+    #!print("Removing {} from history, pos={}".format(readline.get_history_item(pos+1), pos+1))
     readline.remove_history_item(pos)
     
 
@@ -285,13 +285,13 @@ class ReportCli:
         # Create a list of xml files in the same directory as the work_log
         files = os.listdir(directory)
         xmlFiles = []
-        #!print files
+        #!print(files)
         for f in files:
           if f[-4:] == ".xml" and f != self.filename:
             xmlFiles.append(f)
         
         # Print xml files in the directory that aren't the work_log
-        print "Found XML files:", ", ".join(xmlFiles)
+        print("Found XML files: {}".format(", ".join(xmlFiles)))
         # Prompt user for desired xml file with autocomplete
         try:
           # Turn on tab complete
@@ -300,30 +300,30 @@ class ReportCli:
           readline.set_completer(completer.complete)
                 
           # Get xml file
-          desiredXml = raw_input("XML file to convert: ")
+          desiredXml = input("XML file to convert: ")
                 
           if desiredXml != '':
             self._removeHistoryEntry()
           else:
-            #!print "You didn't specify a file, assuming you want dummy.xml"
+            #!print("You didn't specify a file, assuming you want dummy.xml")
             desiredXml = "dummy.xml"
                         
         # Catch KeyboardInterrupt to allow the user to exit the entry process
         except (KeyboardInterrupt, EOFError):
-                print ""
-                print "Aborting..."
+                print("")
+                print("Aborting...")
                 return True
         finally:
                 # Restore main completer
                 readline.set_completer(self.mainCompleter.complete)
 
-        #!print "desiredXml", desiredXml
+        #!print("desiredXml = {}".format(desiredXml))
 
         # Verify that the file exists
-        #!print "%s/%s" % (directory, desiredXml)
-        fullFilePath = "%s/%s" % (directory, desiredXml)
+        fullFilePath = "{}/{}".format(directory, desiredXml)
+        #!print(fullFilePath)
         if os.path.exists(fullFilePath) == False:
-                print "The desired xml file (%s) doesn't exist." % fullFilePath
+                print("The desired xml file ({}) doesn't exist.".format(fullFilePath))
                 return True
 
         # Call mkrep.makeReport()
@@ -338,16 +338,16 @@ class ReportCli:
     
     Calls mkrep.makeXml()
     '''
-    #!print "createReportXml(", args, ")"
+    #!print("createReportXml(", args, ")")
     analysis = self.logObj.getAnalysis()
     
     if analysis == None:
-      print "! The log is empty."
+      print("! The log is empty.")
       return True
 
     # Prompt user for desired filename (Assume just a filename, not a path)
     try:
-      desiredFilename = raw_input("XML report filename: ")
+      desiredFilename = input("XML report filename: ")
 
       # Remove text entry from history
       if desiredFilename != "":
@@ -355,8 +355,8 @@ class ReportCli:
 
     # Catch Ctrl+c and Ctrl+d to allow the user to exit the entry process
     except (KeyboardInterrupt, EOFError):
-      print ""
-      print "Aborting..."
+      print("")
+      print("Aborting...")
       return True
     
     # Use a default filename if it was left blank
@@ -369,13 +369,13 @@ class ReportCli:
     else:
       desiredFilename = desiredFilename + ".xml"
     # Abort rather than overwrite an existing file
-    if os.path.exists("%s/%s" % (self.directory, desiredFilename) ):
-      print "Can't write xml report.  %s/%s already exists." % (self.directory, desiredFilename)
+    if os.path.exists("{}/{}".format(self.directory, desiredFilename)):
+      print("Can't write xml report.  {}/{} already exists.".format(self.directory, desiredFilename))
       return True
         
     try:
       # Prompt user for their name
-      fullName = raw_input("Your name: ")
+      fullName = input("Your name: ")
 
       # Remove text entry from history
       if fullName != "":
@@ -383,8 +383,8 @@ class ReportCli:
 
     # Catch Ctrl+c and Ctrl+d to allow the user to exit the entry process
     except (KeyboardInterrupt, EOFError):
-      print ""
-      print "Aborting..."
+      print("")
+      print("Aborting...")
       return True
 
     status = mkrep.makeXml(analysis, self.directory, desiredFilename, fullName)    
@@ -396,18 +396,18 @@ class ReportCli:
     '''
     Display the labels used in the report
     '''
-    #!print "Displaying stuff", struct
+    #!print("Displaying stuff", struct)
     indentStr = "   "
     if type(struct) is dict:
-      keys = struct.keys()
-      keys.sort()
+      keys = list(struct.keys())
+      keys = sorted(keys)
       for k in keys:
-        print indentStr * level + k
+        print(indentStr * level + k)
         self._recursiveDisplayLabels(struct[k], level+1)
     
     if type(struct) is list:
       for item in struct:
-        print indentStr * level + item
+        print(indentStr * level + item)
 
 
   def listLabels(self, *args):
@@ -416,7 +416,7 @@ class ReportCli:
     
     args is a tuple of the labels that defines the nesting used when displaying the results.
     '''
-    #!print "listLabels(", args, ")"
+    #!print("listLabels(", args, ")")
     
     defaultLabels = ['activity', 'group', 'title']
     
@@ -429,21 +429,21 @@ class ReportCli:
         if label in self.logEntryDef:
           labels.append(label)
         else:
-          print "! %s is not a valid label." % label
+          print("! {} is not a valid label.".format(label))
 
-    #!print labels
+    #!print(labels)
     
-    #!print "Listing the following:"
-    print ""
+    #!print("Listing the following:")
+    print("")
     for i in range(len(labels)):
-      print "   " * i + labels[i]
+      print("   " * i + labels[i])
     
     if len(labels) != 0:
       struct = self.logObj.collectLabels(labels)
     
-      print "---" * (len(labels) + 1 )
+      print("---" * (len(labels) + 1 ))
       self._recursiveDisplayLabels(struct)
-      print ""
+      print("")
     
     return True
  
@@ -454,9 +454,9 @@ class ReportCli:
     
     args is currently ignored
     '''
-    #!print "listLabels(", args, ")"
+    #!print("listLabels(", args, ")")
 
-    print "Possible groups:   %s" % ", ".join(config.possible_groups[1:])
+    print("Possible groups:   {}".format(", ".join(config.possible_groups[1:])))
 
     return True
 
@@ -467,9 +467,9 @@ class ReportCli:
     
     args is currently ignored
     '''
-    #!print "listLabels(", args, ")"
+    #!print("listLabels(", args, ")")
 
-    print "Possible pay codes:   %s" % ", ".join(sorted(config.possible_payCodes[:]))
+    print("Possible pay codes:   {}".format(", ".join(sorted(config.possible_payCodes[:]))))
 
     return True
 
@@ -481,10 +481,10 @@ class ReportCli:
     '''
     if self.promptForPayCode == True:
       self.promptForPayCode = False
-      print "Prompt for pay code: Disabled"
+      print("Prompt for pay code: Disabled")
     else:
       self.promptForPayCode = True
-      print "Prompt for pay code: Enabled"
+      print("Prompt for pay code: Enabled")
     
     return True
 
@@ -494,13 +494,13 @@ class ReportCli:
     
     args is an tuple of group strings to display. If no groups are specified, all groups are displayed.
     '''
-    #!print "displayReport(", args, ")"
+    #!print("displayReport(", args, ")")
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
       self._displayAnalysis(analysis, True, False, False, args)
     else:
-      print "! The log is empty."
+      print("! The log is empty.")
     
     return True
 
@@ -511,13 +511,13 @@ class ReportCli:
     
     args is an tuple of group strings to display. If no groups are specified, all groups are displayed.
     '''
-    #!print "displayPercentReport(", args, ")"
+    #!print("displayPercentReport(", args, ")")
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
       self._displayAnalysis(analysis, True, True, False, args)
     else:
-      print "! The log is empty."
+      print("! The log is empty.")
     
     return True
 
@@ -528,13 +528,13 @@ class ReportCli:
     
     args is an tuple of group strings to display. If no groups are specified, all groups are displayed.
     '''
-    #!print "displaySummary(", args, ")"
+    #!print("displaySummary(", args, ")")
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
       self._displayAnalysis(analysis, False, False, False, args)
     else:
-      print "! The log is empty."
+      print("! The log is empty.")
     
     return True
 
@@ -545,13 +545,13 @@ class ReportCli:
     
     args is an tuple of group strings to display. If no groups are specified, all groups are displayed.
     '''
-    #!print "displayPercentSummary(", args, ")"
+    #!print("displayPercentSummary(", args, ")")
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
       self._displayAnalysis(analysis, False, True, False, args)
     else:
-      print "! The log is empty."
+      print("! The log is empty.")
     
     return True
 
@@ -560,7 +560,7 @@ class ReportCli:
     '''
     Method that actually displays the analysis
     '''
-    #!print analysis
+    #!print(analysis)
     details = analysis[0]
     groupTotals = analysis[1]
     titleTotals = analysis[2]
@@ -568,15 +568,15 @@ class ReportCli:
     theoreticalHours = analysis[4]
     percent = analysis[5]
     
-    groups = titleTotals.keys()
-    groups.sort()
+    groups = list(titleTotals.keys())
+    groups = sorted(groups)
     
     partialGroupStr = ""
     groupsWithSpaces = []
     # Make sure desired group(s) exist when allowing group to be specified
     for desiredGroup in desiredGroups:
       if desiredGroup not in groups:
-        #!print "! %s is not a valid group." % desiredGroup
+        #!print("! {} is not a valid group.".format(desiredGroup))
         # word might be part of a group name with a space in it
         if len(partialGroupStr) == 0:
           partialGroupStr = desiredGroup
@@ -600,55 +600,55 @@ class ReportCli:
       # Append the words that were just removed as a single string
       desiredGroupList.append(groupWithSpaces)
 
-    #!print "desiredGroups", desiredGroups
-    #!print "desiredGroupList", desiredGroupList
-    #!print "groups", groups
+    #!print("desiredGroups = {}".format(desiredGroups))
+    #!print("desiredGroupList = {}".format(desiredGroupList))
+    #!print("groups = {}".format(groups))
     
-    print ""
+    print("")
     for group in groups:
       if desiredGroups == () or group in desiredGroupList:
-        titles = titleTotals[group].keys()
-        titles.sort()
+        titles = list(titleTotals[group].keys())
+        titles = sorted(titles)
       
         # Print group total
         if percents == False:
-          print "%5.2f %s" % (groupTotals[group], group)
+          print("{:5.2f} {}".format(groupTotals[group], group))
         else:
-          print "%4.1f%% %s" % (groupTotals[group] / recordedTotal * 100.0, group)
+          print("{:4.1f}% {}".format(groupTotals[group] / recordedTotal * 100.0, group))
         
         # Loop over titles printing totals
         for title in titles:
           if percents == False:
-            print "\t%5.2f %s" % (titleTotals[group][title], title)
+            print("\t{:5.2f} {}".format(titleTotals[group][title], title))
           else:
-            print "\t%4.1f%% %s" % (titleTotals[group][title] / recordedTotal * 100.0, title)
+            print("\t{:4.1f}% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title))
             
           if verbose == True:
             lastDate = ""
             for e in details[group][title]:
               if dateSort == False:
                 # Use the old, monthly-report approach
-                line = "\t\t%s ; %s ; %s ; %s" % (e.date, e.duration, e.activity, e.description)
-                print textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t")
-                print ""
+                line = "\t\t{} ; {} ; {} ; {}".format(e.date, e.duration, e.activity, e.description)
+                print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"))
+                print("")
               else:
                 # Indent based on date
                 if lastDate != e.date:
-                  print "\t\t%s" % e.date
+                  print("\t\t{}".format(e.date))
                   lastDate = e.date
                 # Include index instead of date
-                line = "\t\t\t%s ; %s ; %s ; %s" % (e.index, e.duration, e.activity, e.description)
-                print textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t")
-                print ""
+                line = "\t\t\t{} ; {} ; {} ; {}".format(e.index, e.duration, e.activity, e.description)
+                print(textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t"))
+                print("")
 
-    print ""
+    print("")
     
     if desiredGroups == ():
       # Print total hours, theoretical hours, and percent
-      print "Recorded:", recordedTotal, "hrs" 
-      print "Possible:", theoreticalHours, "hrs"
-      print "Complete: %0.1f%%" % percent
-      print ""
+      print("Recorded: {} hrs".format(recordedTotal))
+      print("Possible: {} hrs".format(theoreticalHours))
+      print("Complete: {:0.1f}%".format(percent))
+      print("")
 
 
   def displayLog(self, *args):
@@ -657,13 +657,13 @@ class ReportCli:
     
     args is a tuple of index strings (numbers starting from 1).  If no indices are specified, the whole log is displayed.
     '''
-    #!print "displayLog(", args, ")"
+    #!print("displayLog(", args, ")")
     if len(args) == 0:
       # Display the entire log
       self.logObj.printLog()
     else:
       # Display a specific item or specific items
-      print ""
+      print("")
       
       for x in args:
         try:
@@ -672,13 +672,13 @@ class ReportCli:
             tempObj = self.logObj.getEntry(index-1)
             tempObj.printEntry()
           else:
-            print "!", x, "is outside the valid index range."
+            print("! {} is outside the valid index range.".format(x))
         except ValueError:
-          print "!", x, "is not a valid index (integer)."
-          print ""
+          print("! {} is not a valid index (integer).".format(x))
+          print("")
           continue
         
-        print ""
+        print("")
     
     return True
 
@@ -689,7 +689,7 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current day is displayed.
     '''
-    #!print "displayDay(", args, ")"
+    #!print("displayDay(", args, ")")
     if len(args) == 0:
       if self.customDate == None:
         dArgs = (time.strftime("%d"),)
@@ -698,29 +698,29 @@ class ReportCli:
     else:
       dArgs = args
     
-    print ""
-      
+    print("")
+    
     for x in dArgs:
       try:
-        day = "%02i" % int(x)
+        day = "{:02d}".format(int(x))
         dayArray, dayHours, percentRecorded = self.logObj.getDay(day)
         
-        print "selected day: %s" % x
-        print ""
+        print("selected day: {}".format(x))
+        print("")
         
         for x in dayArray:
           # Should probably use the get() methods, but that adds overhead
           if self.showPayCodes == False:
-            print "%s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+            print("{} ; {} ; {} - {} ; {} ; {}".format(x.index, x.duration, x.group, x.title, x.activity, x.description))
           else:
-            print "%s ; %4s ; %s ; %s - %s ; %s ; %s" % (x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description)
-        print ""
-        print "Hours: %.2f" % dayHours
-        print "Percent: %.1f%%" % percentRecorded
-        print ""
+            print("{} ; {:4s} ; {} ; {} - {} ; {} ; {}".format(x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description))
+        print("")
+        print("Hours: {:.2f}".format(dayHours))
+        print("Percent: {:.1f}%".format(percentRecorded))
+        print("")
       except ValueError:
-        print "!", x, "is not a valid day (integer)."
-        print ""
+        print("! {} is not a valid day (integer).".format(x))
+        print("")
         continue
         
     return True
@@ -730,19 +730,19 @@ class ReportCli:
     '''
     Called when "wr" is typed.
     '''
-    #!print "dayTest(", args, ")"
+    #!print("dayTest(", args, ")")
 
     wArgs = self._handleWeekArgs(args)
     if wArgs == -1:
-        print "Error: Days must be integers"
+        print("Error: Days must be integers")
         return True
 
-    print
-    print "Selected days: %s" % " ".join(wArgs)
+    print()
+    print("Selected days: {}".format(" ".join(wArgs)))
 
     analysis = self.logObj.getAnalysis(wArgs)
     
-    #!print analysis
+    #!print(analysis)
     
     if analysis != None:
       if self.wrDateSort == False:
@@ -750,7 +750,7 @@ class ReportCli:
       else:
         self._displayAnalysis(analysis, True, False, True)
     else:
-      print "! No entries for selected day(s)."
+      print("! No entries for selected day(s).")
 
     return True
 
@@ -758,24 +758,24 @@ class ReportCli:
     '''
     Called when "ws" is typed.
     '''
-    #!print "dayTest(", args, ")"
+    #!print("dayTest(", args, ")")
 
     wArgs = self._handleWeekArgs(args)
     if wArgs == -1:
-        print "Error: Days must be integers"
+        print("Error: Days must be integers")
         return True
 
-    print
-    print "Selected days: %s" % " ".join(wArgs)
+    print()
+    print("Selected days: {}".format(" ".join(wArgs)))
 
     analysis = self.logObj.getAnalysis(wArgs)
     
-    #!print analysis
+    #!print(analysis)
     
     if analysis != None:
       self._displayAnalysis(analysis, False, False, False)
     else:
-      print "! No entries for selected day(s)."
+      print("! No entries for selected day(s).")
 
     return True
 
@@ -786,7 +786,7 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current day is displayed.
     '''
-    #!print "displayDaySummary(", args, ")"
+    #!print("displayDaySummary(", args, ")")
     if len(args) == 0:
       if self.customDate == None:
         dArgs = (time.strftime("%d"),)
@@ -795,35 +795,35 @@ class ReportCli:
     else:
       dArgs = args
 
-    print ""
+    print("")
     
     for x in dArgs:
       try:
-        day = "%02i" % int(x)
+        day = "{:02d}".format(int(x))
         groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
         
-        print "selected day: %s" % x
+        print("selected day: {}".format(x))
         
         for group in groups:
-          print ""
-          print "%s: %s hours" % (group, totals[group])
-          print ""
+          print("")
+          print("{}: {} hours".format(group, totals[group]))
+          print("")
           
           for x in entries[group]:
             # Should probably use the get() methods, but that adds overhead
             if self.showPayCodes == False:
-              line = "  %s ; %s ; %s - %s ; %s ; %s" % (x.index, x.duration, x.group, x.title, x.activity, x.description)
+              line = "  {} ; {} ; {} - {} ; {} ; {}".format(x.index, x.duration, x.group, x.title, x.activity, x.description)
             else:
-              line = "  %s ; %4s ; %s ; %s - %s ; %s ; %s" % (x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description)
-            print textwrap.fill(line, width=(self.terminalWidth), subsequent_indent="    ")
+              line = "  {} ; {:4s} ; {} ; {} - {} ; {} ; {}".format(x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description)
+            print(textwrap.fill(line, width=(self.terminalWidth), subsequent_indent="    "))
         
-        print ""
-        print "Hours: %.2f" % dayHours
-        print "Percent: %.1f%%" % percentRecorded
-        print ""
+        print("")
+        print("Hours: {:.2f}".format(dayHours))
+        print("Percent: {:.1f}%".format(percentRecorded))
+        print("")
       except ValueError:
-        print "!", x, "is not a valid day (integer)."
-        print ""
+        print("! {} is not a valid day (integer).".format(x))
+        print("")
         continue
         
     return True
@@ -858,13 +858,14 @@ class ReportCli:
     return weekDayList[:]
 
 
-  def _calcTabs(self, max, group):
+  def _calcTabs(self, maxLen, group):
     '''
     '''
-    # max / 8 + 1 = num tabs max group name uses
+    # maxLen / 8 + 1 = num tabs max group name uses
     # (len(group) / 8) + 1 = num tabs group name uses
-    # (max / 8) - (len(group) / 8) + 1 = num tabs to add
-    return ((max / 8) - (len(group) / 8) + 1)
+    # (maxLen / 8) - (len(group) / 8) + 1 = num tabs to add
+    # NOTE: in python2 the result is an int, in python3 the result is a float
+    return int((maxLen / 8) - (len(group) / 8) + 1)
 
 
   def _handleWeekArgs(self, args):
@@ -876,7 +877,7 @@ class ReportCli:
     else:
       try:
         # Replacing this list comprehension with a loop would allow handling extra spaces between arguments
-        rawWeekArgs = ["%02i" % int(x) for x in args]
+        rawWeekArgs = ["{:02d}".format(int(x)) for x in args]
       except ValueError:
         # pass error indicator back to calling method
         return -1
@@ -900,30 +901,30 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current week is displayed.  Zero will return the current week.  Negative numbers will return previous weeks.
     '''
-    #!print "displayWeekDayforce(", args, ")"
+    #!print("displayWeekDayforce(", args, ")")
     
     wArgs = self._handleWeekArgs(args)
     if wArgs == -1:
-        print "Error: Days must be integers"
+        print("Error: Days must be integers")
         return True
     
-    #!print wArgs
+    #!print(wArgs)
     
     wList = []
     for day in wArgs:
       #  groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
       wList.append(self.logObj.getDaySummary(day))
       
-    #!print wArgs
+    #!print(wArgs)
     
     # header row
     if self.showPayCodes == False:
-        print "Day\t\tTotal\tHours\tProject"
+        print("Day\t\tTotal\tHours\tProject")
     else:
-        print "Day\t\tTotal\tCode\tHours\tProject"
-    #!print "---\t\t-----\t-----\t-------"
+        print("Day\t\tTotal\tCode\tHours\tProject")
+    #!print("---\t\t-----\t-----\t-------")
     line = "-" * 60
-    print line
+    print(line)
     
     weekHourTotal = 0.0
     
@@ -947,7 +948,7 @@ class ReportCli:
                 groupTotal = totals[group]
                 #
                 if firstGroup == True:
-                    prefixStr = "%s\t\t%0.2f\t" % (day, dayTotal)
+                    prefixStr = "{}\t\t{:0.2f}\t".format(day, dayTotal)
                     firstGroup = False
                 else:
                     prefixStr = "\t\t\t"
@@ -956,27 +957,27 @@ class ReportCli:
                 
                 # Assume there will only be one pay code for a given project each day
                 if self.showPayCodes == True:
-                    suffixStr += "%s\t" % entries[group][0].payCode
+                    suffixStr += "{}\t".format(entries[group][0].payCode)
                 
-                suffixStr += "%0.2f\t" % groupTotal
+                suffixStr += "{:0.2f}\t".format(groupTotal)
                 
                 # Include either wbs codes or cost codes
                 if self.showWBSCodes == True:
-                    suffixStr += "%s %s" % (config.jiraDict[group]['wbs_code'], group)
+                    suffixStr += "{} {}".format(config.jiraDict[group]['wbs_code'], group)
                 else:
-                    suffixStr += "%s %s" % (config.jiraDict[group]['cost_code'], group)
+                    suffixStr += "{} {}".format(config.jiraDict[group]['cost_code'], group)
                 
-                print prefixStr + suffixStr
+                print(prefixStr + suffixStr)
         else:
             # day is empty
-            print "%s\t\t%0.2f\t" % (day, dayTotal)
+            print("{}\t\t{:0.2f}\t".format(day, dayTotal))
         
-        #!print ""
-        #!print "---\t\t-----\t-----\t-------"
-        print line
+        #!print("")
+        #!print("---\t\t-----\t-----\t-------")
+        print(line)
         
-    #!print "\t\t-----\t\t"
-    print "\t\t%0.2f" % weekHourTotal
+    #!print("\t\t-----\t\t")
+    print("\t\t{:0.2f}".format(weekHourTotal))
         
     return True
     
@@ -987,21 +988,21 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current week is displayed.  Zero will return the current week.  Negative numbers will return previous weeks.
     '''
-    #!print "displayDaySummary(", args, ")"
+    #!print("displayDaySummary(", args, ")")
     
     wArgs = self._handleWeekArgs(args)
     if wArgs == -1:
-        print "Error: Days must be integers"
+        print("Error: Days must be integers")
         return True
     
-    #!print wArgs
+    #!print(wArgs)
     
     wList = []
     for day in wArgs:
       #  groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
       wList.append(self.logObj.getDaySummary(day))
       
-    #!print wList
+    #!print(wList)
     
     groups = []
     groupWeekTotals = {}
@@ -1022,9 +1023,9 @@ class ReportCli:
         else:
           groupWeekTotals[group] += groupDayTotals[group]
 
-    groups.sort()
-    #!print groups
-    #!print groupWeekTotals
+    groups = sorted(groups)
+    #!print(groups)
+    #!print(groupWeekTotals)
 
     ###
     ### Build hours table
@@ -1036,8 +1037,8 @@ class ReportCli:
     for group in groups:
       if len(group) > maxGroupLen:
         maxGroupLen = len(group)
-    #!print "maxGroupLen", maxGroupLen
-
+    #!print("maxGroupLen", maxGroupLen)
+    
     headString = "Group" + '\t' * self._calcTabs(maxGroupLen, "Group")
     separator =  "-" * maxGroupLen + '\t'
     totalStr = "Total" + '\t' * self._calcTabs(maxGroupLen, "Total")
@@ -1050,12 +1051,12 @@ class ReportCli:
       for group in groups:
         # Will need to handle KeyError exception when pre-jira groups are used
         try:
-	  costCodeLen = len(config.jiraDict[group]['cost_code'])
-	except KeyError:
-	  continue
-	
-	if costCodeLen > maxCostCodeLen:
-	  maxCostCodeLen = costCodeLen
+          costCodeLen = len(config.jiraDict[group]['cost_code'])
+        except KeyError:
+          continue
+        
+        if costCodeLen > maxCostCodeLen:
+          maxCostCodeLen = costCodeLen
 
       # Add Cost codes
       headString += "Cost Code" + '\t' * self._calcTabs(maxCostCodeLen, "Cost Code")
@@ -1070,12 +1071,12 @@ class ReportCli:
       for group in groups:
         # Will need to handle KeyError exception when pre-jira groups are used
         try:
-	  wbsLen = len(config.jiraDict[group]['wbs_code'])
-	except KeyError:
-	  continue
-	
-	if wbsLen > maxWBSLen:
-	  maxWBSLen = wbsLen
+          wbsLen = len(config.jiraDict[group]['wbs_code'])
+        except KeyError:
+          continue
+        
+        if wbsLen > maxWBSLen:
+          maxWBSLen = wbsLen
 
       # Add WBS codes
       headString += "WBS Code" + '\t' * self._calcTabs(maxWBSLen, "WBS Code")
@@ -1085,16 +1086,16 @@ class ReportCli:
     # wArgs = list of dates to be displayed
     # wList = list of day summary results
     for i in range(len(wArgs)):
-      headString += " %s\t" % wArgs[i]
+      headString += " {}\t".format(wArgs[i])
       separator += "----\t"
-      totalStr += "%0.2f\t" % wList[i][3]
+      totalStr += "{:0.2f}\t".format(wList[i][3])
     headString += "Total"
     separator += "-----"
-    totalStr += "%0.2f" % weekHourTotal
+    totalStr += "{:0.2f}".format(weekHourTotal)
  
     # Display first two rows
-    print headString
-    print separator
+    print(headString)
+    print(separator)
 
     # Build group rows
     for group in groups:
@@ -1105,35 +1106,35 @@ class ReportCli:
       # Optionally add Cost code
       if self.showCostCodes == True:
         try:
-	  costCode = config.jiraDict[group]['cost_code']
-	except KeyError:
-	  costCode = 'NONE'
-	
-	grpStr += costCode + '\t' * self._calcTabs(maxCostCodeLen, costCode)
+          costCode = config.jiraDict[group]['cost_code']
+        except KeyError:
+          costCode = 'NONE'
+        
+        grpStr += costCode + '\t' * self._calcTabs(maxCostCodeLen, costCode)
 
       # Optionally add WBS code
       if self.showWBSCodes == True:
         try:
-	  wbsCode = config.jiraDict[group]['wbs_code']
-	except KeyError:
-	  wbsCode = 'NONE'
-	
-	grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
+          wbsCode = config.jiraDict[group]['wbs_code']
+        except KeyError:
+          wbsCode = 'NONE'
+        
+        grpStr += wbsCode + '\t' * self._calcTabs(maxWBSLen, wbsCode)
 
       # wList = list of day summary results
       for i in range(len(wList)):
         if group in wList[i][1]:
-          grpStr += "%0.2f\t" % wList[i][1][group]
+          grpStr += "{:0.2f}\t".format(wList[i][1][group])
         else:
           grpStr += "\t"
         
-      grpStr += "%0.2f" % groupWeekTotals[group]
+      grpStr += "{:0.2f}".format(groupWeekTotals[group])
       # Display group strings as they're built
-      print grpStr
+      print(grpStr)
 
     # Display last two rows
-    print separator
-    print totalStr
+    print(separator)
+    print(totalStr)
 
     return True
 
@@ -1146,7 +1147,7 @@ class ReportCli:
     skipRemainingInput = False
     # Loop over items in a entry
     for item in self.logEntryDef:
-      #!print item
+      #!print(item)
       # Get the get and set functions for this item
       getFun, setFun, verifyFun = entry.getFunctions(item)
       
@@ -1159,23 +1160,23 @@ class ReportCli:
         entryStr = getFun()
         if len(entryStr) > self.showCorrectDescLen:
           entryStr = entryStr[:self.showCorrectDescLen] + "..."
-        promptStr = "%s [%s]: " % (item, entryStr)
+        promptStr = "{} [{}]: ".format(item, entryStr)
       else: 
-        promptStr = "%s: " % item
+        promptStr = "{}: ".format(item)
       
       # Set tab-complete based on which item is being input
       if item == 'activity':
-        print "  Possible activities:   %s" % ", ".join(self.possibleActivities[1:])
+        print("  Possible activities:   {}".format(", ".join(self.possibleActivities[1:])))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(self.possibleActivities[:])
         readline.set_completer(completer.complete)
       if item == 'group':
         # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
-        #!print "  Used groups:   %s" % ", ".join(self.logObj.collectGroups())
-        #!print "  Possible groups:   %s" % ", ".join(self.possibleGroups[1:])
+        #!print("  Used groups:   {}".format(", ".join(self.logObj.collectGroups())))
+        #!print("  Possible groups:   {}".format(", ".join(self.possibleGroups[1:])))
         totalGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[:]))
-        totalGroups.sort()
-        print "  Possible groups:   %s" % ", ".join(totalGroups[1:])
+        totalGroups = sorted(totalGroups)
+        print("  Possible groups:   {}".format(", ".join(totalGroups[1:])))
         readline.parse_and_bind("tab: complete")
         #!completer = _TabCompleter(self.possibleGroups[:])
         completer = _TabCompleter(totalGroups)
@@ -1183,12 +1184,12 @@ class ReportCli:
       if item == 'title':
         #existingTitles = self.logObj.getElementList(item)
         existingTitles = self.logObj.collectEntries(entry.group, item)
-        print "  Existing titles for %s:   %s" % (entry.group, ", ".join(existingTitles)) 
+        print("  Existing titles for {}:   {}".format(entry.group, ", ".join(existingTitles)))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingTitles)
         readline.set_completer(completer.complete)
       if item == 'payCode':
-        print "  Possible payCodes: %s" % ", ".join(self.possiblePayCodes[:])
+        print("  Possible payCodes: {}".format(", ".join(self.possiblePayCodes[:])))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(self.possiblePayCodes[:])
         readline.set_completer(completer.complete)
@@ -1197,21 +1198,21 @@ class ReportCli:
       try:
         validResponse = False
         while not validResponse:
-          userInput = raw_input(promptStr)
+          userInput = input(promptStr)
 
           validResponse = verifyFun(userInput)
           if validResponse == False:
             # There is probably a better way to specify correct forms of arguments
             if item != "date":
-              print "! %s is not a valid %s." % (userInput, item)
+              print("! {} is not a valid {}.".format(userInput, item))
             else:
-              print "! %s is not a valid %s. Required %s format: YYYY-MM-DD" % (userInput, item, item)
+              print("! {} is not a valid {}. Required {} format: YYYY-MM-DD".format(userInput, item, item))
 
           # Force the user to manually enter fields (with exceptions)
           if userInput == '':
             # User input is blank
             if requireInput == True and item != 'date' and item != 'duration' and item != 'payCode':
-              print "! %s can't be empty." % item
+              print("! {} can't be empty.".format(item))
               validResponse = False
           else:
             # User input is NOT blank and has already been verified.
@@ -1227,8 +1228,8 @@ class ReportCli:
         # It may be neccessary to clear this.  Test it
         userInput = ''
         
-        print ""
-        print "Aborting..."
+        print("")
+        print("Aborting...")
         break
         
       except EOFError:
@@ -1238,12 +1239,12 @@ class ReportCli:
           
           userInput = ''
           
-          print ""
-          print "Aborting (until sensible defaults can be determined)..."
+          print("")
+          print("Aborting (until sensible defaults can be determined)...")
           break
         else:
-          print ""
-          print "Finishing..."
+          print("")
+          print("Finishing...")
           skipRemainingInput = True
         
       finally:
@@ -1254,7 +1255,7 @@ class ReportCli:
         
       #  Break the loop before userInput is set since we received the Ctrl+D for the next item and userInput is stale.
       if skipRemainingInput == True:
-        #!print '\t', item, userInput
+        #!print('\t', item, userInput)
         break
         
       # Only change entries from the default if user input isn't blank
@@ -1278,20 +1279,20 @@ class ReportCli:
     
     args is ignored.
     '''
-    #!print "addEntry(", args, ")"
+    #!print("addEntry(", args, ")")
     
     # Create a blank entry -- may need to make this a function so it can be more easily overridden
     newEntry = entry.ReportEntry()
 
     #!newEntry.printEntry()
 
-    print ""
+    print("")
     # Populate the entry
     status = self._getUserInput(newEntry, True)
-    print ""
+    print("")
 
     #!newEntry.printEntry()
-    #!print ""
+    #!print("")
     
     # Only add the entry if the user didn't Ctrl+c out of it
     if status == True:
@@ -1299,7 +1300,7 @@ class ReportCli:
       self.dirty = True
       #!newEntry.printEntry()
     else:
-      #!print "addEntry canceled"
+      #!print("addEntry canceled")
       pass
     
     return True
@@ -1311,7 +1312,7 @@ class ReportCli:
     
     args is a tuple of index strings (numbers starting from 1).  If no indices are specified, the last entry is corrected.
     '''
-    #!print "correctEntry(", args, ")"
+    #!print("correctEntry(", args, ")")
     
     # Get the entry to be corrected
     
@@ -1321,7 +1322,7 @@ class ReportCli:
     else:
       cArgs = args
     
-    print ""
+    print("")
     
     for x in cArgs:
       try:
@@ -1332,14 +1333,14 @@ class ReportCli:
           tempObj = self.logObj.getEntry(index-1)
           valueBackup = tempObj.getAll()
 
-          print "Editing entry #%s" % x
-          print ""
+          print("Editing entry #{}".format(x))
+          print("")
           tempObj.printEntry()
-          print ""
+          print("")
           
           # Correct the entry
           status = self._getUserInput(tempObj)
-          print ""
+          print("")
           
           # Only correct the entry if the user didn't Ctrl+c out of it
           if status == True:
@@ -1348,15 +1349,15 @@ class ReportCli:
             self.dirty = True
           else:
             # This may need to change to continue in the future, depending on what comes after it
-            #!print "correctEntry canceled"
+            #!print("correctEntry canceled")
             # restore the value backup
             tempObj.setAll(valueBackup)
           
         else:
-          print "!", x, "is outside the valid index range."
+          print("! {} is outside the valid index range.".format(x))
       except ValueError:
-        print "!", x, "is not a valid index (integer)."
-        print ""
+        print("! {} is not a valid index (integer).".format(x))
+        print("")
         continue
 
     return True
@@ -1377,7 +1378,7 @@ class ReportCli:
     for i in range(len(promptItem)):
       item = promptItem[i]
 
-      promptStr = "%s %s: " % (promptAdj[i], item)
+      promptStr = "{} {}: ".format(promptAdj[i], item)
       
       if item == 'group':
         # Combine default groups (likely a subset of valid groups) with collected groups (possibly containing non-default, but still valid groups)
@@ -1385,15 +1386,15 @@ class ReportCli:
           existingGroups = list(set(self.logObj.collectGroups()) | set(self.possibleGroups[1:]))
         else:
           existingGroups = self.logObj.collectGroups()
-        existingGroups.sort()
-        print "  Possible groups:   %s" % ", ".join(existingGroups)
+        existingGroups = sorted(existingGroups)
+        print("  Possible groups:   {}".format(", ".join(existingGroups)))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingGroups)
         readline.set_completer(completer.complete)
       if item == 'title':
         # Group is element of list before the current one
         existingTitles = self.logObj.collectEntries(changeInput[i-1], item)
-        print "  Existing titles for %s:   %s" % (changeInput[i-1], ", ".join(existingTitles)) 
+        print("  Existing titles for {}:   {}".format(changeInput[i-1], ", ".join(existingTitles)))
         readline.parse_and_bind("tab: complete")
         completer = _TabCompleter(existingTitles)
         readline.set_completer(completer.complete)
@@ -1402,13 +1403,13 @@ class ReportCli:
       try:
         validResponse = False
         while not validResponse:
-          userInput = raw_input(promptStr)
+          userInput = input(promptStr)
 
           # 
           if userInput == '':
             # User input is blank
             if itemRequired[i] == True:
-              print "! %s %s can't be empty." % (promptAdj[i], item)
+              print("! {} {} can't be empty.".format(promptAdj[i], item))
               validResponse = False
             elif i == 2:
               # Set new group to old group if none is specified
@@ -1429,9 +1430,9 @@ class ReportCli:
 
             if validResponse == False:
               if i == 2:
-                print "! %s is not a valid %s." % (userInput, item)
+                print("! {} is not a valid {}.".format(userInput, item))
               else:
-                print "! %s is not an existing %s." % (userInput, item)
+                print("! {} is not an existing {}.".format(userInput, item))
             else:
               desiredInput = userInput
           
@@ -1446,8 +1447,8 @@ class ReportCli:
         userInput = ''
         changeInput = []
         
-        print ""
-        print "Aborting..."
+        print("")
+        print("Aborting...")
         break
         
       finally:
@@ -1465,9 +1466,9 @@ class ReportCli:
     
     args: None
     '''
-    #!print "changeTitle(", args, ")"
+    #!print("changeTitle(", args, ")")
     changeResponse = self._getChangeInput()
-    #!print changeResponse
+    #!print(changeResponse)
     
     if changeResponse != []:
       oldGroup, oldTitle, newGroup, newTitle = changeResponse
@@ -1488,7 +1489,7 @@ class ReportCli:
     '''
     Called when "save" or "s" is typed.  Causes the log to be saved and the dirty flag to be cleared.
     '''
-    #!print "saveLog(", args, ")"
+    #!print("saveLog(", args, ")")
     self.logObj.saveLog()
     self.dirty = False
     return True
@@ -1498,18 +1499,18 @@ class ReportCli:
     '''
     Called when "quit" or "q" is typed.  Takes into account whether there are unsaved changes before quitting the program.
     '''
-    #!print "quit(", args, ")"
+    #!print("quit(", args, ")")
     if self.dirty == False:
-      print "Quitting..."
+      print("Quitting...")
       retval = False
     else:
-      rawAck = raw_input("You have unsaved changes, are you sure you want to quit without saving? ")
-      ack = string.strip(rawAck)
+      rawAck = input("You have unsaved changes, are you sure you want to quit without saving? ")
+      ack = rawAck.strip()
       if ack == "Yes" or ack == "yes" or ack == "Y" or ack == "y":
-        print "Discarding unsaved changes and quitting..."
+        print("Discarding unsaved changes and quitting...")
         retval = False
       else:
-        print "A very wise choice!"
+        print("A very wise choice!")
         retval = True
 
     return retval
@@ -1523,7 +1524,7 @@ class ReportCli:
     if len(sys.argv) > 1:
       filepath = sys.argv[1]
     else:
-      filepath = "%s/%s" % (os.getcwd(), self.logFilename)
+      filepath = "{}/{}".format(os.getcwd(), self.logFilename)
       # Alternately could use the script location (sys.argv[0]), but that seems like a bad decision
 
     #
@@ -1532,18 +1533,18 @@ class ReportCli:
 
     # Check to see if the file exists
     if not os.path.isfile(filepath):
-      print filepath, "DOES NOT EXIST!"
+      print("{} DOES NOT EXIST!".format(filepath))
 
       # Ask the user if the file should be created
       try:
-        decision = raw_input("Would you like to create it? (y/n) ")
+        decision = input("Would you like to create it? (y/n) ")
       except KeyboardInterrupt:
-        print
+        print()
         decision = "No"
 
       if decision in ("Yes", "yes", "Y", "y"):
         # Create the file
-        print "Creating %s" % filepath
+        print("Creating {}".format(filepath))
       else:
         self.run = False
 
@@ -1556,9 +1557,9 @@ class ReportCli:
     '''
     # print only the long form of the commands
     longCommandList = sorted([c for c in self.commands.keys() if len(c) > 1])
-    #!print longCommandList
+    #!print(longCommandList)
     # print groups that have been used so far
-    #!print self.logObj.collectGroups()
+    #!print(self.logObj.collectGroups())
 
     # Set up the smart tab completer
     readline.parse_and_bind("tab: complete")
@@ -1568,24 +1569,24 @@ class ReportCli:
     # Enter command interpreter mode
     while ( self.run ):
       try:
-        command = raw_input(" > ")
+        command = input(" > ")
       except KeyboardInterrupt:
-        print ""
+        print("")
         command = "quit"
       except EOFError:
-        print ""
+        print("")
         continue
 
-      cmnd = string.strip(command)
+      cmnd = command.strip()
       if len(cmnd) > 0:
         cmndKey = cmnd.split(" ")[0]
         args = cmnd.split(" ")[1:]
-        #!print cmnd, cmndKey, commands.keys()
+        #!print(cmnd, cmndKey, commands.keys())
         if cmndKey in self.commands.keys():
-          #!print commands[cmndKey]
+          #!print(commands[cmndKey])
           self.run = self.commands[cmndKey](*args)
         else:
-          print "\"%s\" is not a valid command" % cmnd
+          print("\"{}\" is not a valid command".format(cmnd))
 
 
 class _SmartTabCompleter:
@@ -1649,7 +1650,7 @@ class _SmartTabCompleter:
 
           #!logging.debug('currentCandidates=%s', self.currentCandidates)
           
-        except (KeyError, IndexError), err:
+        except (KeyError, IndexError) as err:
           #!logging.error('completion error: %s', err)
           self.currentCandidates = []
         except:

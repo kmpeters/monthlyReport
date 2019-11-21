@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 ############  SVN Repository information  #############
 # $Date$
@@ -22,19 +22,19 @@ from os import system
 
 
 def _compileLaTeX(subdir, texPrefix):
-  print ""
-  system("pdflatex -output-directory %s %s.tex" % (subdir, texPrefix) )
-  print ""
+  print("")
+  system("pdflatex -output-directory {} {}.tex".format(subdir, texPrefix))
+  print("")
 
 def _writeLaTeX(results, subdir, texPrefix):
   author = results[0]
   date = strftime("%B %Y")
   srDict = results[2]
   #groupTotals = results[3]
-	
+  
   # Eventually get more sophisticated about the filename and file existence checking
   if isfile("dummy.tex"):
-    print "dummy.tex already exists"
+    print("dummy.tex already exists")
     return
 
   # Build the .tex file in an array to write the fill in a single shot
@@ -42,22 +42,22 @@ def _writeLaTeX(results, subdir, texPrefix):
   # LaTeX header
   lines.append("\\documentclass{article}\n")
   lines.append("\\usepackage{fullpage}\n")
-  lines.append("\\author{%s}\n" % author)
-  lines.append("\\title{Monthly Report for %s}\n" % date)
+  lines.append("\\author{{{0}}}\n".format(author))
+  lines.append("\\title{{Monthly Report for {0}}}\n".format(date))
   lines.append("\\begin{document}\n")
   lines.append("\\maketitle\n\n")
 
   # LaTeX body
-  #groups = groupTotals.keys()
-  groups = srDict.keys()
-  groups.sort()
+  #groups = list(groupTotals.keys())
+  groups = list(srDict.keys())
+  groups = sorted(groups)
   for group in groups:
     # LaTeX Section = monthly report group
-    #!lines.append("\\section*{%s - \\emph{%d\\%%}}\n\n" % (group, groupTotals[group]))
+    #!lines.append("\\section*{{{0} - \\emph{{{1}\\%}}}}\n\n".format(group, groupTotals[group]))
     # Pete would prefer we leave out group totals
-    lines.append("\\section*{%s}\n\n" % group)
+    lines.append("\\section*{{{0}}}\n\n".format(group))
     # subsections might have more appropriate heading sizes
-    #!lines.append("\\subsection*{%s}\n\n" % group)
+    #!lines.append("\\subsection*{{{0}}}\n\n".format(group))
 
     # Itemized list = dummy.xml remarks
     lines.append("\\begin{itemize}\n")
@@ -73,26 +73,26 @@ def _writeLaTeX(results, subdir, texPrefix):
       correctedDetails = correctedDetails.replace("%", "\\%")
       # And pound signs
       correctedDetails = correctedDetails.replace("#", "\\#")
-      #lines.append("  \\item %s - \\emph{%d\\%%}\n" % (correctedDetails, item[0]) )
-      lines.append("  \\item %s - \\emph{%s}\n" % (correctedDetails, item[0]) )
+      #lines.append("  \\item {0} - \\emph{{{1}\\%}}\n".format(correctedDetails, item[0]))
+      lines.append("  \\item {0} - \\emph{{{1}}}\n".format(correctedDetails, item[0]))
   
       # Eventually figure out a pretty way of including an optional title
       #!if item[2] == None:
-      #!      lines.append("  \\item %s - \\emph{%d\\%%}\n" % (item[1], item[0]) )
+      #!      lines.append("  \\item {0} - \\emph{{{1}\\%}}\n".format(item[1], item[0]))
       #!else:
       #!      # Need to handle "optional" title somehow.  Not sure how to do it so it isn't ugly.		      
-  	    
+      
     lines.append("\\end{itemize}\n\n")
 
   # LaTeX end
   lines.append("\\end{document}\n")
-  	  
+  
   # 
   if subdir == '':
-  	  subdir = "."
+      subdir = "."
 
   # Write the .tex file
-  filename = "%s/%s.tex" % (subdir, texPrefix)
+  filename = "{}/{}.tex".format(subdir, texPrefix)
   f = open(filename, 'w')
   f.writelines(lines)
   f.close()
@@ -141,9 +141,9 @@ def _analyzeXml(sr):
   #totalEffort = 0.0
   #for group in groupTotals:
   #	  totalEffort += groupTotals[group]
-  #print ""
-  #print "Total effort: %0.2f%%" % totalEffort
-  #print ""
+  #print("")
+  #print("Total effort: {:0.2f}%".format(totalEffort))
+  #print("")
 
   #return (fullname, xmldate, srDict, groupTotals)
   return (fullname, xmldate, srDict)
@@ -173,27 +173,27 @@ def makeReport(fullFilePath):
   # Check to see if the subdirectory exists (assumes fullFilePath ends in .xml)
   subdir = fullFilePath[:-4]
   if exists( subdir ):
-    print "The desired subdirectory (%s) already exists." % subdir
+    print("The desired subdirectory ({}) already exists.".format(subdir))
   else:
-    print "Creating subdirectory: %s" % subdir
-    system("mkdir %s" % subdir)
+    print("Creating subdirectory: {}".format(subdir))
+    system("mkdir {}".format(subdir))
 
   # Read the xml report
-  print "Reading %s" % fullFilePath
+  print("Reading {}".format(fullFilePath))
   sr = _readXml(fullFilePath)
 
   # Scan the tree for important info
-  print "Analyzing %s" % fullFilePath
+  print("Analyzing {}".format(fullFilePath))
   results = _analyzeXml(sr)
-  #!print results
+  #!print(results)
 
   # Write the LaTeX file (may need to catch errors writing file)
-  print "Writing LaTeX report"
+  print("Writing LaTeX report")
   texPrefix = split(subdir)[1]
   _writeLaTeX(results, subdir, texPrefix)
-	
+  
   # Compile the LaTeX file (eventually will need to skip if there was a write error)
-  print "Compiling LaTeX report and converting to pdf"
+  print("Compiling LaTeX report and converting to pdf")
   _compileLaTeX(subdir, texPrefix)
 
 
@@ -228,7 +228,7 @@ def makeXml(analysis, directory, filename, fullName):
   fullName   (String) The full name of the author.
   =========  =====================================================================
   '''
-  #!print analysis
+  #!print(analysis)
   details = analysis[0]
   groupTotals = analysis[1]
   titleTotals = analysis[2]
@@ -238,15 +238,15 @@ def makeXml(analysis, directory, filename, fullName):
 
   # Author is the last word in the full name
   lastName = fullName.split()[len(fullName.split())-1]
-  #!print "author", last_name
+  #!print("author", last_name)
 
   # Get current time
   currentTime = strftime("%Y-%m-%dT%H:%M:%S")
   currentDate = strftime("%Y-%m-%d")
-  #!print "time", currentTime
+  #!print("time", currentTime)
 
   # Create <BCDA_Staff_Monthly_Report>
-  #!print "Creating %s" % filename
+  #!print("Creating {}".format(filename))
   tree = etree.ElementTree()
   root = etree.Element('BCDA_Staff_Monthly_Report', version="1.0")
 
@@ -260,26 +260,26 @@ def makeXml(analysis, directory, filename, fullName):
   author.text = lastName
 
   # Get groups
-  groups = titleTotals.keys()
-  groups.sort()
+  groups = list(titleTotals.keys())
+  groups = sorted(groups)
   
   for group in groups:
     # Get titles
-    titles = titleTotals[group].keys()
-    titles.sort()
+    titles = list(titleTotals[group].keys())
+    titles = sorted(titles)
 
     # Eventually this should change to report hours instead of percents. 
     
     #groupPercent = groupTotals[group] / recordedTotal * 100.00
-    #groupPercentStr = "%.1f%%" % groupPercent
+    #groupPercentStr = "{:.1f}%".format(groupPercent)
     
-    groupHourStr = "%.2f hrs" % groupTotals[group]
+    groupHourStr = "{:.2f} hrs".format(groupTotals[group])
     
     for title in titles:
       #titlePercent = titleTotals[group][title] / recordedTotal * 100.0
-      #titlePercentStr = "%.1f%%" % titlePercent
+      #titlePercentStr = "{:.1f}%".format(titlePercent)
       
-      titleHourStr = "%.2f hrs" % titleTotals[group][title]
+      titleHourStr = "{:.2f} hrs".format(titleTotals[group][title])
       
       # Populate report with <remark>'s
       remark = etree.SubElement(root, "remark")
@@ -294,15 +294,15 @@ def makeXml(analysis, directory, filename, fullName):
 
       # The user will replace this text with actual content
       entryElem = etree.SubElement(remark, "entry")
-      #entryElem.text = "Details of %s" % title
+      #entryElem.text = "Details of {}".format(title)
       # Combine all the entry descriptions into a paragraph
       entryText = ""
       effortBreakdown = {}
       for entryObj in details[group][title]:
         # Combine all the entry descriptions into a paragraph
         entryText += entryObj.description
-	entryText += " "
-	  
+        entryText += " "
+        
       entryElem.text = entryText
 
       effortElem = etree.SubElement(remark, "effort")
@@ -316,7 +316,7 @@ def makeXml(analysis, directory, filename, fullName):
   # Write the populated staff report to disk
   _indent(root)
   tree._setroot(root)
-  tree.write("%s/%s" % (directory, filename) )
+  tree.write("{}/{}".format(directory, filename))
 
   return True
 
@@ -329,12 +329,12 @@ def main():
   if len(sys.argv) > 1:
     fullFilePath = sys.argv[1]
   else:
-    print "Usage: mkrep.py <bcda_staff_monthly_report_xml>"
+    print("Usage: mkrep.py <bcda_staff_monthly_report_xml>")
     return
 
   # Check to see if the file exists
   if not isfile(fullFilePath):
-    print "The specified xml file (%s) doesn't exist." % fullFilePath
+    print("The specified xml file ({}) doesn't exist.".format(fullFilePath))
     return
 
   makeReport(fullFilePath)
