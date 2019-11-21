@@ -614,14 +614,14 @@ class ReportCli:
         if percents == False:
           print("{:5.2f} {}".format(groupTotals[group], group))
         else:
-          print("{:4.1f}%% {}".format(groupTotals[group] / recordedTotal * 100.0, group))
+          print("{:4.1f}% {}".format(groupTotals[group] / recordedTotal * 100.0, group))
         
         # Loop over titles printing totals
         for title in titles:
           if percents == False:
             print("\t{:5.2f} {}".format(titleTotals[group][title], title))
           else:
-            print("\t{:4.1f}%% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title))
+            print("\t{:4.1f}% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title))
             
           if verbose == True:
             lastDate = ""
@@ -647,7 +647,7 @@ class ReportCli:
       # Print total hours, theoretical hours, and percent
       print("Recorded: {} hrs".format(recordedTotal))
       print("Possible: {} hrs".format(theoreticalHours))
-      print("Complete: {:0.1f}%%".format(percent))
+      print("Complete: {:0.1f}%".format(percent))
       print("")
 
 
@@ -689,7 +689,7 @@ class ReportCli:
     
     args is a tuple of day strings.  If no days are specified, the current day is displayed.
     '''
-    print("displayDay(", args, ")")
+    #!print("displayDay(", args, ")")
     if len(args) == 0:
       if self.customDate == None:
         dArgs = (time.strftime("%d"),)
@@ -716,7 +716,7 @@ class ReportCli:
             print("{} ; {:4s} ; {} ; {} - {} ; {} ; {}".format(x.index, x.payCode, x.duration, x.group, x.title, x.activity, x.description))
         print("")
         print("Hours: {:.2f}".format(dayHours))
-        print("Percent: {:.1f}%%".format(percentRecorded))
+        print("Percent: {:.1f}%".format(percentRecorded))
         print("")
       except ValueError:
         print("! {} is not a valid day (integer).".format(x))
@@ -819,7 +819,7 @@ class ReportCli:
         
         print("")
         print("Hours: {:.2f}".format(dayHours))
-        print("Percent: {:.1f}%%".format(percentRecorded))
+        print("Percent: {:.1f}%".format(percentRecorded))
         print("")
       except ValueError:
         print("! {} is not a valid day (integer).".format(x))

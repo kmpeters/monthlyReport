@@ -42,8 +42,8 @@ def _writeLaTeX(results, subdir, texPrefix):
   # LaTeX header
   lines.append("\\documentclass{article}\n")
   lines.append("\\usepackage{fullpage}\n")
-  lines.append("\\author{{}}\n".format(author))
-  lines.append("\\title{Monthly Report for {}}\n".format(date))
+  lines.append("\\author{{{0}}}\n".format(author))
+  lines.append("\\title{{Monthly Report for {0}}}\n".format(date))
   lines.append("\\begin{document}\n")
   lines.append("\\maketitle\n\n")
 
@@ -53,11 +53,11 @@ def _writeLaTeX(results, subdir, texPrefix):
   groups = sorted(groups)
   for group in groups:
     # LaTeX Section = monthly report group
-    #!lines.append("\\section*{{} - \\emph{{:d}\\%%}}\n\n".format(group, groupTotals[group]))
+    #!lines.append("\\section*{{{0} - \\emph{{{1}\\%}}}}\n\n".format(group, groupTotals[group]))
     # Pete would prefer we leave out group totals
-    lines.append("\\section*{{}}\n\n".format(group))
+    lines.append("\\section*{{{0}}}\n\n".format(group))
     # subsections might have more appropriate heading sizes
-    #!lines.append("\\subsection*{{}}\n\n".format(group))
+    #!lines.append("\\subsection*{{{0}}}\n\n".format(group))
 
     # Itemized list = dummy.xml remarks
     lines.append("\\begin{itemize}\n")
@@ -73,12 +73,12 @@ def _writeLaTeX(results, subdir, texPrefix):
       correctedDetails = correctedDetails.replace("%", "\\%")
       # And pound signs
       correctedDetails = correctedDetails.replace("#", "\\#")
-      #lines.append("  \\item {} - \\emph{{:d}\\%%}\n".format(correctedDetails, item[0]))
-      lines.append("  \\item {} - \\emph{{}}\n".format(correctedDetails, item[0]))
+      #lines.append("  \\item {0} - \\emph{{{1}\\%}}\n".format(correctedDetails, item[0]))
+      lines.append("  \\item {0} - \\emph{{{1}}}\n".format(correctedDetails, item[0]))
   
       # Eventually figure out a pretty way of including an optional title
       #!if item[2] == None:
-      #!      lines.append("  \\item {} - \\emph{{}\\%%}\n".format(item[1], item[0]))
+      #!      lines.append("  \\item {0} - \\emph{{{1}\\%}}\n".format(item[1], item[0]))
       #!else:
       #!      # Need to handle "optional" title somehow.  Not sure how to do it so it isn't ugly.		      
       
@@ -142,7 +142,7 @@ def _analyzeXml(sr):
   #for group in groupTotals:
   #	  totalEffort += groupTotals[group]
   #print("")
-  #print("Total effort: {:0.2f}%%".format(totalEffort))
+  #print("Total effort: {:0.2f}%".format(totalEffort))
   #print("")
 
   #return (fullname, xmldate, srDict, groupTotals)
@@ -271,13 +271,13 @@ def makeXml(analysis, directory, filename, fullName):
     # Eventually this should change to report hours instead of percents. 
     
     #groupPercent = groupTotals[group] / recordedTotal * 100.00
-    #groupPercentStr = "{:.1f}%%".format(groupPercent)
+    #groupPercentStr = "{:.1f}%".format(groupPercent)
     
     groupHourStr = "{:.2f} hrs".format(groupTotals[group])
     
     for title in titles:
       #titlePercent = titleTotals[group][title] / recordedTotal * 100.0
-      #titlePercentStr = "{:.1f}%%".format(titlePercent)
+      #titlePercentStr = "{:.1f}%".format(titlePercent)
       
       titleHourStr = "{:.2f} hrs".format(titleTotals[group][title])
       
