@@ -115,7 +115,8 @@ payCodeDict  = {'None':'None',
                  'VNP':'Vacation No Pay',
                  'VO1':'Vac - Override - S1',
                  'VS1':'Vac in lieu of Sick - S1',
-                 'WRK':'Work'
+                 'WRK':'Work',
+                 'HDY':'Holiday'
                  }
 
 possible_payCodes = list(payCodeDict.keys())
