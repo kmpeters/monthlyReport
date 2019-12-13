@@ -864,8 +864,15 @@ class ReportCli:
     # maxLen / 8 + 1 = num tabs max group name uses
     # (len(group) / 8) + 1 = num tabs group name uses
     # (maxLen / 8) - (len(group) / 8) + 1 = num tabs to add
-    # NOTE: in python2 the result is an int, in python3 the result is a float
-    return int((maxLen / 8) - (len(group) / 8) + 1)
+    
+    if (maxLen > 8) and (len(group) < 8):
+      # An extra tab is needed if the string is sufficiently smaller than the label
+      # since python3 truncates when converting to an int whereas python2 rounded
+      extraTabs = 1
+    else:
+      extraTabs = 0
+    
+    return (int((maxLen / 8) - (len(group) / 8) + 1) + extraTabs)
 
 
   def _handleWeekArgs(self, args):
