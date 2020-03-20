@@ -194,6 +194,7 @@ jiraDict = {
   'LTP Lab':{'jira_key':'BCDA_LTP_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   'Topo Lab':{'jira_key':'BCDA_TOPO_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
   'XRR Lab':{'jira_key':'BCDA_XRR_LAB', 'cost_code':'PRJ1000854-PH01-APS030501', 'wbs_code':'APS030501'},
+  'CAT Beamlines':{'jira_key':'BCDA_CATS', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   # Old leave cost code: 1321000-132; Formerly PAID_ABSENCE
   'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PT4037'},
   '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'},
