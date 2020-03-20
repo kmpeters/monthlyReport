@@ -57,6 +57,9 @@ class MyCli(cli.ReportCli):
     self.showPayCodes = True
     # Use the default pay code for everything
     self.promptForPayCode = False
+    
+    # Temporarily change default pay code
+    self.defaultPayCode = "TEL"
 
   # Override the createReportLog function so that MyReportLog is used instead of ReportLog
   def createReportLog(self, filepath):
