@@ -913,7 +913,7 @@ class ReportCli:
     wList = []
     for day in wArgs:
       #  groups, totals, entries, dayHours, percentRecorded = self.logObj.getDaySummary(day)
-      wList.append(self.logObj.getDaySummary(day))
+      wList.append(self.logObj.getDetailedDaySummary(day))
       
     #!print(wArgs)
     
@@ -933,7 +933,7 @@ class ReportCli:
         #
         day = wArgs[i]
         dayList = wList[i]
-        groups = dayList[0]
+        groupTuples = dayList[0]
         entries = dayList[2]
         totals = dayList[1]
         dayTotal = dayList[3]
@@ -941,11 +941,14 @@ class ReportCli:
 
         weekHourTotal += dayTotal
         
-        #
-        if len(groups) > 0:
-            for group in groups:
+        if len(groupTuples) > 0:
+            for groupTuple in groupTuples:
                 #
-                groupTotal = totals[group]
+                group = groupTuple[0]
+                payCode = groupTuple[1]
+                
+                #
+                groupTotal = totals[groupTuple]
                 #
                 if firstGroup == True:
                     prefixStr = "{}\t\t{:0.2f}\t".format(day, dayTotal)
@@ -955,9 +958,9 @@ class ReportCli:
                 
                 suffixStr = ""
                 
-                # Assume there will only be one pay code for a given project each day
+                # TODO: show old group total if paycodes are hidden?
                 if self.showPayCodes == True:
-                    suffixStr += "{}\t".format(entries[group][0].payCode)
+                    suffixStr += "{}\t".format(payCode)
                 
                 suffixStr += "{:0.2f}\t".format(groupTotal)
                 

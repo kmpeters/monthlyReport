@@ -409,6 +409,55 @@ class ReportLog:
     # [[group, hours, [entry1, entry2]], [], 
     return (groups[:], totals, entries, dayHours, percentRecorded)
     
+  def getDetailedDaySummary(self, day):
+    '''
+    Returns summary for a given day.
+    
+    day is a zero-padded, two-character string represting the day of the month.
+    
+    Returns the following tuple: (dayArray[:], dayHours, percentRecorded)
+    
+    ===============  =======================================================
+    variable         description
+    ===============  =======================================================
+    groups           Array of (group, payCode) tuples from the specified day
+    totals           Dict of totals with (group, payCode) as keys
+    entries          Dict of lists of entries with (group, payCode) as keys
+    dayHours         Total hours recorded for the specified day
+    percentRecorded  Percent recorded, assuming an eight-hour day
+    ===============  =======================================================
+    
+    '''
+    dayArray, dayHours, percentRecorded = self.getDay(day)
+
+    dayArraySorted = sorted(dayArray, key=self._customSortKey)
+
+    runTot = 0.0
+    lastGroup = None
+    groupTuples = []
+    totals = {}
+    entries = {}
+    
+    for item in dayArraySorted:
+      # Add the group to the group list
+      if (item.group, item.payCode) not in groupTuples:
+        groupTuples.append((item.group, item.payCode))
+      
+      # Keep a running total for the group
+      if (item.group, item.payCode) not in totals:
+        totals[(item.group, item.payCode)] = float(item.duration)
+      else:
+        totals[(item.group, item.payCode)] += float(item.duration)
+        
+      # Categories the entries
+      if (item.group, item.payCode) not in entries:
+        entries[(item.group, item.payCode)] = [item]
+      else:
+        entries[(item.group, item.payCode)].append(item)
+        
+    # [[group, hours, [entry1, entry2]], [],
+    return (groupTuples[:], totals, entries, dayHours, percentRecorded)
+
   def _customSortKey(self, entry):
     '''
     Custom sort routine for entry objects
