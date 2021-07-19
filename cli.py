@@ -875,22 +875,18 @@ class ReportCli:
     if len(args) == 0:
       wArgs = self._getWeek(0)
     else:
-      try:
-        # Replacing this list comprehension with a loop would allow handling extra spaces between arguments
-        rawWeekArgs = ["{:02d}".format(int(x)) for x in args]
-      except ValueError:
-        # pass error indicator back to calling method
-        return -1
-      else:
-        wArgs = []
-        
-        # num is a two-digit string representation of an integer
-        for num in rawWeekArgs:
-          if int(num) >= 1:
-            wArgs.append(num)
+      wArgs = []
+      for arg in args:
+        try:
+          if '-' in arg or '+' in arg:
+            wArgs += self._getWeek(int(arg))
+          elif int(arg) == 0:
+            wArgs += self._getWeek(0)
           else:
-            wArgs += self._getWeek(int(num))
-      
+            wArgs.append("{:02d}".format(int(arg)))
+        except ValueError:
+          return -1
+    
     # This would be a good place to sort the list, if the wArgs contained date object rather than strings
     return wArgs[:]
 
