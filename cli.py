@@ -116,10 +116,14 @@ class ReportCli:
     self.run = True
     # Dirty flag to indicate unsaved changes
     self.dirty = False
-
+    
+    # Run the main loop
+    self.runMainLoop()
+    
+  def runMainLoop(self):
     # Get log filename
     self.filepath, self.directory, self.filename = self._getLogFilename()
-
+    
     if self.run == True:
       # Let the user know which file is being used
       print("Reading {}".format(self.filepath))
