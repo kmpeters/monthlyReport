@@ -60,7 +60,12 @@ class ReportEntry:
     self.date, self.duration, self.activity, self.group, self.title, self.description, self.payCode = fieldList
     return
   
-  
+  def getYear(self):
+    '''
+    Method to get the entry year
+    '''
+    return self.date[:4]
+
   def getDate(self):
     '''
     Method to get the entry date.
@@ -73,6 +78,12 @@ class ReportEntry:
     '''  
     return self.duration
     
+  def getDurationFloat(self):
+    '''
+    Method to get the entry duration as a float.
+    '''
+    return float(self.duration)
+
   def getActivity(self):
     '''
     Method to get the entry activity.
