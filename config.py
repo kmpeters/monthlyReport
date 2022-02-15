@@ -199,10 +199,13 @@ jiraDict = {
   'Leave':{'jira_key':'LEAVE', 'cost_code':'PRJ1000854-PH01-APS03010502', 'wbs_code':'PT4037'},
   '33ID-C HFM':{'jira_key':'33IDC_HFM', 'cost_code':'PRJ1000854-PH01-APS03020220P', 'wbs_code':'APS03020220P'},
   ### Upgrade projects
-  'ATOMIC/3DMN Support':{'jira_key':'UPGRADE_34ID_SUPPORT', 'cost_code':'RJ1006459 U2-CON-133_MGT_0403340101.D', 'wbs_code':'0403340101'},
+  # 34-ID ATOMIC/3DMN
+  #'ATOMIC/3DMN Support':{'jira_key':'UPGRADE_34ID_SUPPORT', 'cost_code':'RJ1006459 U2-CON-133_MGT_0403340101.D', 'wbs_code':'0403340101'},
   'ATOMIC/3DMN Design':{'jira_key':'UPGRADE_34ID_DESIGN', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
   'ATOMIC 34ID-F':{'jira_key':'UPGRADE_34ID_F', 'cost_code':'PRJ1006459 U2-CON-133_FIN_04033401030301.D', 'wbs_code':'04033401030301'},
   '3DMN 34ID-E':{'jira_key':'UPGRADE_34ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
+  # 19-ID ISN
+  'ISN Design':{'jira_key':'UPGRADE_19ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403190106.D', 'wbs_code':'0403190106'},
   # 4-ID Polar
   'POLAR':{'jira_key':'UPGRADE_04ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403040106.D', 'wbs_code':'0403040106'},
   # 2ID-D BNP-II
