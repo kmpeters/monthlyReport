@@ -201,13 +201,21 @@ jiraDict = {
   ### Upgrade projects
   # 34-ID ATOMIC/3DMN
   #'ATOMIC/3DMN Support':{'jira_key':'UPGRADE_34ID_SUPPORT', 'cost_code':'RJ1006459 U2-CON-133_MGT_0403340101.D', 'wbs_code':'0403340101'},
-  'ATOMIC/3DMN Design':{'jira_key':'UPGRADE_34ID_DESIGN', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
+  'ATOMIC/3DMN Design':{'jira_key':'UPGRADE_34ID', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
   'ATOMIC 34ID-F':{'jira_key':'UPGRADE_34ID_F', 'cost_code':'PRJ1006459 U2-CON-133_FIN_04033401030301.D', 'wbs_code':'04033401030301'},
   '3DMN 34ID-E':{'jira_key':'UPGRADE_34ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403340102.D', 'wbs_code':'0403340102'},
+  # 33-ID Ptycho
+  'Ptycho Design':{'jira_key':'UPGRADE_33ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403330106.D', 'wbs_code':'0403330106'},
+  # 20-ID HEXM
+  'HEXM Design':{'jira_key':'UPGRADE_20ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403200106.D', 'wbs_code':'0403200106'},
   # 19-ID ISN
   'ISN Design':{'jira_key':'UPGRADE_19ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403190106.D', 'wbs_code':'0403190106'},
+  # 9-ID CSSI
+  'CSSI Design':{'jira_key':'UPGRADE_09ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403090106.D', 'wbs_code':'0403090106'},
+  # 8-ID XPCS
+  'XPCS Design':{'jira_key':'UPGRADE_08ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403080106.D', 'wbs_code':'0403080106'},
   # 4-ID Polar
-  'POLAR':{'jira_key':'UPGRADE_04ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403040106.D', 'wbs_code':'0403040106'},
+  'POLAR Design':{'jira_key':'UPGRADE_04ID', 'cost_code':'PRJ1006459 U2-CON-133_FIN_0403040106.D', 'wbs_code':'0403040106'},
   # 2ID-D BNP-II
   'BNP-II':{'jira_key':'ENHANCE_02ID_D', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403020103030304.D', 'wbs_code':'0403020103030304'},
   # 2ID-E Microprobe
