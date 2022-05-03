@@ -69,6 +69,7 @@ class ReportCli:
            "ws": self.displayWeekSummary,
          "wrep": self.displayWeekReport,
            "wr": self.displayWeekReport,
+           "wn": self.displayWeekNotes,
            "wd": self.displayWeekDayforce,
          "dsum": self.displayDaySummary,
            "ds": self.displayDaySummary,
@@ -560,7 +561,7 @@ class ReportCli:
     return True
 
 
-  def _displayAnalysis(self, analysis, verbose=False, percents=False, dateSort=False, desiredGroups=()):
+  def _displayAnalysis(self, analysis, verbose=False, percents=False, dateSort=False, lessInfo=False, desiredGroups=()):
     '''
     Method that actually displays the analysis
     '''
@@ -628,21 +629,30 @@ class ReportCli:
             print("\t{:4.1f}% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title))
             
           if verbose == True:
-            lastDate = ""
-            for e in details[group][title]:
-              if dateSort == False:
-                # Use the old, monthly-report approach
-                line = "\t\t{} ; {} ; {} ; {}".format(e.date, e.duration, e.activity, e.description)
+            if lessInfo == False:
+              # Show date, duration, activity and description by default
+              lastDate = ""
+              for e in details[group][title]:
+                if dateSort == False:
+                  # Use the old, monthly-report approach
+                  line = "\t\t{} ; {} ; {} ; {}".format(e.date, e.duration, e.activity, e.description)
+                  print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"))
+                  print("")
+                else:
+                  # Indent based on date
+                  if lastDate != e.date:
+                    print("\t\t{}".format(e.date))
+                    lastDate = e.date
+                  # Include index instead of date
+                  line = "\t\t\t{} ; {} ; {} ; {}".format(e.index, e.duration, e.activity, e.description)
+                  print(textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t"))
+                  print("")
+            else:
+              # Show only the description
+              for e in details[group][title]:
+                #
+                line = "\t\t* {}".format(e.description)
                 print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"))
-                print("")
-              else:
-                # Indent based on date
-                if lastDate != e.date:
-                  print("\t\t{}".format(e.date))
-                  lastDate = e.date
-                # Include index instead of date
-                line = "\t\t\t{} ; {} ; {} ; {}".format(e.index, e.duration, e.activity, e.description)
-                print(textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t"))
                 print("")
 
     print("")
@@ -757,6 +767,33 @@ class ReportCli:
       print("! No entries for selected day(s).")
 
     return True
+
+
+  def displayWeekNotes(self, *args):
+    '''
+    Called when "wn" is typed.
+    '''
+    #!print("dayTest(", args, ")")
+
+    wArgs = self._handleWeekArgs(args)
+    if wArgs == -1:
+        print("Error: Days must be integers")
+        return True
+
+    print()
+    print("Selected days: {}".format(" ".join(wArgs)))
+
+    analysis = self.logObj.getAnalysis(wArgs)
+    
+    #!print(analysis)
+    
+    if analysis != None:
+      self._displayAnalysis(analysis, verbose=True, percents=False, lessInfo=True)
+    else:
+      print("! No entries for selected day(s).")
+
+    return True
+
 
   def displayWeekSummary(self, *args):
     '''
