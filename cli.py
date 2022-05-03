@@ -502,7 +502,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, True, False, False, args)
+      self._displayAnalysis(analysis, verbose=True, percents=False, dateSort=False, desiredGroups=args)
     else:
       print("! The log is empty.")
     
@@ -519,7 +519,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, True, True, False, args)
+      self._displayAnalysis(analysis, verbose=True, percents=True, dateSort=False, desiredGroups=args)
     else:
       print("! The log is empty.")
     
@@ -536,7 +536,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, False, False, args)
+      self._displayAnalysis(analysis, verbose=False, percents=False, dateSort=False, desiredGroups=args)
     else:
       print("! The log is empty.")
     
@@ -553,7 +553,7 @@ class ReportCli:
     analysis = self.logObj.getAnalysis()
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, True, False, args)
+      self._displayAnalysis(analysis, verbose=False, percents=True, dateSort=False, desiredGroups=args)
     else:
       print("! The log is empty.")
     
@@ -750,9 +750,9 @@ class ReportCli:
     
     if analysis != None:
       if self.wrDateSort == False:
-        self._displayAnalysis(analysis, True, False, False)
+        self._displayAnalysis(analysis, verbose=True, percents=False, dateSort=False)
       else:
-        self._displayAnalysis(analysis, True, False, True)
+        self._displayAnalysis(analysis, verbose=True, percents=False, dateSort=True)
     else:
       print("! No entries for selected day(s).")
 
@@ -777,7 +777,7 @@ class ReportCli:
     #!print(analysis)
     
     if analysis != None:
-      self._displayAnalysis(analysis, False, False, False)
+      self._displayAnalysis(analysis, verbose=False, percents=False, dateSort=False)
     else:
       print("! No entries for selected day(s).")
 
