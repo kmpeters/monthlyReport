@@ -220,6 +220,8 @@ jiraDict = {
   'BNP-II':{'jira_key':'ENHANCE_02ID_D', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403020103030304.D', 'wbs_code':'0403020103030304'},
   # 2ID-E Microprobe
   '2IDE-ENH':{'jira_key':'ENHANCE_02ID_E', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403020103030404.D', 'wbs_code':'0403020103030404'}
+  # 26ID Nanoprobe
+  '26ID-ENH':{'jira_key':'ENHANCE_26ID', 'cost_code':'PRJ1006459 U2-CON-133_DES_0403260103030204.D', 'wbs_code':'0403260103030204'}
   }
 
 possible_groups = list(jiraDict.keys()) + ["",]
