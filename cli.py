@@ -209,6 +209,11 @@ class ReportCli:
                 
    ch            Bulk title change. Make a BACKUP of your log before using
                  this feature, since it hasn't been extensively tested yet.
+   
+   sc            Start capturing report output to a text file instead of 
+                 printing it to stdout.
+   ec            End capture report output to a text file.  Quitting will
+                 automatically close this file.
     """)
     return True
 

@@ -36,6 +36,11 @@ class PerfAppCli(cli.ReportCli):
    print (p) [#] prints info from the log file (default=everything)
    list [label ...] list the labels used in the log. Default labels are
                  activity, group and title.
+   
+   sc            Start capturing report output to a text file instead of 
+                 printing it to stdout.
+   ec            End capture report output to a text file.  Quitting will
+                 automatically close this file.
 
     """)
     return True
@@ -65,6 +70,8 @@ class PerfAppCli(cli.ReportCli):
            "lg": self.listGroups,
         "codes": self.listPayCodes,
            "pc": self.listPayCodes,
+           "sc": self.startCapture,
+           "ec": self.endCapture,
          }
     
     # You can specify a different default name for the log file
