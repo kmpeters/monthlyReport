@@ -88,6 +88,8 @@ class ReportCli:
            "lg": self.listGroups,
         "codes": self.listPayCodes,
            "pc": self.listPayCodes,
+           "sc": self.startCapture,
+           "ec": self.endCapture,
           "tpc": self.togglePayCodePrompt,
           "xml": self.createReportXml,
         "mkrep": self.makePdfReport,
@@ -117,6 +119,14 @@ class ReportCli:
     self.run = True
     # Dirty flag to indicate unsaved changes
     self.dirty = False
+    
+    #
+    self.outFile=sys.stdout
+    
+    # Capture file open flag
+    self.captureFileHandle = None
+    # Capture file name
+    self.captureFile = None
     
     # Run the main loop
     self.runMainLoop()
@@ -609,7 +619,7 @@ class ReportCli:
     #!print("desiredGroupList = {}".format(desiredGroupList))
     #!print("groups = {}".format(groups))
     
-    print("")
+    print("", file=self.outFile)
     for group in groups:
       if desiredGroups == () or group in desiredGroupList:
         titles = list(titleTotals[group].keys())
@@ -617,16 +627,16 @@ class ReportCli:
       
         # Print group total
         if percents == False:
-          print("{:5.2f} {}".format(groupTotals[group], group))
+          print("{:5.2f} {}".format(groupTotals[group], group), file=self.outFile)
         else:
-          print("{:4.1f}% {}".format(groupTotals[group] / recordedTotal * 100.0, group))
+          print("{:4.1f}% {}".format(groupTotals[group] / recordedTotal * 100.0, group), file=self.outFile)
         
         # Loop over titles printing totals
         for title in titles:
           if percents == False:
-            print("\t{:5.2f} {}".format(titleTotals[group][title], title))
+            print("\t{:5.2f} {}".format(titleTotals[group][title], title), file=self.outFile)
           else:
-            print("\t{:4.1f}% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title))
+            print("\t{:4.1f}% {}".format(titleTotals[group][title] / recordedTotal * 100.0, title), file=self.outFile)
             
           if verbose == True:
             if lessInfo == False:
@@ -636,33 +646,77 @@ class ReportCli:
                 if dateSort == False:
                   # Use the old, monthly-report approach
                   line = "\t\t{} ; {} ; {} ; {}".format(e.date, e.duration, e.activity, e.description)
-                  print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"))
-                  print("")
+                  print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"), file=self.outFile)
+                  print("", file=self.outFile)
                 else:
                   # Indent based on date
                   if lastDate != e.date:
-                    print("\t\t{}".format(e.date))
+                    print("\t\t{}".format(e.date), file=self.outFile)
                     lastDate = e.date
                   # Include index instead of date
                   line = "\t\t\t{} ; {} ; {} ; {}".format(e.index, e.duration, e.activity, e.description)
-                  print(textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t"))
-                  print("")
+                  print(textwrap.fill(line, width=(self.terminalWidth-21), subsequent_indent="\t\t\t"), file=self.outFile)
+                  print("", file=self.outFile)
             else:
               # Show only the description
               for e in details[group][title]:
                 #
                 line = "\t\t* {}".format(e.description)
-                print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"))
-                print("")
+                print(textwrap.fill(line, width=(self.terminalWidth-14), subsequent_indent="\t\t"), file=self.outFile)
+                print("", file=self.outFile)
 
-    print("")
+    print("", file=self.outFile)
     
     if desiredGroups == ():
       # Print total hours, theoretical hours, and percent
-      print("Recorded: {} hrs".format(recordedTotal))
-      print("Possible: {} hrs".format(theoreticalHours))
-      print("Complete: {:0.1f}%".format(percent))
-      print("")
+      print("Recorded: {} hrs".format(recordedTotal), file=self.outFile)
+      print("Possible: {} hrs".format(theoreticalHours), file=self.outFile)
+      print("Complete: {:0.1f}%".format(percent), file=self.outFile)
+      print("", file=self.outFile)
+
+
+  def startCapture(self, *args):
+    '''
+    Called when "sc" is typed
+    
+    args is a path to the capture file
+    '''
+    
+    #!print("startCapture(", args, ")")
+    if len(args) != 1:
+      print("! exactly one capture file is required")
+    else:
+      desiredCaptureFile = args[0]
+      
+      if self.captureFileHandle != None:
+        print("! {} is already open".format(self.captureFile))
+      else:
+        if os.path.isdir(args[0]):
+          print("! {} is a directory".format(self.captureFile))
+        else:
+          self.captureFile = desiredCaptureFile
+          self.captureFileHandle = open(self.captureFile, "a")
+          self.outFile = self.captureFileHandle
+          print("Capturing output in {}".format(self.captureFile))
+    
+    return True
+
+
+  def endCapture(self, *args):
+    '''
+    Called when "ec" is typed
+    
+    no args required
+    '''
+    
+    if self.captureFileHandle != None:
+      print("Closing {}".format(self.captureFile))
+      self.captureFileHandle.close()
+      self.captureFileHandle = None
+      self.captureFile = None
+      self.outFile = sys.stdout
+    
+    return True
 
 
   def displayLog(self, *args):
@@ -1541,6 +1595,9 @@ class ReportCli:
     '''
     #!print("quit(", args, ")")
     if self.dirty == False:
+      # Automatically close a capture file if one was open
+      self.endCapture()
+        
       print("Quitting...")
       retval = False
     else:
