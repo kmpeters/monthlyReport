@@ -88,6 +88,7 @@ class ReportCli:
            "lg": self.listGroups,
         "codes": self.listPayCodes,
            "pc": self.listPayCodes,
+          "pcr": self.displayPayCodeReport,
            "sc": self.startCapture,
            "ec": self.endCapture,
           "tpc": self.togglePayCodePrompt,
@@ -193,7 +194,9 @@ class ReportCli:
    psum [cat]    displays the month summary w/o details (percent)
    rep [cat]     displays the month summary w/ details (hours)
    prep [cat]    displays the month summary w/ details (percent)
-
+   
+   pcr [pc]      displays a pay code report w/o details (hours)
+   
    print (p) [#] prints info from the log file (default=everything)
    list [label ...] list the labels used in the log. Default labels are
                  activity, group and title.
@@ -493,6 +496,7 @@ class ReportCli:
 
     return True
 
+
   def togglePayCodePrompt(self, *args):
     '''
     Method to toggle prompt for the pay code when adding entries
@@ -507,6 +511,7 @@ class ReportCli:
       print("Prompt for pay code: Enabled")
     
     return True
+
 
   def displayReport(self, *args):
     '''
@@ -878,6 +883,46 @@ class ReportCli:
       print("! No entries for selected day(s).")
 
     return True
+
+
+  def displayPayCodeReport(self, *args):
+    '''
+    Method to display the pay code report
+    
+    args is a tuple of pay codes
+    '''
+    #!print("displayPayCodeReport(", args, ")")
+    
+    pcArgs = self._handlePayCodeArgs(args)
+    
+    #!print(pcArgs)
+    pcTotals = self.logObj.getPayCodeTotals(pcArgs)
+    #!print(pcTotals)
+    
+    print()
+    
+    for pc in pcTotals.keys():
+      print("{}: {:.2f}".format(pc, pcTotals[pc]['total']))
+      print()
+      for d in pcTotals[pc]['days'].keys():
+        print("  {}: {:.2f}".format(d, pcTotals[pc]['days'][d]['total']))
+      print()
+    return True
+
+
+  def _handlePayCodeArgs(self, args):
+    '''
+    Internal routine to handle pay code args for displayPayCode* methods
+    '''
+    pcArgs = []
+    if len(args) > 0:
+      for arg in args:
+        if arg in config.possible_payCodes:
+          pcArgs.append(arg)
+        else:
+          print("! {} is not a valid pay code".format(arg))
+    
+    return pcArgs[:]
 
 
   def displayDaySummary(self, *args):

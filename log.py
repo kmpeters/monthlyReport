@@ -239,7 +239,44 @@ class ReportLog:
     else:
       valid = False
     return valid
+
+
+  def getPayCodeTotals(self, payCodeList=[]):
+    '''
+    Collect pay code totals
     
+    Returns a dictionary with the data in it
+    '''
+    # Make sure there is something to analyze
+    if self.getLogLength() == 0:
+      return None
+    
+    if len(payCodeList) == 0:
+      alwaysAddPayCode = True
+    else:
+      alwaysAddPayCode = False
+    
+    # pcTotals = { 'VAC': {'total': 0.0, 'days': {'2022-10-26': 0.0, 'details': [] ... }, ... }, ...}
+    pcTotals = {}
+    
+    # Loop over all entries
+    for x in self.entryArray:
+      if alwaysAddPayCode or x.payCode in payCodeList:
+        # Include the entry in the totals
+        
+        if x.payCode not in pcTotals.keys():
+          pcTotals[x.payCode] = {'total' : 0.0, 'days' : { x.date : {'total' : 0.0, 'entries' : []} } }
+        if x.date not in pcTotals[x.payCode]['days'].keys():
+          pcTotals[x.payCode]['days'][x.date] = {'total' : 0.0, 'entries' : []}
+          
+        # Add the data
+        pcTotals[x.payCode]['total'] += float(x.duration)
+        pcTotals[x.payCode]['days'][x.date]['total'] += float(x.duration)
+        pcTotals[x.payCode]['days'][x.date]['entries'].append(x)
+    
+    return pcTotals
+
+
   def getAnalysis(self, dayList=None):
     '''
     Do the analysis.
