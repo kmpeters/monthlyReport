@@ -33,6 +33,8 @@ class PerfAppCli(cli.ReportCli):
    rep [cat]     displays the month summary w/ details (hours)
    prep [cat]    displays the month summary w/ details (percent)
 
+   pcr [pc]      displays a pay code report w/o details (hours)
+   
    print (p) [#] prints info from the log file (default=everything)
    list [label ...] list the labels used in the log. Default labels are
                  activity, group and title.
@@ -70,6 +72,7 @@ class PerfAppCli(cli.ReportCli):
            "lg": self.listGroups,
         "codes": self.listPayCodes,
            "pc": self.listPayCodes,
+          "pcr": self.displayPayCodeReport,
            "sc": self.startCapture,
            "ec": self.endCapture,
          }
