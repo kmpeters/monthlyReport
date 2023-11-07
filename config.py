@@ -154,8 +154,9 @@ jiraDict = {
   '07BM':{'jira_key':'BCDA_07BM', 'cost_code':'PRJ1000854-PH01-APS03071402', 'wbs_code':'APS03071402'},
   '07ID':{'jira_key':'BCDA_07ID', 'cost_code':'PRJ1000854-PH01-APS03071502', 'wbs_code':'APS03071502'},
   '08BM':{'jira_key':'BCDA_08BM', 'cost_code':'PRJ1000854-PH01-APS03071602', 'wbs_code':'APS03071602'},
-  '08ID-E':{'jira_key':'BCDA_08ID_A_E', 'cost_code':'PRJ1000854-PH01-APS03071702', 'wbs_code':'APS03071702'},
-  '08ID-I':{'jira_key':'BCDA_08ID_A_I', 'cost_code':'PRJ1000854-PH01-APS03071802', 'wbs_code':'APS03071802'},
+  '08ID-EI':{'jira_key':'BCDA_08ID_A_E_I', 'cost_code':'PRJ1000854-PH01-APS03071702', 'wbs_code':'APS03071702'},
+  # The old 08ID-I was retired and I was merged with E
+  #'08ID-I':{'jira_key':'BCDA_08ID_A_I', 'cost_code':'PRJ1000854-PH01-APS03071802', 'wbs_code':'APS03071802'},
   '09BM':{'jira_key':'BCDA_09BM', 'cost_code':'PRJ1000854-PH01-APS03071902', 'wbs_code':'APS03071902'},
   '09ID-B':{'jira_key':'BCDA_09ID_B', 'cost_code':'PRJ1000854-PH01-APS03073302', 'wbs_code':'APS03073302'},
   '09ID-C':{'jira_key':'BCDA_09ID', 'cost_code':'PRJ1000854-PH01-APS03072002', 'wbs_code':'APS03072002'},
