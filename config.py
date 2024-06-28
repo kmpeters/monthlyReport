@@ -176,6 +176,12 @@ jiraDict = {
   '22BM':{'jira_key':'BCDA_22BM', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '22ID':{'jira_key':'BCDA_22ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '23ID':{'jira_key':'BCDA_23ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
+  # 132>PRJ1000854 APS03-132>General>APS03074802:25-ID-C Operations 
+  '25ID-C':{'jira_key':'BCDA_25ID_C', 'cost_code':'PRJ1000854-PH01-APS03074802', 'wbs_code':'APS03074802'},
+  # 132>PRJ1000854 APS03-132>General>APS03074902: 25-ID-D Operations 
+  '25ID-D':{'jira_key':'BCDA_25ID_C', 'cost_code':'PRJ1000854-PH01-APS03074902', 'wbs_code':'APS03074902'},
+  # 132>PRJ1000854 APS03-132>General>APS03075002: 25-ID-E Operations 
+  '25ID-E':{'jira_key':'BCDA_25ID_C', 'cost_code':'PRJ1000854-PH01-APS03075002', 'wbs_code':'APS03075002'},
   '26ID':{'jira_key':'BCDA_26ID', 'cost_code':'PRJ1000854-PH01-APS03073402', 'wbs_code':'APS03073402'},
   '27ID':{'jira_key':'BCDA_27ID', 'cost_code':'PRJ1000854-PH01-APS03073502', 'wbs_code':'APS03073502'},
   '29ID':{'jira_key':'BCDA_29ID', 'cost_code':'PRJ1000854-PH01-APS03073602', 'wbs_code':'APS03073602'},
