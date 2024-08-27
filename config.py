@@ -173,6 +173,7 @@ jiraDict = {
   '16ID':{'jira_key':'BCDA_16ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '18ID':{'jira_key':'BCDA_18ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '19ID':{'jira_key':'BCDA_19ID', 'cost_code':'PRJ1000854-PH01-APS03075202', 'wbs_code':'APS03075202'},
+  '20BM':{'jira_key':'BCDA_20BM', 'cost_code':'PRJ1000854-PH01-APS03073102', 'wbs_code':'APS03073102'},
   '20ID':{'jira_key':'BCDA_20ID', 'cost_code':'PRJ1000854-PH01-APS03073202', 'wbs_code':'APS03073202'},
   '22BM':{'jira_key':'BCDA_22BM', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
   '22ID':{'jira_key':'BCDA_22ID', 'cost_code':'PRJ1000854-PH01-APS030107', 'wbs_code':'APS030107'},
