@@ -51,6 +51,36 @@ class XmlLog:
     '''
     self.xmlRoot = "log"
     self.xmlEntry = "entry"
+  
+  @classmethod
+  def createLogFromEntryArray(cls, filepath, xmlEntryDef, entryArray):
+    '''
+    Method caled by subclasses that need to create the xml file from an array of entries.  ai.py uses this.
+    '''
+    obj = cls.__new__(cls)
+    
+    obj.filepath = filepath
+    obj.xmlEntryDef = xmlEntryDef
+    obj.definitions()
+    
+    # Split filename into dir and name
+    obj.directory = os.path.split(filepath)[0]
+    obj.filename = os.path.split(filepath)[1]
+    # Handle empty directories when file is in cwd
+    if obj.directory == '':
+      obj.directory = "."
+
+    # The file has already been confirmed to not exist at higher levels, so it is safe to create it here
+    obj._createEmptyXML()
+      
+    # Read the empty file
+    obj.tree, obj.root = obj._readXML()    
+      
+    # Add all the entries from the existing array
+    for e in entryArray:
+      obj.addEntry(e)
+      
+    return obj
 
   def convertEntryToObj(self, entryElem):
     '''

@@ -37,13 +37,11 @@ class ReportLog:
     # log file in array of entry objs form
     self.entryArray = self.getLog()
 
-
   def createLogFileObj(self, logFile, logEntryDef):
     '''
     Method called by __init__ to create the log file instance. Designed to be overriden without having to reimplement __init__.
     '''
     return xmllog.XmlLog(logFile, logEntryDef)
-
 
   def definitions(self):
     '''
@@ -66,6 +64,15 @@ class ReportLog:
     Retuns the log entry definition list.  Called by user interfaces and file-writing modules.
     '''
     return self.logEntryDef[:]
+
+  def createLogFromEntries(self, logFile, entries):
+    '''
+    Create the xml log from an existing list of events.  Only used by subclasses that override default methods.
+    '''
+    self.logFile = xmllog.XmlLog.createLogFromEntryArray(logFile, self.logEntryDef[:], entries)
+    
+    # Make the entryArray consistent with the events that will be written to disk
+    self.entryArray = entries
 
   def _recursiveCollectLabels(self, ent, labels, struct, level=0):
     '''

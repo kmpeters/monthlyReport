@@ -34,14 +34,19 @@ class AICli(pa.PerfAppCli):
     self.commands["s"] = self.saveLog
 
     # Specify a list of groups, titles and keywords to ignore
-    self.ignores = [Ignore("BCDA", ["email", "discussion", "misc", "training", "IT", "meetings"]),
+    self.ignores = [Ignore("BCDA", ["email", "discussion", "misc", "training", "IT", "meetings", "feedback", "interviews"]),
       Ignore("19ID", "meetings"),
       Ignore("XSD", None),
       Ignore("Jira", None),
+      Ignore("Training", None),
       Ignore("Leave", None)]
+    
+    self.outputFilename = "ai_work_log.xml"
+
   
   # Override the createReportLog function so that AILog is used instead of ReportLog
   def createReportLog(self, filepaths):
+    # Don't create the log file here. Create it when the file is saved instead
     return pa.PerfAppLog(filepaths) 
   
   # Override runMainLoop to allow handling multiple filenames
@@ -96,18 +101,25 @@ class AICli(pa.PerfAppCli):
     '''
     #!print("saveLog(", args, ")")
     
-    eventsToKeep = []
-    
-    for e in self.logObj.entryArray:
-      if not self._checkIgnore(e):
-        print(e, e.group, e.title)
-        eventsToKeep.append(e)
-    
-    # TODO:
-    #   2. create the xmllog
-    #   3. add all the entries to it
-    #   4. save to a filename that doesn't conflict with the work log
-    # TODO: handle being called multiple times
+    # Check to see if the file exists
+    if os.path.isfile(self.outputFilename):
+      print("{} already exists! Cowardly refusing to do anything".format(self.outputFilename))
+    else:
+      eventsToKeep = []
+      
+      # It might be better to filter events when reading in the files, rather than at the time of saving, but this is a simpler approach for now.
+      for e in self.logObj.entryArray:
+        if not self._checkIgnore(e):
+          #!print(e, e.group, e.title)
+          eventsToKeep.append(e)
+      
+      # Create an empty xml file and the xml object with all the entries in it
+      self.logObj.createLogFromEntries(self.outputFilename, eventsToKeep)
+      
+      # Actually save the entries to disk
+      self.logObj.saveLog()
+
+      # TODO: handle being called multiple times
     
     return True
 
