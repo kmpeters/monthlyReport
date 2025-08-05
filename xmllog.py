@@ -95,12 +95,25 @@ class XmlLog:
     # loop over elements of an entry
     for x in self.xmlEntryDef:
       getFun, setFun, verifyFun = newObj.getFunctions(x)
+      
       # Set the ReportEntry object to the value from the xml file
       try:
         setFun(entryElem.find(x).text)
       except AttributeError:
-        # The x element of the entry couldn't be found; None types don't have .text fields
-        setFun("None")
+        # Older work logs used category and keyword instead of group and title
+        if x == "group":
+          try:
+            setFun(entryElem.find('category').text)
+          except AttributeError:
+            setFun("None")
+        elif x == "title":
+          try:
+            setFun(entryElem.find('keyword').text)
+          except AttributeError:
+            setFun("None")
+        else:
+          # The x element of the entry couldn't be found; None types don't have .text fields
+          setFun("None")
 
     return newObj
 
