@@ -47,7 +47,7 @@ class AICli(pa.PerfAppCli):
   # Override the createReportLog function so that AILog is used instead of ReportLog
   def createReportLog(self, filepaths):
     # Don't create the log file here. Create it when the file is saved instead
-    return pa.PerfAppLog(filepaths) 
+    return AILog(filepaths) 
   
   # Override runMainLoop to allow handling multiple filenames
   def runMainLoop(self):
@@ -122,6 +122,31 @@ class AICli(pa.PerfAppCli):
       # TODO: handle being called multiple times
     
     return True
+
+
+class AILog(log.ReportLog):
+  def __init__(self, logFiles):
+    self.definitions()
+    
+    # Note: the ReportLog class also defines a logFile member, but that isn't needed here;
+    #       all of the commands that use it have been removed.
+    
+    self.entryArray = []
+    
+    for logFile in logFiles:
+      print("Reading {}".format(logFile))
+      # Append the entries from each log file to the entry array
+      self.entryArray += (self.createLogFileObj(logFile, self.logEntryDef[:])).convertLogToObjs()
+      
+  # Override the definition function to reduce the amount of data written to the json file
+  def definitions(self):
+    self.logEntryDef = [
+        "date",
+        "duration",
+        "group",
+        "title",
+        "description"
+      ]
 
     
 if __name__ == '__main__':
