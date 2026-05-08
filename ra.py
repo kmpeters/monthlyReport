@@ -26,10 +26,8 @@ class MyCli(cli.ReportCli):
 					'BCDA', 'Jira', 'MEDM Replacement', 'motor', 'synApps', 
 					#'EPICS base', 'EPICS clients', 'areaDetector',
 					#'Python', 'spec', 'VxWorks', 'Beamline Comp Env', 
-					'09ID-B', '09ID-C', '15ID', '26ID', '32ID', '33BM', '33ID', 
-					'34ID-C', '34ID-E', 'XSD', 'Leave', '33ID-C HFM',
-					'ATOMIC/3DMN Support', 'ATOMIC/3DMN Design',
-					'ATOMIC 34ID-F', '3DMN 34ID-E']
+					'09ID-D', '19ID', '26ID', '32ID', '33BM', '33ID',
+					'34ID-E', '34ID-F', 'XSD', 'Leave']
 
     self.payCodeDict = {#'None':'None',
                           'VAC':'Vacation',
@@ -41,6 +39,7 @@ class MyCli(cli.ReportCli):
                          #'JUR':'Jury Duty',
                          #'PAR':'Parental Leave*',
                            'RG':'Regular',
+                          'HDY':'Holiday',
                           'TEL':'TELECOMMUTING*'
                           }
     self.possiblePayCodes = sorted(list(self.payCodeDict.keys()))
