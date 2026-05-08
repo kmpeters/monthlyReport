@@ -158,8 +158,9 @@ jiraDict = {
   # The old 08ID-I was retired and I was merged with E
   #'08ID-I':{'jira_key':'BCDA_08ID_A_I', 'cost_code':'PRJ1000854-PH01-APS03071802', 'wbs_code':'APS03071802'},
   '09BM':{'jira_key':'BCDA_09BM', 'cost_code':'PRJ1000854-PH01-APS03071902', 'wbs_code':'APS03071902'},
-  #'09ID-B':{'jira_key':'BCDA_09ID_B', 'cost_code':'PRJ1000854-PH01-APS03073302', 'wbs_code':'APS03073302'},
-  #'09ID-C':{'jira_key':'BCDA_09ID', 'cost_code':'PRJ1000854-PH01-APS03072002', 'wbs_code':'APS03072002'},
+  # 09ID-B and 09ID-C are no longer used, but they remain here to avoid crashes when loading old work logs
+  '09ID-B':{'jira_key':'BCDA_09ID_B', 'cost_code':'PRJ1000854-PH01-APS03073302', 'wbs_code':'APS03073302'},
+  '09ID-C':{'jira_key':'BCDA_09ID', 'cost_code':'PRJ1000854-PH01-APS03072002', 'wbs_code':'APS03072002'},
   '09ID-D':{'jira_key':'BCDA_09ID_D', 'cost_code':'PRJ1000854-PH01-APS03075102', 'wbs_code':'APS03075102'},
   '11BM':{'jira_key':'BCDA_11BM', 'cost_code':'PRJ1000854-PH01-APS03072102', 'wbs_code':'APS03072102'},
   '11ID-B':{'jira_key':'BCDA_11ID_A_B', 'cost_code':'PRJ1000854-PH01-APS03072202', 'wbs_code':'APS03072202'},
